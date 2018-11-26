@@ -1,11 +1,16 @@
 Package: tcherry
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Estimate probability distributions based on tcherry trees
+Version: 0.0.0.900
+Author: c(
+  person("Katrine", "Kirkeby", email = "enir_tak@hotmail.com", role = c("aut","cre")),
+  person("Maria", "Knudsen", email = "mariaknudsen@hotmail.dk", role = c("aut","cre")),
+  person("Ninna", "Vihrs", email = "ninnavihrs@hotmail.dk", role = c("aut","cre")))
+Description: Estimates probability distributions functions based on t-cherry trees.
+    Determines t-cherry trees from Chow-Liu trees.
+License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
+Suggests: 
+    testthat
