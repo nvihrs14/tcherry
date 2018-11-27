@@ -12,6 +12,12 @@
 #'
 #' The mutual information for three variables is calculated by the      formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P      (x)P(y)P(z)))} where the sum is over all possible values of x, y     and z.
 #' @return The mutual information given by a single numeric value.
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
 #' @importFrom Rdpack reprompt
 #' @references
 #' \insertRef{TCJT}{tcherry}
@@ -51,7 +57,8 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
   prop_y <- c(tab_y / sum(tab_y))
   prop_xy <- tab_xy / sum(tab_xy)
 
-  frac_prop_MI <- t(t(prop_xy) / prop_y) / prop_x
+  frac_prop_MI <- sweep(prop_xy, 1, prop_x, FUN='/')
+  frac_prop_MI <- sweep(frac_prop_MI, 2, prop_y, FUN='/')
 
   MI <- sum(prop_xy * log(frac_prop_MI, base = log_base))
 
@@ -60,7 +67,40 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
 
 #' @rdname MI2
 MI3 <- function(x, y, z, smooth = 0, log_base = 2){
-  print('hello world')
+  if (! all(sapply(list(x, y, z), function(x){is.character(x) | is.factor(x)}))){
+    stop('x, y and z must be either characters or factors')
+  }
+  if (length(smooth) > 1){
+    stop('smooth must be a single non-negative value')
+  }
+  else if (!is.numeric(smooth)) {
+    stop('smooth must be numeric')
+  }
+  else if (smooth < 0){
+    stop('smooth must be a non-negative numeric value')
+  }
+
+  tab_x <- table(x) + smooth
+  tab_y <- table(y) + smooth
+  tab_z <- table(z) + smooth
+  tab_xyz <- table(x, y, z) + smooth
+
+  if (0 %in% c(tab_x, tab_y, tab_z, tab_xyz)){
+    stop('Some probabilities are zero and therefore MI cannot be calculated. Consider using the smooth argument.')
+  }
+
+  prop_x <- c(tab_x / sum(tab_x))
+  prop_y <- c(tab_y / sum(tab_y))
+  prop_z <- c(tab_z / sum(tab_z))
+  prop_xyz <- tab_xyz / sum(tab_xyz)
+
+  frac_prop_MI <- sweep(prop_xyz, 1, prop_x, FUN='/')
+  frac_prop_MI <- sweep(frac_prop_MI, 2, prop_y, FUN='/')
+  frac_prop_MI <- sweep(frac_prop_MI, 3, prop_z, FUN='/')
+
+  MI <- sum(prop_xyz * log(frac_prop_MI, base = log_base))
+
+  return(MI)
 }
 
 

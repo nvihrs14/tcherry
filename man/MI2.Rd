@@ -42,3 +42,10 @@ MI2(x, y, log_base = exp(1))
 
 \insertRef{EKTS}{tcherry}
 }
+\author{
+Katrine Kirkeby, \email{enir_tak@hotmail.com}
+
+Maria Knudsen, \email{mariaknudsen@hotmail.dk}
+
+Ninna Vihrs, \email{ninnavihrs@hotmail.dk}
+}
