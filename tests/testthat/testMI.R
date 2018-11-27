@@ -3,7 +3,7 @@ library(tcherry)
 
 test_that('Input is correctly specified',{
   expect_error(MI2(c(1.5,3.6),c('1','2')),'x and y must be either characters or factors')
-  expect_error(MI2(c('1','2'),c('1','2'),c(1,2)),'smooth must be a single positive number')
+  expect_error(MI2(c('1','2'),c('1','2'),c(1,2)),'smooth must be a single non-negative value')
   expect_error(MI2(c('1','2'),c('1','2'),'C'),'smooth must be numeric')
   expect_error(MI2(c('1','2'),c('1','2'),-1),'smooth must be a non-negative numeric value')
 })
