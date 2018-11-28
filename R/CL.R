@@ -1,4 +1,35 @@
-
+#' Test whether an undirected graph is acyclic
+#'
+#' @description Test whether an undirected graph, represented by
+#' an adjacency matrix, is acyclic.
+#'
+#' @param adj_matrix The adjacency matrix representing the graph.
+#' @details Notice that the function cannot cope with loops.
+#' If the graph has loops, an error is returned.
+#' @return A logical value indicating whether the graph is acyclic.
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#' @examples
+#' adj_matrix_cyclic <- matrix(c(0, 1, 1, 1,
+#'                               1, 0, 0, 1,
+#'                               1, 0, 0, 0,
+#'                               1, 1, 0, 0),
+#'                              nrow = 4)
+#'
+#' is_acyclic(adj_matrix_cyclic)
+#'
+#' adj_matrix_acyclic <- matrix(c(0, 0, 1, 1,
+#'                                0, 0, 0, 1,
+#'                                1, 0, 0, 0,
+#'                                1, 1, 0, 0),
+#'                               nrow = 4)
+#'
+#' is_acyclic(adj_matrix_acyclic)
+#' @export
 
 is_acyclic <- function(adj_matrix){
   if (any(diag(adj_matrix) == 1)){
