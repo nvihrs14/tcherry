@@ -1,4 +1,5 @@
 
+
 is_acyclic <- function(adj_matrix){
   if (any(diag(adj_matrix) == 1)){
     stop("The graph represented by the matrix contains loops.")
@@ -18,7 +19,32 @@ is_acyclic <- function(adj_matrix){
   res
 }
 
-ChowLiu <- function(data, root = NULL, ...){
+CPT <- function(adj_matrix, data, bayes_smooth = 0){
+  nodes <- rownames(adj_matrix)
+  FUN <- function(node){
+    parents_idx <- which(adj_matrix[, node] == 1)
+    parents <- nodes[parents_idx]
+
+    tab <- table(data[, c(node, parents)]) + bayes_smooth
+    if (length(parents) == 0){
+      mar <- NULL
+    } else {
+      tab_parents <- table(data[, c(parents)]) + bayes_smooth
+        if (any(tab_parents == 0)){
+        stop("Some cell counts of parent configurations are zero.
+           Consider using the bayes_smooth argument.")
+        }
+      mar <- (1:length(parents))+1
+    }
+    prop.table(tab, margin = mar)
+  }
+
+  CPT_list <- lapply(nodes, FUN)
+  names(CPT_list) <- nodes
+  CPT_list
+}
+
+ChowLiu <- function(data, root = NULL, ..., bayes_smooth = 0){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix")
   }
@@ -69,6 +95,8 @@ ChowLiu <- function(data, root = NULL, ...){
     i <- i+1
   }
 
+  skeleton_adj <- adj_matrix
+
   # Determine DAG
   if(is.null(root)){
     root <- sample(nodes,1)
@@ -80,10 +108,21 @@ ChowLiu <- function(data, root = NULL, ...){
 
   while (nrow(adj_matrix) > 0) {
     adj_matrix_directed[root, ] <- adj_matrix[root, ]
-    adj_matrix <- adj_matrix[! nodes %in% root, ]
-    adj_matrix[,root] <- 0
-    #opdater rod
+    adj_matrix <- adj_matrix[! rownames(adj_matrix) %in% root, ,
+                             drop = FALSE]
+    adj_matrix[, root] <- 0
+    kids_idx <- which(colSums(adj_matrix_directed[root, ,
+                                      drop = FALSE]) > 0)
+    root <- nodes[kids_idx]
   }
+
+  # Calculate conditional probability tables
+  CPTs <- CPT(adj_matrix_directed, data,
+              bayes_smooth = bayes_smooth)
+
+  return(list("skeleton_adj" = skeleton_adj,
+              "adj_DAG" = adj_matrix_directed,
+              "CPTs" = CPTs))
 }
 
 
