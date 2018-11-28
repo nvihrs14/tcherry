@@ -12,7 +12,7 @@ MI3(x, y, z, smooth = 0, log_base = 2)
 \arguments{
 \item{x, y, z}{Vectors of class character or factor.}
 
-\item{smooth}{A single numeric non-negative value. See 'details'      below.}
+\item{smooth}{A single numeric non-negative value. See "details"      below.}
 
 \item{log_base}{The base of the logarithmic function to be used.}
 }
@@ -31,8 +31,8 @@ The mutual information for three variables is calculated by the      formula \de
 }
 \examples{
 
-x <- c('hund','kat','kat','kat','hund','hund','hund','hund','hund')
-y <- c('a','b','c','a','c','b','a','a','b')
+x <- c("hund","kat","kat","kat","hund","hund","hund","hund","hund")
+y <- c("a","b","c","a","c","b","a","a","b")
 MI2(x, y)
 MI2(x, y, smooth = 1)
 MI2(x, y, log_base = exp(1))
