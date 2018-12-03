@@ -114,21 +114,20 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
   nodes <- names(data)
   n_var <- length(nodes)
 
-  if (! root %in% nodes){
+  if (! is.null(root)){
+    if (! root %in% nodes){
     stop("The specified root is not a node.")
+    }
   }
 
-  pair_1 <- rep(nodes[- n_var], (n_var - 1):1)
-  pair_2 <- unlist(sapply(1:(n_var - 1), function(n){
-    nodes[- (1:n)]
-    }))
+  pairs <- t(combn(nodes, 2))
 
   MI_fun <- function(var1, var2){
     MI2(data[, var1], data[, var2], ...)
   }
 
-  MI <- mapply(MI_fun, pair_1, pair_2)
-  MI_tab <- data.frame(pair_1, pair_2, MI)
+  MI <- mapply(MI_fun, pairs[, 1], pairs[, 2])
+  MI_tab <- data.frame(pairs, MI)
 
   ord_idx <- order(MI_tab$MI, decreasing = TRUE)
   MI_tab <- MI_tab[ord_idx, ]
