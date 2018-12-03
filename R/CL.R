@@ -50,32 +50,55 @@ is_acyclic <- function(adj_matrix){
   res
 }
 
-CPT <- function(adj_matrix, data, bayes_smooth = 0){
-  nodes <- rownames(adj_matrix)
-  FUN <- function(node){
-    parents_idx <- which(adj_matrix[, node] == 1)
-    parents <- nodes[parents_idx]
+#' Determines the Chow-Liu tree for data
+#'
+#' @description Determines the structure and the conditional
+#' probability tables for the Chow-Liu tree fitted to data.
+#'
+#' @param data The data set the model should be fitted for.
+#' @param root An optional argument, choosing a userspecified
+#' root for the tree.
+#' @param bayes_smooth Additional cell counts for bayesian
+#' estimation.
+#' @param ... Additional parameters passed to \code{MI2}.
+#'
+#' @return A list containing the following components:
+#' \itemize{
+#' \item \code{skeleton_adj} The adjacency matrix for the skeleton
+#' of the Chow-Liu tree.
+#' \item \code{adj_DAG} The adjacency matrix of the resulting DAG.
+#' \item \code{CPTs} The estimated conditional probability tables
+#' of the bayesian network.
+#' }
+#'
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#'
+#' @seealso \code{\link{MI2}} for mutual information,
+#' \code{\link{CPT}} for probability tables and
+#' \code{\link{is_acyclic}} for a test for cycles.
+#'
+#' @examples
+#' set.seed(43)
+#' var1 <- c(sample(c(1, 2), 50, replace = TRUE))
+#' var2 <- var1 + c(sample(c(1, 2), 50, replace = TRUE))
+#' var3 <- var1 + c(sample(c(0, 1), 50, replace = TRUE,
+#'                         prob = c(0.9, 0.1)))
+#' var4 <- c(sample(c(1, 2), 50, replace = TRUE))
+#'
+#' data <- data.frame("var1" = as.character(var1),
+#'                    "var2" = as.character(var2),
+#'                    "var3" = as.character(var3),
+#'                    "var4" = as.character(var4))
+#'
+#' CL <- ChowLiu(data, root = 'var1', smooth = 0.1)
+#' @export
 
-    tab <- table(data[, c(node, parents)]) + bayes_smooth
-    if (length(parents) == 0){
-      mar <- NULL
-    } else {
-      tab_parents <- table(data[, c(parents)]) + bayes_smooth
-        if (any(tab_parents == 0)){
-        stop("Some cell counts of parent configurations are zero.
-           Consider using the bayes_smooth argument.")
-        }
-      mar <- (1:length(parents))+1
-    }
-    prop.table(tab, margin = mar)
-  }
-
-  CPT_list <- lapply(nodes, FUN)
-  names(CPT_list) <- nodes
-  CPT_list
-}
-
-ChowLiu <- function(data, root = NULL, ..., bayes_smooth = 0){
+ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix")
   }
@@ -90,6 +113,10 @@ ChowLiu <- function(data, root = NULL, ..., bayes_smooth = 0){
   # Calculating mutual information
   nodes <- names(data)
   n_var <- length(nodes)
+
+  if (! root %in% nodes){
+    stop("The specified root is not a node.")
+  }
 
   pair_1 <- rep(nodes[- n_var], (n_var - 1):1)
   pair_2 <- unlist(sapply(1:(n_var - 1), function(n){

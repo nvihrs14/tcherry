@@ -73,6 +73,8 @@ data_numeric <- data.frame("var1" = as.character(var1),
                            "var4" = var4)
 
 test_that("Input is specified correctly", {
+  expect_error(ChowLiu(data, root = "var5"),
+               "The specified root is not a node.")
   expect_error(ChowLiu(data_numeric),
                "Some columns are not characters or factors")
   expect_error(ChowLiu(var1),
