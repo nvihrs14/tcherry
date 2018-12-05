@@ -51,13 +51,14 @@ CPT <- function(adj_matrix, data, bayes_smooth = 0){
     tab <- table(data[, c(node, parents)]) + bayes_smooth
     if (length(parents) == 0){
       mar <- NULL
+      names(dimnames(tab)) <- node
     } else {
       tab_parents <- table(data[, c(parents)]) + bayes_smooth
       if (any(tab_parents == 0)){
         stop("Some cell counts of parent configurations are zero.
              Consider using the bayes_smooth argument.")
       }
-      mar <- (1:length(parents))+1
+      mar <- (1:length(parents)) + 1
       }
     prop.table(tab, margin = mar)
   }

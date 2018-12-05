@@ -57,9 +57,9 @@ CPT_ex <- CPT(adj_matrix_DAG, data)
 
 test_that("CPT's are calculated correctly", {
   expect_equal(c(CPT_ex$var2), CPT_var2_var1)
-  expect_equal(sum(CPT_ex$var3[,1]), 1)
-  expect_equal(sum(CPT_ex$var3[,2]), 1)
-  expect_equal(sum(CPT_ex$var4[,1]), 1)
+  expect_equal(sum(CPT_ex$var3[, 1]), 1)
+  expect_equal(sum(CPT_ex$var3[, 2]), 1)
+  expect_equal(sum(CPT_ex$var4[, 1]), 1)
   expect_equal(sum(CPT_ex$var1), 1)
 })
 
@@ -89,7 +89,7 @@ adj_matrix_skeleton <- matrix(c(0, 1, 1, 0,
 rownames(adj_matrix_skeleton) <-
   colnames(adj_matrix_skeleton) <- names(data)
 
-CL <- ChowLiu(data, root = 'var1', smooth = 0.1)
+CL <- ChowLiu(data, root = "var1", smooth = 0.1)
 
 test_that("Adjacency matrices are correct", {
   expect_equal(CL$adj_DAG, adj_matrix_DAG)

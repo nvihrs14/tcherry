@@ -120,7 +120,7 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
     }
   }
 
-  pairs <- t(combn(nodes, 2))
+  pairs <- t(utils::combn(nodes, 2))
 
   MI_fun <- function(var1, var2){
     MI2(data[, var1], data[, var2], ...)
@@ -149,14 +149,14 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
       adj_matrix <- adj_matrix_temp
     }
 
-    i <- i+1
+    i <- i + 1
   }
 
   skeleton_adj <- adj_matrix
 
   # Determine DAG
-  if(is.null(root)){
-    root <- sample(nodes,1)
+  if (is.null(root)){
+    root <- sample(nodes, 1)
   }
 
   adj_matrix_directed <- matrix(NA, nrow = n_var, ncol = n_var)
@@ -165,11 +165,12 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
 
   while (nrow(adj_matrix) > 0) {
     adj_matrix_directed[root, ] <- adj_matrix[root, ]
-    adj_matrix <- adj_matrix[! rownames(adj_matrix) %in% root, ,
-                             drop = FALSE]
+    adj_matrix <- adj_matrix[! rownames(adj_matrix) %in% root,
+                             , drop = FALSE]
     adj_matrix[, root] <- 0
-    kids_idx <- which(colSums(adj_matrix_directed[root, ,
-                                      drop = FALSE]) > 0)
+    kids_idx <- which(colSums(adj_matrix_directed[root,
+                                                  , drop = FALSE])
+                      > 0)
     root <- nodes[kids_idx]
   }
 
@@ -181,7 +182,3 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
               "adj_DAG" = adj_matrix_directed,
               "CPTs" = CPTs))
 }
-
-
-
-

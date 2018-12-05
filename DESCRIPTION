@@ -3,9 +3,9 @@ Type: Package
 Title: Estimate probability distributions based on tcherry trees
 Version: 0.0.0.900
 Author: c(
-  person("Katrine", "Kirkeby", email = "enir_tak@hotmail.com", role = c("aut")),
-  person("Maria", "Knudsen", email = "mariaknudsen@hotmail.dk", role = c("aut")),
-  person("Ninna", "Vihrs", email = "ninnavihrs@hotmail.dk", role = c("aut")))
+    person("Katrine", "Kirkeby", email = "enir_tak@hotmail.com", role = c("aut")),
+    person("Maria", "Knudsen", email = "mariaknudsen@hotmail.dk", role = c("aut")),
+    person("Ninna", "Vihrs", email = "ninnavihrs@hotmail.dk", role = c("aut")))
 Maintainer: Ninna Vihrs <ninnavihrs@hotmail.dk>
 Description: Estimates probability distributions functions based on t-cherry trees.
     Determines t-cherry trees from Chow-Liu trees.
@@ -13,7 +13,12 @@ License: GPL(>=2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: Rdpack
+Imports: 
+    Rdpack,
+    utils
 RdMacros: Rdpack
 Suggests: 
-    testthat
+    testthat,
+    gRbase,
+    Rgraphviz,
+    gRain
