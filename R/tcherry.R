@@ -108,6 +108,7 @@ tcherry <- function(data, ...){
   n_edges <- sum(tree) / 2
   tcherry_nodes <- c()
 
+  # Find the first cherry
   i <- 1
   while (length(tcherry_nodes) == 0) {
     adj_matrix_temp <- tree
@@ -130,6 +131,7 @@ tcherry <- function(data, ...){
       }
     }
 
+  # Add remaining nodes via new cherries.
   i <- k <- 1
   j <- 2
 
@@ -156,11 +158,9 @@ tcherry <- function(data, ...){
         separators[[k]] <- cliques[[j]][s_idx]
         names(cliques[[j]]) <- names(separators[[k]]) <- NULL
 
-
         tcherry_nodes <- unique(unlist(c(tcherry_nodes,
                                         MI3_tab[i, 1:3])))
         n_edges <- n_edges + 1
-
 
         idx_delete <- which(rowSums(matrix(
           as.matrix(MI3_tab[, 1:3]) %in% tcherry_nodes,
