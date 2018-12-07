@@ -88,7 +88,7 @@ tcherry <- function(data, ...){
   CL <- ChowLiu(data, ...)
   tree <- CL$skeleton_adj
 
-  nodes <- names(data)
+  nodes <- colnames(data)
   n_var <- length(nodes)
   triples <- t(utils::combn(nodes, 3))
 
@@ -129,6 +129,7 @@ tcherry <- function(data, ...){
       cliques <- list(tcherry_nodes)
       names(cliques[[1]]) <- NULL
       }
+    i <- i + 1
     }
 
   # Add remaining nodes via new cherries.

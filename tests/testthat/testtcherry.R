@@ -19,6 +19,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var5" = as.character(var5),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
+data_matrix <- as.matrix(data)
 
 adj_matrix_tcherry <- matrix(c(0, 1, 0, 0, 1, 0, 0,
                                1, 0, 1, 0, 1, 1, 0,
@@ -32,6 +33,7 @@ colnames(adj_matrix_tcherry) <- rownames(adj_matrix_tcherry) <-
   names(data)
 
 tcherry_tree <- tcherry(data, smooth = 0.1)
+tcherry_tree_matrix <- tcherry(data_matrix, smooth = 0.1)
 
 tcherry_cliques <- list(c("var2", "var3", "var5"),
                         c("var1", "var2", "var5"),
@@ -48,4 +50,7 @@ test_that("results are corrects", {
   expect_equal(tcherry_tree$adj_tcherry, adj_matrix_tcherry)
   expect_equal(tcherry_tree$cliques, tcherry_cliques)
   expect_equal(tcherry_tree$separators, tcherry_separators)
+  expect_equal(tcherry_tree_matrix$adj_tcherry, adj_matrix_tcherry)
+  expect_equal(tcherry_tree_matrix$cliques, tcherry_cliques)
+  expect_equal(tcherry_tree_matrix$separators, tcherry_separators)
   })

@@ -43,6 +43,7 @@
 #' @export
 
 CPT <- function(adj_matrix, data, bayes_smooth = 0){
+  data <- data.frame(data, stringsAsFactors = FALSE)
   nodes <- rownames(adj_matrix)
   FUN <- function(node){
     parents_idx <- which(adj_matrix[, node] == 1)

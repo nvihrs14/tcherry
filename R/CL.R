@@ -111,7 +111,7 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
   }
 
   # Calculating mutual information
-  nodes <- names(data)
+  nodes <- colnames(data)
   n_var <- length(nodes)
 
   if (! is.null(root)){
