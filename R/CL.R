@@ -69,6 +69,7 @@ is_acyclic <- function(adj_matrix){
 #' \item \code{adj_DAG} The adjacency matrix of the resulting DAG.
 #' \item \code{CPTs} The estimated conditional probability tables
 #' of the bayesian network.
+#' \item \code{MI} A data frame with the mutual informations.
 #' }
 #'
 #' @author
@@ -180,5 +181,6 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
 
   return(list("skeleton_adj" = skeleton_adj,
               "adj_DAG" = adj_matrix_directed,
-              "CPTs" = CPTs))
+              "CPTs" = CPTs,
+              "MI" = MI_tab))
 }
