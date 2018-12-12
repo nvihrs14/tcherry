@@ -1,4 +1,4 @@
-context("tcherry")
+context("tcherry_CL")
 library(tcherry)
 
 set.seed(43)
@@ -32,8 +32,8 @@ adj_matrix_tcherry <- matrix(c(0, 1, 0, 0, 1, 0, 0,
 colnames(adj_matrix_tcherry) <- rownames(adj_matrix_tcherry) <-
   names(data)
 
-tcherry_tree <- tcherry(data, smooth = 0.1)
-tcherry_tree_matrix <- tcherry(data_matrix, smooth = 0.1)
+tcherry_tree <- tcherry_CL(data, smooth = 0.1)
+tcherry_tree_matrix <- tcherry_CL(data_matrix, smooth = 0.1)
 
 tcherry_cliques <- list(c("var2", "var3", "var5"),
                         c("var1", "var2", "var5"),

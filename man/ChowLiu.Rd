@@ -25,6 +25,7 @@ of the Chow-Liu tree.
 \item \code{adj_DAG} The adjacency matrix of the resulting DAG.
 \item \code{CPTs} The estimated conditional probability tables
 of the bayesian network.
+\item \code{MI} A data frame with the mutual informations.
 }
 }
 \description{

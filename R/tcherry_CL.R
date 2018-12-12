@@ -1,14 +1,14 @@
-#' Determine structure of t-cherry tree
+#' Determine t-cherry tree from a Chow-Liu tree
 #'
 #' @description Determine the structure of a t-cherry tree
-#' from the Chow-Liu tree for data.
+#' from a Chow-Liu tree for data.
 #'
 #' @param data The data the tree structure should be based on.
 #' @param ... Additional arguments passed to \code{MI2} and
 #' \code{MI3}.
 #'
 #' @details The algorithm for constructing the t-cherry tree from
-#' the Chow-Liu tree is as described in \insertRef{EKTS}{tcherry}.
+#' a Chow-Liu tree is as described in \insertRef{EKTS}{tcherry}.
 #'
 #' The algorithm is greedy in the sence that it always attempts to
 #' use the three variables with highest mutual information as the
@@ -59,7 +59,7 @@
 #'                    "var7" = as.character(var7))
 #'
 #' # smooth used in both MI2 and MI3
-#' (tch <- tcherry(data, smooth = 0.1))
+#' (tch <- tcherry_CL(data, smooth = 0.1))
 #'
 #' # For plotting
 #' library(gRbase)
@@ -73,7 +73,7 @@
 #' querygrain(model)
 #' @export
 
-tcherry <- function(data, ...){
+tcherry_CL <- function(data, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix")
   }
