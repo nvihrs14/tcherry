@@ -83,7 +83,8 @@ tcherry_step <- function(data, ...){
     }
     idx_max_score <- which.max(score_next_step)
     score <- score_next_step[idx_max_score]
-    tcherry_nodes <- c(tcherry_nodes, new_var_list[[idx_max_score]])
+    tcherry_nodes <- unlist(c(tcherry_nodes,
+                              new_var_list[[idx_max_score]]))
     nodes_remaining <- nodes[! nodes %in% tcherry_nodes]
     tcherry_edges[nrow(tcherry_edges) + 1, ] <-
       c(new_var_list[[idx_max_score]],
