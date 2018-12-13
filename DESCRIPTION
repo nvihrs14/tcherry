@@ -17,7 +17,8 @@ Imports:
     Rdpack,
     utils,
     gRbase,
-    compare
+    compare,
+    stats
 RdMacros: Rdpack
 Suggests: 
     testthat,
