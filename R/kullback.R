@@ -65,7 +65,8 @@ kullback <- function(target_p, approx_p){
     stop("Some entries are zero.")
   }
 
-  if (all.equal(dimnames(target_p), dimnames(approx_p)) != TRUE){
+  if (! compare::compare(dimnames(target_p), dimnames(approx_p),
+                       ignoreComponentOrder = TRUE)$result[1]){
     stop("Distributions are not over the same universe.")
   }
   frac <- gRbase::ar_div(target_p, approx_p)
