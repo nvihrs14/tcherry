@@ -70,6 +70,7 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
 }
 
 #' @rdname MI2
+#' @export
 MI3 <- function(x, y, z, smooth = 0, log_base = 2){
   if (! all(sapply(list(x, y, z), function(x){
     is.character(x) | is.factor(x)

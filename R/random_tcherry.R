@@ -1,4 +1,5 @@
 
+#' @export
 random_tcherry <- function(n, n_levels){
   var_names <- paste("V", 1:n, sep = "")
   adj_matrix <- matrix(0, nrow = n, ncol = n)
