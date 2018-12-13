@@ -54,3 +54,15 @@ test_that("results are corrects", {
   expect_equal(tcherry_tree_matrix$cliques, tcherry_cliques)
   expect_equal(tcherry_tree_matrix$separators, tcherry_separators)
   })
+
+data_numeric <- data
+data_numeric[, 3] <- as.numeric(data_numeric[, 3])
+
+vec <- rep(1:2, 5)
+
+test_that("error messages work", {
+  expect_error(tcherry_CL(data_numeric, smooth = 0.001),
+               "Some columns are not characters or factors")
+  expect_error(tcherry_CL(vec, smooth = 0.001),
+               "data must be a data frame or a matrix")
+})

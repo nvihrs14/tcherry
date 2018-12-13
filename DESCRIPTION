@@ -20,6 +20,5 @@ Imports:
 RdMacros: Rdpack
 Suggests: 
     testthat,
-    gRbase,
     Rgraphviz,
     gRain
