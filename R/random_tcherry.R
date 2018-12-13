@@ -1,3 +1,4 @@
+#' Finds random t-cherry
 
 random_tcherry <- function(n, n_levels){
   var_names <- paste("V", 1:n, sep = "")
