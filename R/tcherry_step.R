@@ -184,5 +184,3 @@ tcherry_step <- function(data, ...){
               "cliques" = cliques,
               "separators" = separators))
 }
-
-

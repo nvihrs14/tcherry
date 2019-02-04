@@ -89,8 +89,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
   }
 
   if (length(n_levels) != n){
-    stop("There are not enough specified number of levels for the
-         number of variables.")
+    stop("The number of entries in n_level must be n.")
   }
 
 
@@ -143,7 +142,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
 
     if (! is.null(noise)){
       for (j in 2:l_edge_2) {
-        CPTnew[, , j] <- CPTnew[, , 1] +
+        CPTnew[,, j] <- CPTnew[,, 1] +
           abs(stats::rnorm(l_new_var * l_edge_1, sd = noise))
       }
     }
