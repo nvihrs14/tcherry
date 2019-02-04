@@ -1,4 +1,65 @@
-
+#' Constructs a random t-cherry tree
+#'
+#' @description Constructs a random t-cherry tree with conditional
+#' probability tables.
+#'
+#' @param n The number of variables/nodes in the graph.
+#' @param n_levels Vector with the number of levels for each variable.
+#' @param noise If given makes it possible to control the strength
+#'  of dependences. See details.
+#'
+#' @details The t-cherry tree is constructed by choosing the first edge
+#' at random. Then a random node is chosen to be connected to the two
+#' nodes of a random already existing edge.
+#'
+#' The constructed conditional probability tables are based on the
+#' structures of a bayesian network with the t-cherry tree as domain
+#' graph.
+#' The two nodes firstly added to the graph are considered to have no
+#' parents in the bayesian network, and there probability tables are
+#' constructed by normalised random tables.
+#' All other nodes have exactly two parents. If the argument \code{noise}
+#' is \code{NULL} these conditional probability tables are also made by
+#' random tables with suiting normalisation.
+#'
+#' If \code{noise} is given,
+#' the conditional probability table is first constructed for the child
+#' given one parent and a specific level for the second parent.
+#' The conditional probability tables for the remaining levels of the
+#' second parent is then constructed from the first one by adding normally
+#' distributed simulations with mean 0 and variance \code{noise}.
+#'
+#' This makes it possible to control whether the child should depend
+#' strongly on one parents and not necessarily both. For instance
+#' \code{noise = 0} would mean that the child is actually independent of
+#' the second parent given the first.
+#'
+#' @return A list containing the following components:
+#' \itemize{
+#' \item \code{adj_matrix} The adjacency matrix for the t-cherry tree.
+#' \item \code{CPTs} Conditional probability tables for a corresponding
+#' bayesian network.
+#' }
+#'
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#'
+#' @examples
+#' set.seed(43)
+#' graph <- random_tcherry(5, rep(2, 5))
+#' graph_noise <- random_tcherry(5, rep(2, 5), noise = 0.01)
+#' # For simulation
+#' library(gRain)
+#' comp <- compileCPT(graph$CPTs)
+#' network <- grain(comp)
+#' # Bayesian network
+#' plot(network)
+#' sim <- simulate(network, nsim = 500)
+#'
 #' @export
 random_tcherry <- function(n, n_levels, noise = NULL){
   if (length(n) != 1 | ! is.numeric(n)){
@@ -9,12 +70,14 @@ random_tcherry <- function(n, n_levels, noise = NULL){
     stop("n must be a positive integer and at least 2.")
   }
 
-  if (length(noise) != 1 | ! is.numeric(noise)){
-    stop("noise must be a single numeric number.")
-  }
+  if (! is.null(noise)){
+    if (length(noise) != 1 | ! is.numeric(noise)){
+      stop("noise must be a single numeric number.")
+    }
 
-  if (noise < 0){
-    stop("noise must be non-negative.")
+    if (noise < 0){
+      stop("noise must be non-negative.")
+    }
   }
 
   if (! is.vector(n_levels) | ! is.numeric(n_levels)){
@@ -80,8 +143,8 @@ random_tcherry <- function(n, n_levels, noise = NULL){
 
     if (! is.null(noise)){
       for (j in 2:l_edge_2) {
-        CPTnew[, , j] <- CPTnew[, , 1] + abs(rnorm(l_new_var * l_edge_1,
-                                             sd = noise))
+        CPTnew[, , j] <- CPTnew[, , 1] +
+          abs(stats::rnorm(l_new_var * l_edge_1, sd = noise))
       }
     }
 
