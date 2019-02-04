@@ -1,6 +1,37 @@
 
 #' @export
-random_tcherry <- function(n, n_levels){
+random_tcherry <- function(n, n_levels, noise = NULL){
+  if (length(n) != 1 | ! is.numeric(n)){
+    stop("n must be a single integer.")
+  }
+
+  if (n %% 1 != 0 | n <= 1){
+    stop("n must be a positive integer and at least 2.")
+  }
+
+  if (length(noise) != 1 | ! is.numeric(noise)){
+    stop("noise must be a single numeric number.")
+  }
+
+  if (noise < 0){
+    stop("noise must be non-negative.")
+  }
+
+  if (! is.vector(n_levels) | ! is.numeric(n_levels)){
+    stop("n_levels must be a numeric vector.")
+  }
+
+  if (! all(n_levels %% 1 == 0) | ! all(n_levels >= 1)){
+    stop("n_levels must be all positive integers.")
+  }
+
+  if (length(n_levels) != n){
+    stop("There are not enough specified number of levels for the
+         number of variables.")
+  }
+
+
+
   var_names <- paste("V", 1:n, sep = "")
   adj_matrix <- matrix(0, nrow = n, ncol = n)
   rownames(adj_matrix) <- colnames(adj_matrix) <- var_names
@@ -46,6 +77,14 @@ random_tcherry <- function(n, n_levels){
     l_edge_2 <- n_levels[new_edge_idx[2]]
     CPTnew <- as.table(stats::runif(l_new_var * l_edge_1 * l_edge_2))
     dim(CPTnew) <- c(l_new_var, l_edge_1, l_edge_2)
+
+    if (! is.null(noise)){
+      for (j in 2:l_edge_2) {
+        CPTnew[, , j] <- CPTnew[, , 1] + abs(rnorm(l_new_var * l_edge_1,
+                                             sd = noise))
+      }
+    }
+
     cs <- colSums(CPTnew)
     CPTnew <- sweep(CPTnew, c(2, 3), cs, FUN = "/")
     levels1 <- paste("l", 1:l_new_var, sep = "")
