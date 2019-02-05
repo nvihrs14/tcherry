@@ -1,7 +1,9 @@
-#' Determine the number of different edges for graphs.
+#' Determine the number of differing edges for t-cherry trees.
 #'
-#' @description Determines the number of different edges for two undirected
-#' graphs, with no loops, represented by adjacency matrices.
+#' @description Determines the number of differing edges for two t-cherry
+#' trees over the same universe represented by adjacency matrices,
+#' i.e. the total number of edges minus the number of edges common to both
+#' t-cherry trees.
 #'
 #' @param adj_mat_1,adj_mat_2 Adjacency matrices for the two graphs.
 #'
@@ -15,16 +17,17 @@
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
 #'
 #' @examples
-#' m1 <- matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0), nrow = 3, ncol = 3)
-#' m2_same <- m1
-#' m2_diff <- matrix(c(0, 1, 1, 1, 0, 1, 1, 1, 0), nrow = 3, ncol = 3)
+#' m1 <- matrix(c(0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0),
+#'              nrow = 4, ncol = 4)
+#' m2 <- matrix(c(0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0),
+#'              nrow = 4, ncol = 4)
 #'
-#' diff_edges(m1, m2_same)
-#' diff_edges(m1, m2_diff)
+#' diff_edges_tch(m1, m1)
+#' diff_edges_tch(m1, m2)
 #'
 #' @export
 
-diff_edges <- function(adj_mat_1, adj_mat_2){
+diff_edges_tch <- function(adj_mat_1, adj_mat_2){
 
   if (! is.matrix(adj_mat_1) | ! is.matrix(adj_mat_2)){
     stop("Arguments must be matrices.")
@@ -55,13 +58,8 @@ diff_edges <- function(adj_mat_1, adj_mat_2){
   if (! is.null(colnames(adj_mat_1)) | ! is.null(rownames(adj_mat_1))
      | ! is.null(colnames(adj_mat_2)) | ! is.null(rownames(adj_mat_2))){
 
-    if ( colnames(adj_mat_1) != rownames(adj_mat_1) |
-        colnames(adj_mat_2) != rownames(adj_mat_2)){
-      stop("For a named matrix both column and row names should be the
-           names of the variables and they should agree.")
-    }
-
-    if (rownames(adj_mat_1) != rownames(adj_mat_2)){
+    if (! compare::compare(rownames(adj_mat_1), rownames(adj_mat_2),
+                           ignoreOrder = TRUE)$result[1]){
       stop("The node names must be the same in both graphs.")
     }
     adj_mat_1 <- adj_mat_1[rownames(adj_mat_2), colnames(adj_mat_2)]
@@ -74,5 +72,5 @@ diff_edges <- function(adj_mat_1, adj_mat_2){
   u_tri_2 <- adj_mat_2[u_tri_2_idx]
 
   is_different <- u_tri_1 != u_tri_2
-  length(which(is_different))
+  length(which(is_different)) / 2
 }
