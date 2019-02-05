@@ -57,7 +57,7 @@ kullback <- function(target_p, approx_p){
     stop("Names of the variable levels are missing.")
   }
 
-  if (sum(target_p) != 1 | sum(approx_p) != 1){
+  if (!isTRUE(all.equal(c(sum(target_p), sum(approx_p)), c(1, 1)))){
     stop("At least one of the given arrays is not a probability distribution.")
   }
 
