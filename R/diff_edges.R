@@ -26,26 +26,45 @@
 
 diff_edges <- function(adj_mat_1, adj_mat_2){
 
-  if(! is.matrix(adj_mat_1) | ! is.matrix(adj_mat_2)){
+  if (! is.matrix(adj_mat_1) | ! is.matrix(adj_mat_2)){
     stop("Arguments must be matrices.")
   }
 
-  if(! is.numeric(adj_mat_1) | ! is.numeric(adj_mat_2)){
+  if (! isTRUE(all.equal(dim(adj_mat_1), dim(adj_mat_2)))){
+    stop("The matrices must have the same dimensions.")
+  }
+
+  if (! is.numeric(adj_mat_1) | ! is.numeric(adj_mat_2)){
     stop("Arguments must be numeric.")
   }
 
-  if(any(!c(adj_mat_1, adj_mat_2) %in% 0:1)){
+  if (any(!c(adj_mat_1, adj_mat_2) %in% 0:1)){
     stop("Arguments must be adjacency matrices for unweighted graphs.
          Therefore all entries must be 0 or 1.")
   }
 
-  if(! isSymmetric(adj_mat_1) | ! isSymmetric(adj_mat_2)){
+  if (! isSymmetric(adj_mat_1) | ! isSymmetric(adj_mat_2)){
     stop("Only undirected graphs are supported so arguments must be
          symmetric.")
   }
 
-  if(any(c(diag(adj_mat_1), diag(adj_mat_2)) != 0)){
+  if (any(c(diag(adj_mat_1), diag(adj_mat_2)) != 0)){
     stop("Loops are not supported so diagonal must be all 0.")
+  }
+
+  if (! is.null(colnames(adj_mat_1)) | ! is.null(rownames(adj_mat_1))
+     | ! is.null(colnames(adj_mat_2)) | ! is.null(rownames(adj_mat_2))){
+
+    if ( colnames(adj_mat_1) != rownames(adj_mat_1) |
+        colnames(adj_mat_2) != rownames(adj_mat_2)){
+      stop("For a named matrix both column and row names should be the
+           names of the variables and they should agree.")
+    }
+
+    if (rownames(adj_mat_1) != rownames(adj_mat_2)){
+      stop("The node names must be the same in both graphs.")
+    }
+    adj_mat_1 <- adj_mat_1[rownames(adj_mat_2), colnames(adj_mat_2)]
   }
 
   u_tri_1_idx <- upper.tri(adj_mat_1)
