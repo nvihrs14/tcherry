@@ -85,7 +85,7 @@ tcherry_CL <- function(data, ...){
     stop("Some columns are not characters or factors")
   }
 
-  CL <- ChowLiu(data, ...)
+  CL <- ChowLiu(data, CPTs = FALSE, ...)
   tree <- CL$skeleton_adj
 
   nodes <- colnames(data)
