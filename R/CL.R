@@ -60,6 +60,8 @@ is_acyclic <- function(adj_matrix){
 #' root for the tree.
 #' @param bayes_smooth Additional cell counts for bayesian
 #' estimation.
+#' @param CPTs A logical value indicating whether conditional probability
+#' tables should be estimated from data or not.
 #' @param ... Additional parameters passed to \code{MI2}.
 #'
 #' @return A list containing the following components:
@@ -68,7 +70,8 @@ is_acyclic <- function(adj_matrix){
 #' of the Chow-Liu tree.
 #' \item \code{adj_DAG} The adjacency matrix of the resulting DAG.
 #' \item \code{CPTs} The estimated conditional probability tables
-#' of the bayesian network.
+#' of the bayesian network if estimated. Otherwise the logical value
+#' \code{FALSE}.
 #' \item \code{MI} A data frame with the mutual informations.
 #' }
 #'
@@ -99,7 +102,8 @@ is_acyclic <- function(adj_matrix){
 #' CL <- ChowLiu(data, root = 'var1', smooth = 0.1)
 #' @export
 
-ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
+ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
+                    CPTs = TRUE, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix")
   }
@@ -176,11 +180,16 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0, ...){
   }
 
   # Calculate conditional probability tables
-  CPTs <- CPT(adj_matrix_directed, data,
+  if(CPTs){
+    CPTs <- CPT(adj_matrix_directed, data,
               bayes_smooth = bayes_smooth)
+
+
+  }
 
   return(list("skeleton_adj" = skeleton_adj,
               "adj_DAG" = adj_matrix_directed,
               "CPTs" = CPTs,
               "MI" = MI_tab))
+
 }
