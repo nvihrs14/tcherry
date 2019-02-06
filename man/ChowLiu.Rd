@@ -4,7 +4,7 @@
 \alias{ChowLiu}
 \title{Determines the Chow-Liu tree for data}
 \usage{
-ChowLiu(data, root = NULL, bayes_smooth = 0, ...)
+ChowLiu(data, root = NULL, bayes_smooth = 0, CPTs = TRUE, ...)
 }
 \arguments{
 \item{data}{The data set the model should be fitted for.}
@@ -15,6 +15,9 @@ root for the tree.}
 \item{bayes_smooth}{Additional cell counts for bayesian
 estimation.}
 
+\item{CPTs}{A logical value indicating whether conditional probability
+tables should be estimated from data or not.}
+
 \item{...}{Additional parameters passed to \code{MI2}.}
 }
 \value{
@@ -24,7 +27,8 @@ A list containing the following components:
 of the Chow-Liu tree.
 \item \code{adj_DAG} The adjacency matrix of the resulting DAG.
 \item \code{CPTs} The estimated conditional probability tables
-of the bayesian network.
+of the bayesian network if estimated. Otherwise the logical value
+\code{FALSE}.
 \item \code{MI} A data frame with the mutual informations.
 }
 }

@@ -45,8 +45,8 @@ If \code{noise} is given,
 the conditional probability table is first constructed for the child
 given one parent and a specific level for the second parent.
 The conditional probability tables for the remaining levels of the
-second parent is then constructed from the first one by adding normally
-distributed simulations with mean 0 and variance \code{noise}.
+second parent is then constructed from the first one by adding
+uniformly distributed simulations in the interval [0 ; \code{noise}].
 
 This makes it possible to control whether the child should depend
 strongly on one parents and not necessarily both. For instance
