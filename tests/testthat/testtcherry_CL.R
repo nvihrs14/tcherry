@@ -47,10 +47,10 @@ tcherry_separators <- list(c("var2", "var5"),
                            c("var5", "var6"))
 
 test_that("results are corrects", {
-  expect_equal(tcherry_tree$adj_tcherry, adj_matrix_tcherry)
+  expect_equal(tcherry_tree$adj_matrix, adj_matrix_tcherry)
   expect_equal(tcherry_tree$cliques, tcherry_cliques)
   expect_equal(tcherry_tree$separators, tcherry_separators)
-  expect_equal(tcherry_tree_matrix$adj_tcherry, adj_matrix_tcherry)
+  expect_equal(tcherry_tree_matrix$adj_matrix, adj_matrix_tcherry)
   expect_equal(tcherry_tree_matrix$cliques, tcherry_cliques)
   expect_equal(tcherry_tree_matrix$separators, tcherry_separators)
   })

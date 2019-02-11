@@ -16,7 +16,7 @@
 #'
 #' @return A list containing the following components:
 #' \itemize{
-#' \item \code{adj_tcherry} The adjacency matrix for the t-cherry
+#' \item \code{adj_matrix} The adjacency matrix for the t-cherry
 #' tree.
 #' \item \code{cliques} A list containing the cliques (cherries) of
 #'  the t-cherry tree.
@@ -177,7 +177,7 @@ tcherry_CL <- function(data, ...){
     i <- i + 1
   }
 
-  return(list("adj_tcherry" = adj_matrix,
+  return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
               "separators" = separators,
               "MI" = MI))
