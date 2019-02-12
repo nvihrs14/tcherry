@@ -15,7 +15,7 @@ tcherry_CL(data, ...)
 \value{
 A list containing the following components:
 \itemize{
-\item \code{adj_tcherry} The adjacency matrix for the t-cherry
+\item \code{adj_matrix} The adjacency matrix for the t-cherry
 tree.
 \item \code{cliques} A list containing the cliques (cherries) of
  the t-cherry tree.
