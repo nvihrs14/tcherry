@@ -62,7 +62,7 @@ data <- data.frame("var1" = as.character(var1),
 # For plotting
 library(gRbase)
 library(Rgraphviz)
-tcherry_tree <- as(tch$adj_tcherry, "graphNEL")
+tcherry_tree <- as(tch$adj_matrix, "graphNEL")
 plot(tcherry_tree)
 
 # For probability propagation
