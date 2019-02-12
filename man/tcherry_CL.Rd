@@ -15,7 +15,7 @@ tcherry_CL(data, ...)
 \value{
 A list containing the following components:
 \itemize{
-\item \code{adj_tcherry} The adjacency matrix for the t-cherry
+\item \code{adj_matrix} The adjacency matrix for the t-cherry
 tree.
 \item \code{cliques} A list containing the cliques (cherries) of
  the t-cherry tree.
@@ -62,7 +62,7 @@ data <- data.frame("var1" = as.character(var1),
 # For plotting
 library(gRbase)
 library(Rgraphviz)
-tcherry_tree <- as(tch$adj_tcherry, "graphNEL")
+tcherry_tree <- as(tch$adj_matrix, "graphNEL")
 plot(tcherry_tree)
 
 # For probability propagation
