@@ -42,6 +42,9 @@ MI2(x, y, log_base = exp(1))
 
 \insertRef{EKTS}{tcherry}
 }
+\seealso{
+\code{\link{MIk}} for mutual information for k variables.
+}
 \author{
 Katrine Kirkeby, \email{enir_tak@hotmail.com}
 

@@ -1,5 +1,3 @@
-
-
 #' Calculate mutual information
 #' @description Calculate mutual information for two or three            categorical variables.
 #'
@@ -23,6 +21,8 @@
 #' \insertRef{TCJT}{tcherry}
 #'
 #' \insertRef{EKTS}{tcherry}
+#' @seealso
+#' \code{\link{MIk}} for mutual information for k variables.
 #' @examples
 #'
 #' x <- c("hund","kat","kat","kat","hund","hund","hund","hund","hund")
