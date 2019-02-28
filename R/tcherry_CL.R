@@ -75,14 +75,14 @@
 
 tcherry_CL <- function(data, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
-    stop("data must be a data frame or a matrix")
+    stop("data must be a data frame or a matrix.")
   }
 
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
   }
   ))){
-    stop("Some columns are not characters or factors")
+    stop("Some columns are not characters or factors.")
   }
 
   CL <- ChowLiu(data, CPTs = FALSE, ...)

@@ -46,7 +46,7 @@ vec <- rep(1:2, 5)
 
 test_that("error messages work", {
   expect_error(tcherry_step(data_numeric, smooth = 0.001),
-               "Some columns are not characters or factors")
+               "Some columns are not characters or factors.")
   expect_error(tcherry_step(vec, smooth = 0.001),
-               "data must be a data frame or a matrix")
+               "data must be a data frame or a matrix.")
 })

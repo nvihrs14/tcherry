@@ -47,29 +47,29 @@
 #' MIk(c("var1", "var2", "var7"), data, smooth = 0.001)
 #' @export
 MIk <- function(variables, data, smooth = 0, log_base = 2){
-  if (!all(variables %in% colnames(data))){
-    stop("All names in variables must be column names of data")
+  if (! (is.data.frame(data) | is.matrix(data))) {
+    stop("data must be a data frame or a matrix.")
   }
 
-  if (! (is.data.frame(data) | is.matrix(data))) {
-    stop("data must be a data frame or a matrix")
+  if (!all(variables %in% colnames(data))){
+    stop("All names in variables must be column names of data.")
   }
 
   if (! all(sapply(as.list(data[, variables]), function(x){
     is.character(x) | is.factor(x)
   }
   ))){
-    stop("Input must be either characters or factors")
+    stop("Input must be either characters or factors.")
   }
 
   if (length(smooth) > 1){
-    stop("smooth must be a single non-negative value")
+    stop("smooth must be a single non-negative value.")
   }
   else if (!is.numeric(smooth)) {
-    stop("smooth must be numeric")
+    stop("smooth must be numeric.")
   }
   else if (smooth < 0){
-    stop("smooth must be a non-negative numeric value")
+    stop("smooth must be a non-negative numeric value.")
   }
 
   tab_marginals <- lapply(as.list(variables), function(x){

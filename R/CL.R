@@ -105,14 +105,14 @@ is_acyclic <- function(adj_matrix){
 ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
                     CPTs = TRUE, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
-    stop("data must be a data frame or a matrix")
+    stop("data must be a data frame or a matrix.")
   }
 
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
   }
   ))){
-    stop("Some columns are not characters or factors")
+    stop("Some columns are not characters or factors.")
   }
 
   # Calculating mutual information
@@ -180,7 +180,7 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
   }
 
   # Calculate conditional probability tables
-  if(CPTs){
+  if (CPTs){
     CPTs <- CPT(adj_matrix_directed, data,
               bayes_smooth = bayes_smooth)
 

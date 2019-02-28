@@ -76,9 +76,9 @@ test_that("Input is specified correctly", {
   expect_error(ChowLiu(data, root = "var5"),
                "The specified root is not a node.")
   expect_error(ChowLiu(data_numeric),
-               "Some columns are not characters or factors")
+               "Some columns are not characters or factors.")
   expect_error(ChowLiu(var1),
-               "data must be a data frame or a matrix")
+               "data must be a data frame or a matrix.")
 })
 
 adj_matrix_skeleton <- matrix(c(0, 1, 1, 0,

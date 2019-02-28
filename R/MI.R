@@ -36,16 +36,16 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
     is.character(x) | is.factor(x)
     }
     ))){
-    stop("x and y must be either characters or factors")
+    stop("x and y must be either characters or factors.")
   }
   if (length(smooth) > 1){
-    stop("smooth must be a single non-negative value")
+    stop("smooth must be a single non-negative value.")
   }
   else if (!is.numeric(smooth)) {
-    stop("smooth must be numeric")
+    stop("smooth must be numeric.")
   }
   else if (smooth < 0){
-    stop("smooth must be a non-negative numeric value")
+    stop("smooth must be a non-negative numeric value.")
   }
 
   tab_x <- table(x) + smooth
@@ -76,16 +76,16 @@ MI3 <- function(x, y, z, smooth = 0, log_base = 2){
     is.character(x) | is.factor(x)
     }
     ))){
-    stop("x, y and z must be either characters or factors")
+    stop("x, y and z must be either characters or factors.")
   }
   if (length(smooth) > 1){
-    stop("smooth must be a single non-negative value")
+    stop("smooth must be a single non-negative value.")
   }
   else if (!is.numeric(smooth)) {
-    stop("smooth must be numeric")
+    stop("smooth must be numeric.")
   }
   else if (smooth < 0){
-    stop("smooth must be a non-negative numeric value")
+    stop("smooth must be a non-negative numeric value.")
   }
 
   tab_x <- table(x) + smooth

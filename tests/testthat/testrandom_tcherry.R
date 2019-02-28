@@ -43,4 +43,3 @@ test_that("Check that the CPT sums to 1", {
   expect_true(all(colSums(tch$CPTs[[4]]) == 1))
   expect_true(all(colSums(tch$CPTs[[5]]) == 1))
 })
-

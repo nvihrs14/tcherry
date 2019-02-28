@@ -3,13 +3,13 @@ library(tcherry)
 
 test_that("Input is correctly specified", {
   expect_error(MI2(c(1.5, 3.6), c("1", "2")),
-               "x and y must be either characters or factors")
+               "x and y must be either characters or factors.")
   expect_error(MI2(c("1", "2"), c("1", "2"), c(1, 2)),
-               "smooth must be a single non-negative value")
+               "smooth must be a single non-negative value.")
   expect_error(MI2(c("1", "2"), c("1", "2"), "C"),
-               "smooth must be numeric")
+               "smooth must be numeric.")
   expect_error(MI2(c("1", "2"), c("1", "2"), -1),
-               "smooth must be a non-negative numeric value")
+               "smooth must be a non-negative numeric value.")
 })
 
 
@@ -35,13 +35,13 @@ context("MI3")
 
 test_that("Input is correctly specified", {
   expect_error(MI3(c(1.5, 3.6), c("1", "2"), c("a", "b")),
-               "x, y and z must be either characters or factors")
+               "x, y and z must be either characters or factors.")
   expect_error(MI3(c("1", "2"), c("1", "2"), c("1", "2"), c(1, 2)),
-               "smooth must be a single non-negative value")
+               "smooth must be a single non-negative value.")
   expect_error(MI3(c("1", "2"), c("1", "2"), c("1", "2"), "C"),
-               "smooth must be numeric")
+               "smooth must be numeric.")
   expect_error(MI3(c("1", "2"), c("1", "2"), c("1", "2"), -1),
-               "smooth must be a non-negative numeric value")
+               "smooth must be a non-negative numeric value.")
 })
 
 x1 <- c("1", "2", "3")
