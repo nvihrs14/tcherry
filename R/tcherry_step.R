@@ -12,10 +12,11 @@
 #' divergence. The first cherry is chosen as the triplet with
 #' highest mutual information. This is the preliminary t-cherry
 #' tree. Then all possible new cherries are added stepwise to this
-#' tree and the score \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
-#' where the first sum is over the cliques and the second over the
+#' tree and the weight \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
+#' is calculated.
+#' The first sum is over the cliques and the second over the
 #' separators of the junction tree of the preliminary t-cherry tree.
-#' The one with the highest score is chosen as the new preliminary
+#' The one with the highest weight is chosen as the new preliminary
 #' t-cherry tree, and the procedure is repeated untill all variables
 #' has been added.
 #'
@@ -23,7 +24,7 @@
 #' \itemize{
 #' \item \code{adj_matrix} The adjacency matrix for the t-cherry
 #' tree.
-#' \item \code{score} The score of the final t-cherry tree.
+#' \item \code{weight} The weight of the final t-cherry tree.
 #' \item \code{cliques} A list containing the cliques (cherries) of
 #'  the t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
@@ -126,15 +127,15 @@ tcherry_step <- function(data, ...){
     adj_matrix[edge_2, edge_3] <-
     adj_matrix[edge_3, edge_2] <- 1
 
-  score <- MI3_tab$MI3[idx.max]
+  weight <- MI3_tab$MI3[idx.max]
 
   idx_list <- 1
 
   while (length(tcherry_nodes) != n_var) {
-    score_next_step <- rep(NA, nrow(tcherry_edges) *
+    weight_next_step <- rep(NA, nrow(tcherry_edges) *
                              length(nodes_remaining))
     new_cliques_list <- new_seps_list <- new_var_list <-
-      as.list(score_next_step)
+      as.list(weight_next_step)
     idx <- 1
     for (i in 1:nrow(tcherry_edges)){
       for (var in nodes_remaining){
@@ -144,7 +145,7 @@ tcherry_step <- function(data, ...){
         MI2_sep <- MI2_fun(new_sep[1], new_sep[2])
         MI3_clique <- MI3_fun(new_clique[1], new_clique[2],
                               new_clique[3])
-        score_next_step[idx] <- score + MI3_clique - MI2_sep
+        weight_next_step[idx] <- weight + MI3_clique - MI2_sep
         new_cliques_list[[idx]] <- new_clique
         new_seps_list[[idx]] <- new_sep
         new_var_list[[idx]] <- var
@@ -152,24 +153,24 @@ tcherry_step <- function(data, ...){
       }
     }
 
-    idx_max_score <- which.max(score_next_step)
+    idx_max_weight <- which.max(weight_next_step)
 
-    score <- score_next_step[idx_max_score]
+    weight <- weight_next_step[idx_max_weight]
 
     tcherry_nodes <- unlist(c(tcherry_nodes,
-                              new_var_list[[idx_max_score]]))
+                              new_var_list[[idx_max_weight]]))
     nodes_remaining <- nodes[! nodes %in% tcherry_nodes]
 
-    cliques[[idx_list + 1]] <- new_cliques_list[[idx_max_score]]
-    separators[[idx_list]] <- new_seps_list[[idx_max_score]]
+    cliques[[idx_list + 1]] <- new_cliques_list[[idx_max_weight]]
+    separators[[idx_list]] <- new_seps_list[[idx_max_weight]]
     idx_list <- idx_list + 1
 
     tcherry_edges[nrow(tcherry_edges) + 1, ] <-
-      c(new_var_list[[idx_max_score]],
-        new_seps_list[[idx_max_score]][1])
+      c(new_var_list[[idx_max_weight]],
+        new_seps_list[[idx_max_weight]][1])
     tcherry_edges[nrow(tcherry_edges) + 1, ] <-
-      c(new_var_list[[idx_max_score]],
-        new_seps_list[[idx_max_score]][2])
+      c(new_var_list[[idx_max_weight]],
+        new_seps_list[[idx_max_weight]][2])
 
     edge_1 <- tcherry_edges[nrow(tcherry_edges) - 1, 1]
     edge_2 <- tcherry_edges[nrow(tcherry_edges) - 1, 2]
@@ -180,7 +181,7 @@ tcherry_step <- function(data, ...){
       adj_matrix[edge_3, edge_1] <- 1
   }
   return(list("adj_matrix" = adj_matrix,
-              "score" = score,
+              "weight" = weight,
               "cliques" = cliques,
               "separators" = separators))
 }

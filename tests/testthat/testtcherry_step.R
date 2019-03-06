@@ -35,7 +35,7 @@ rownames(mat_res) <- colnames(mat_res) <- names(data)
 test_that("results are correct", {
   expect_equal(tcherry_step(data, smooth = 0.001)$adj_matrix,
                mat_res)
-  expect_equal(tcherry_step(data, smooth = 0.001)$score, 4.269289,
+  expect_equal(tcherry_step(data, smooth = 0.001)$weight, 4.269289,
                tolerance = 1e-6)
 })
 

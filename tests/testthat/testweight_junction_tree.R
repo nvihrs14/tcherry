@@ -25,7 +25,7 @@ tch <- tcherry_step(data, smooth = 0.001)
 test_that("weight is correct", {
   expect_equal(weight_junction_tree(tch$cliques, tch$separators, data,
                                     smooth = 0.001),
-               tch$score)
+               tch$weight)
 })
 
 cliques <- tch$cliques

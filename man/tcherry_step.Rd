@@ -17,7 +17,7 @@ A list containing the following components:
 \itemize{
 \item \code{adj_matrix} The adjacency matrix for the t-cherry
 tree.
-\item \code{score} The score of the final t-cherry tree.
+\item \code{weight} The weight of the final t-cherry tree.
 \item \code{cliques} A list containing the cliques (cherries) of
  the t-cherry tree.
 \item \code{separators} A list containing the separators of a
@@ -34,10 +34,11 @@ data is based on an atempt to minimize the Kullback-Leibler
 divergence. The first cherry is chosen as the triplet with
 highest mutual information. This is the preliminary t-cherry
 tree. Then all possible new cherries are added stepwise to this
-tree and the score \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
-where the first sum is over the cliques and the second over the
+tree and the weight \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
+is calculated.
+The first sum is over the cliques and the second over the
 separators of the junction tree of the preliminary t-cherry tree.
-The one with the highest score is chosen as the new preliminary
+The one with the highest weight is chosen as the new preliminary
 t-cherry tree, and the procedure is repeated untill all variables
 has been added.
 }
