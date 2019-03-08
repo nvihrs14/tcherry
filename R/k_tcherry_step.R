@@ -127,53 +127,133 @@ k_tcherry_step <- function(data, k, ...){
 
   weight <- max(MI)
 
+  if (length(nodes_remaining) != n_var){
+
   idx_list <- 1
 
+  n_nodes_remaining_median <- floor((n_var - k) / 2 + 1)
+  n_hyp_edges_median <- 1 + (k - 1) * ((n_var - n_nodes_remaining_median)
+                                       - (k - 1))
+
+  weight_cliq_sep <- MI_cliq <- MI_sep <- new_var <-
+    rep(NA, n_nodes_remaining_median * n_hyp_edges_median)
+
+  new_cliques_list <- new_seps_list <-
+    as.list(weight_cliq_sep)
+
+  dat_new_poss <- data.frame(new_cliq = I(new_cliques_list),
+                             new_sep = I(new_seps_list),
+                             new_var = new_var,
+                             MI_cliq = MI_cliq,
+                             MI_sep = MI_sep,
+                             weight_increase = weight_cliq_sep)
+
+  idx.dat <- 1
+  for (i in 1:length(tcherry_hyperedges)){
+    for (var in nodes_remaining){
+      dat_new_poss$new_sep[[idx.dat]] <- tcherry_hyperedges[[i]]
+      dat_new_poss$new_cliq[[idx.dat]] <-
+        c(dat_new_poss$new_sep[[idx.dat]], var)
+
+      dat_new_poss$MI_sep[idx.dat] <-
+        MIk(dat_new_poss$new_sep[[idx.dat]], data, ...)
+      dat_new_poss$MI_cliq[idx.dat] <-
+        MIk(dat_new_poss$new_cliq[[idx.dat]], data, ...)
+
+      dat_new_poss$weight_increase[idx.dat] <-
+        dat_new_poss$MI_cliq[idx.dat] - dat_new_poss$MI_sep[idx.dat]
+
+      dat_new_poss$new_var[[idx.dat]] <- var
+      idx.dat <- idx.dat + 1
+    }
+  }
+
+  idx_max_weight <- which.max(dat_new_poss$weight_increase)
+  weight <- weight + dat_new_poss$weight_increase[idx_max_weight]
+
+  new_clique <- dat_new_poss$new_cliq[[idx_max_weight]]
+  new_sep <- dat_new_poss$new_sep[[idx_max_weight]]
+  new_var <- dat_new_poss$new_var[idx_max_weight]
+
+  tcherry_nodes <- c(tcherry_nodes, new_var)
+  nodes_remaining <- setdiff(nodes, tcherry_nodes)
+
+  cliques[[2]] <- new_clique
+  separators[[1]] <- new_sep
+  idx.list <- 2
+
+  new_hyper_edges <- utils::combn(new_clique, k - 1)
+  new_hyper_edges <- split(new_hyper_edges,
+                           rep(1:ncol(new_hyper_edges),
+                               each = nrow(new_hyper_edges)))
+  idx.new <- sapply(new_hyper_edges, function(e){
+    length(setdiff(e, new_var)) != k - 1
+  })
+  new_hyper_edges <- new_hyper_edges[idx.new]
+
+  adj_matrix[new_clique, new_clique] <- 1
+  diag(adj_matrix[new_clique, new_clique]) <- 0
+
+  idx.new.var <- dat_new_poss$new_var == new_var &
+    !is.na(dat_new_poss$new_var)
+  dat_new_poss[idx.new.var, ] <- NA
+  ord <- order(dat_new_poss$weight_increase, decreasing = TRUE)
+  dat_new_poss <- dat_new_poss[ord, ]
+  }
+
   while (length(tcherry_nodes) != n_var) {
-    weight_next_step <- rep(NA, length(tcherry_hyperedges) *
-                             length(nodes_remaining))
-    new_cliques_list <- new_seps_list <- new_var_list <-
-      as.list(weight_next_step)
-    idx <- 1
-    for (i in 1:length(tcherry_hyperedges)){
+    idx.dat <- which(is.na(dat_new_poss$weight_increase))[1]
+    for (i in 1:length(new_hyper_edges)){
       for (var in nodes_remaining){
-        new_sep <- tcherry_hyperedges[[i]]
-        new_clique <- c(new_sep, var)
+        dat_new_poss$new_sep[[idx.dat]] <- new_hyper_edges[[i]]
+        dat_new_poss$new_cliq[[idx.dat]] <-
+          c(dat_new_poss$new_sep[[idx.dat]], var)
 
-        MI_sep <- MIk(new_sep, data, ...)
-        MI_clique <- MIk(new_clique, data, ...)
+        dat_new_poss$MI_sep[idx.dat] <-
+          MIk(dat_new_poss$new_sep[[idx.dat]], data, ...)
+        dat_new_poss$MI_cliq[idx.dat] <-
+          MIk(dat_new_poss$new_cliq[[idx.dat]], data, ...)
 
-        weight_next_step[idx] <- weight + MI_clique - MI_sep
-        new_cliques_list[[idx]] <- new_clique
-        new_seps_list[[idx]] <- new_sep
-        new_var_list[[idx]] <- var
-        idx <- idx + 1
+        dat_new_poss$weight_increase[idx.dat] <-
+          dat_new_poss$MI_cliq[idx.dat] - dat_new_poss$MI_sep[idx.dat]
+
+        dat_new_poss$new_var[[idx.dat]] <- var
+        idx.dat <- idx.dat + 1
       }
     }
 
-    idx_max_weight <- which.max(weight_next_step)
-    weight <- weight_next_step[idx_max_weight]
+    idx_max_weight <- which.max(dat_new_poss$weight_increase)
+    weight <- weight + dat_new_poss$weight_increase[idx_max_weight]
 
-    new_clique <- new_cliques_list[[idx_max_weight]]
-    new_sep <- new_seps_list[[idx_max_weight]]
-    new_var <- new_var_list[[idx_max_weight]]
+    new_clique <- dat_new_poss$new_cliq[[idx_max_weight]]
+    new_sep <- dat_new_poss$new_sep[[idx_max_weight]]
+    new_var <- dat_new_poss$new_var[idx_max_weight]
 
     tcherry_nodes <- c(tcherry_nodes, new_var)
     nodes_remaining <- setdiff(nodes, tcherry_nodes)
 
-    cliques[[idx_list + 1]] <- new_clique
-    separators[[idx_list]] <- new_sep
-    idx_list <- idx_list + 1
+    cliques[[idx.list + 1]] <- new_clique
+    separators[[idx.list]] <- new_sep
+    idx.list <- idx.list + 1
 
     new_hyper_edges <- utils::combn(new_clique, k - 1)
     new_hyper_edges <- split(new_hyper_edges,
-                                rep(1:ncol(new_hyper_edges),
-                                    each = nrow(new_hyper_edges)))
-    tcherry_hyperedges <- c(tcherry_hyperedges, new_hyper_edges)
-    tcherry_hyperedges <- unique(tcherry_hyperedges)
+                             rep(1:ncol(new_hyper_edges),
+                                 each = nrow(new_hyper_edges)))
+    idx.new <- sapply(new_hyper_edges, function(e){
+      length(setdiff(e, new_var)) != k - 1
+    })
+    new_hyper_edges <- new_hyper_edges[idx.new]
 
     adj_matrix[new_clique, new_clique] <- 1
     diag(adj_matrix[new_clique, new_clique]) <- 0
+
+    idx.new.var <- dat_new_poss$new_var == new_var &
+      !is.na(dat_new_poss$new_var)
+    dat_new_poss[idx.new.var, ] <- NA
+    ord <- order(dat_new_poss$weight_increase, decreasing = TRUE)
+    dat_new_poss <- dat_new_poss[ord, ]
+
 
   }
 
