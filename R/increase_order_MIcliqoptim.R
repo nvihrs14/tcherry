@@ -9,10 +9,18 @@
 #' @param data The data the tree structure should be based on.
 #' @param ... Additional arguments passed to \code{MIk}.
 #'
-#' @details The algorithm for constructing the (k+1)'th order t-cherry
-#' tree from a k'th order t-cherry tree is a greedy algorithm in the
-#' sence that it always attempts to use the k variables with highest
-#' mutual information as the next cherry. The procedure is as follows:
+#' @details The algorithms for constructing the (k+1)'th order t-cherry
+#' tree from a k'th order t-cherry tree are greedy algorithms.
+#' \code{increase_order_MIcliqoptim} attempts to maximize the sum of
+#' mutual information of the cliques and
+#' \code{increase_order_weightoptim} attempts to maximize the weight of
+#' the junction tree. \code{increase_order_weightoptim} is also a faster
+#' implementation and a faster alternative to create a (k+1)'th order
+#' t-cherry tree directly from data with \code{k_tcherry_step}. It is
+#' therefore recommended to use this one, and \code{increase_order_
+#' MIcliqoptim} is primarily kept for historical reasons.
+#'
+#' In \code{increase_order_MIcliqoptim} the procedure is:
 #' \itemize{
 #' \item Starting from the k'th order t-cherry tree make a complete set
 #' of the (k+1) variables with highest mutual information which satisfies
@@ -24,6 +32,20 @@
 #' (k+1). Remove these (k+1) variables from later consideration.
 #' \item Continue until all variables are in a clique of size (k+1).
 #' }
+#'
+#' For \code{increase_order_weightoptim} the procedure is to start from
+#' the k'th order t-cherry tree and then choose the first cherry as the
+#' k + 1 variables with highest mutual information which satisfies that
+#' it only adds one edge to the existing graph. This is the preliminary
+#' t-cherry tree. Then all possible new cherries of size k+1 are added
+#' stepwise to this tree and the weight \deqn{\sum MI(Clique) -
+#' \sum MI(Separator)} is calculated. The first sum is over the cliques
+#' and the second over the separators of the junction tree of the
+#' preliminary t-cherry tree. Again new cherries are only possible if
+#' only one edge is added to the existing graph.
+#' The one with the highest weight is chosen as the new preliminary
+#' t-cherry tree, and the procedure is repeated untill all variables
+#' has been added.
 #'
 #' @return A list containing the following components:
 #' \itemize{
@@ -69,7 +91,8 @@
 #'                         c("var4", "var6"),
 #'                         c("var5", "var6"))
 #' # smooth used in MIk
-#' (tch <- tcherry_order_increase(ChowLiu_cliques, data, smooth = 0.1))
+#' (tch <- increase_order_MIcliqoptim(ChowLiu_cliques, data, smooth = 0.1))
+#' (tch2 <- increase_order_weightoptim(ChowLiu_cliques, data, smooth = 0.1))
 #'
 #' # For plotting
 #' library(gRbase)
@@ -83,7 +106,7 @@
 #' querygrain(model)
 #' @export
 
-tcherry_order_increase <- function(tch_cliq, data, ...){
+increase_order_MIcliqoptim <- function(tch_cliq, data, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }

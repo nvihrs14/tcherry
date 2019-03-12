@@ -29,6 +29,10 @@ Determine the structure of a t-cherry tree
 from data based on a greedy stepwise approach.
 }
 \details{
+This function i mainly kept for historical purposes, and it is
+recommended to use \code{\link{k_tcherry_step}} with \eqn{k=3},
+because this function runs faster.
+
 The algorithm for constructing the t-cherry tree from
 data is based on an atempt to minimize the Kullback-Leibler
 divergence. The first cherry is chosen as the triplet with
@@ -76,6 +80,7 @@ model <- grain(tcherry_tree, data = data, smooth = 0.1)
 querygrain(model)
 }
 \seealso{
+\code{\link{k_tcherry_step}} for a better implementation,
 \code{\link{MI2}} and \code{\link{MI3}} for mutual
 information of two and three variables respectively.
 }

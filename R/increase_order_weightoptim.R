@@ -1,17 +1,61 @@
+#' @rdname increase_order_MIcliqoptim
 #' @export
 
-tcherry_order_increase2 <- function(tch_cliq, data, ...){
+increase_order_weightoptim <- function(tch_cliq, data, ...){
+  if (! (is.data.frame(data) | is.matrix(data))) {
+    stop("data must be a data frame or a matrix.")
+  }
+
+  if (! all(sapply(data, function(x){
+    is.character(x) | is.factor(x)
+  }
+  ))){
+    stop("Some columns are not characters or factors.")
+  }
+
+  if (! is.list(tch_cliq)){
+    stop(cat("Cliques must be given in a list, each entry containing\n",
+               "a vector with the names of the variables in the clique."
+             ))
+  }
+
+  if (! compare::compare(unique(unlist(tch_cliq)), colnames(data),
+                         ignoreOrder = TRUE)$result){
+    stop(cat("The column names of data must be the same as the\n",
+             "variable names in tch_cliq. All variables in data must\n",
+             "be in at least one clique."))
+  }
+
+  if (length(unique(sapply(tch_cliq, length))) != 1){
+    stop(cat("tch_cliq should be the cliques of a k'th order t-cherry\n",
+             "tree. Therefore they should all have the same length k."))
+  }
 
   nodes <- colnames(data)
   n_var <- length(nodes)
   n_cliq <- length(tch_cliq)
   k <- length(tch_cliq[[1]])
 
+  if (n_var < (k + 1)){
+    stop("It takes at least k plus 1 variables to fit a k plus 1'th order t-cherry tree.")
+  }
+
   tch_adj <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(tch_adj) <- colnames(tch_adj) <- nodes
   for (i in 1:n_cliq) {
     tch_adj[tch_cliq[[i]], tch_cliq[[i]]] <- 1
     diag(tch_adj[tch_cliq[[i]], tch_cliq[[i]]]) <- 0
+  }
+
+  if (! all(gRbase::triangulateMAT(tch_adj) == tch_adj)){
+    stop(cat("The cliques do not come from a triangulated graph.\n",
+             "The cliques should correspond to a k'th order t-cherry\n",
+             "tree so it must be triangulated."))
+  }
+
+  if (sum(tch_adj) / 2 != (k - 1) * n_var - (1 / 2) * (k - 1) * k){
+    stop(cat("The graph corresponding to the cliques does not have\n",
+            "the correct number of edges for a k'th order t-cherry tree."))
   }
 
   cliques <- as.list(rep(NA, n_var - k))
@@ -92,11 +136,8 @@ tcherry_order_increase2 <- function(tch_cliq, data, ...){
         diag(adj_matrix_temp[new_cliq, new_cliq]) <- 0
 
         if ((sum(adj_matrix_temp) / 2 ) == (n_edges + 1)){
-          dat_new_poss$MI_sep[idx.dat] <-
-          MIk(dat_new_poss$new_sep[[idx.dat]], data, smooth = 0.1)
-
-          dat_new_poss$MI_cliq[idx.dat] <-
-          MIk(dat_new_poss$new_cliq[[idx.dat]], data, smooth = 0.1)
+          dat_new_poss$MI_sep[idx.dat] <- MIk(new_sep, data, ...)
+          dat_new_poss$MI_cliq[idx.dat] <- MIk(new_cliq, data, ...)
 
           dat_new_poss$weight_increase[idx.dat] <-
           dat_new_poss$MI_cliq[idx.dat] - dat_new_poss$MI_sep[idx.dat]

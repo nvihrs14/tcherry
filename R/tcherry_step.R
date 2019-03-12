@@ -7,7 +7,12 @@
 #' @param ... Additional arguments passed to \code{MI2} and
 #' \code{MI3}.
 #'
-#' @details The algorithm for constructing the t-cherry tree from
+#' @details
+#' This function i mainly kept for historical purposes, and it is
+#' recommended to use \code{\link{k_tcherry_step}} with \eqn{k=3},
+#' because this function runs faster.
+#'
+#' The algorithm for constructing the t-cherry tree from
 #' data is based on an atempt to minimize the Kullback-Leibler
 #' divergence. The first cherry is chosen as the triplet with
 #' highest mutual information. This is the preliminary t-cherry
@@ -38,7 +43,8 @@
 #'
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
 #'
-#' @seealso \code{\link{MI2}} and \code{\link{MI3}} for mutual
+#' @seealso \code{\link{k_tcherry_step}} for a better implementation,
+#' \code{\link{MI2}} and \code{\link{MI3}} for mutual
 #' information of two and three variables respectively.
 #'
 #' @examples
