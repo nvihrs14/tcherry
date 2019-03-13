@@ -1,4 +1,102 @@
+#' Determine the k'th order t-cherry tree from data with the greatest
+#' weight.
+#'
+#' @description Determine the structure of the k'th order t-cherry tree
+#' from data with the greatest weight based on a complete search.
+#'
+#' @param data The data the tree structure should be based on.
+#' @param k The order of the t-cherry tree.
+#' @param ... Additional arguments passed to \code{weight_junction_tree}.
+#'
+#' @details
+#'
+#' The algorithm for constructing the t-cherry tree from
+#' data is based on an atempt to minimize the Kullback-Leibler
+#' divergence, by mazimising the weight. All possible structures are
+#' determined and the one with the highest weight is chosen.
+#'
+#' Note that this procedure is highly inefficient, and only suited for
+#' small problems.
+#'
+#' @return A list containing the following components:
+#' \itemize{
+#' \item \code{model} A list with the following components:
+#' \itemize{
+#' \item \code{weight} The weight of the final k'th order t-cherry tree.
+#' \item \code{cliques} A list containing the cliques (cherries) of
+#'  the k'th order t-cherry tree.
+#' \item \code{separators} A list containing the separators of a
+#' junction tree for the k'th order t-cherry tree.
+#' \item \code{adj_matrix} The adjacency matrix for the k'th order
+#' t-cherry tree.
+#' }
+#' \item \code{n_models} The number of considered models.
+#' }
+#'
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#'
+#' @seealso \code{\link{weight_junction_tree}} for calculation of the
+#' weight and \code{\link{k_tcherry_step}} for a more efficient but
+#' greedy algorithm.
+#'
+#' @examples
+#' set.seed(43)
+#' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
+#' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+#' var3 <- var1 + c(sample(c(0, 1), 100, replace = TRUE,
+#'                         prob = c(0.9, 0.1)))
+#' var4 <- c(sample(c(1, 2), 100, replace = TRUE))
+#' var5 <- var2 + var3
+#' var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
+#' var7 <- c(sample(c(1, 2), 100, replace = TRUE))
+#'
+#' data <- data.frame("var1" = as.character(var1),
+#'                    "var2" = as.character(var2),
+#'                    "var3" = as.character(var3),
+#'                    "var4" = as.character(var4),
+#'                    "var5" = as.character(var5),
+#'                    "var6" = as.character(var6),
+#'                    "var7" = as.character(var7))
+#'
+#' (tch <- tcherry_complete_search(data, 5, smooth = 0.1))
+#'
+#' # For plotting
+#' library(gRbase)
+#' library(Rgraphviz)
+#' tcherry_tree <- as(tch$model$adj_matrix, "graphNEL")
+#' plot(tcherry_tree)
+#'
+#' # For probability propagation
+#' library(gRain)
+#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
+#' querygrain(model)
+#' @export
+
 tcherry_complete_search <- function(data, k, ...){
+  if (! (is.data.frame(data) | is.matrix(data))) {
+    stop("data must be a data frame or a matrix.")
+  }
+
+  if (! all(sapply(data, function(x){
+    is.character(x) | is.factor(x)
+  }
+  ))){
+    stop("Some columns are not characters or factors.")
+  }
+
+  if (length(k) != 1){
+    stop("k must be a single positive integer.")
+  }
+
+  if (k %% 1 != 0 | k <= 1){
+    stop("k must be a positive integer and at least 2.")
+  }
+
   nodes <- names(data)
   n_var <- length(nodes)
 

@@ -14,21 +14,22 @@ increase_order_weightoptim <- function(tch_cliq, data, ...){
   }
 
   if (! is.list(tch_cliq)){
-    stop(cat("Cliques must be given in a list, each entry containing\n",
-               "a vector with the names of the variables in the clique."
-             ))
+    stop(paste("Cliques must be given in a list, each entry containing",
+               "a vector with the names of the variables in the clique.",
+               collapse = " "))
   }
 
   if (! compare::compare(unique(unlist(tch_cliq)), colnames(data),
                          ignoreOrder = TRUE)$result){
-    stop(cat("The column names of data must be the same as the\n",
-             "variable names in tch_cliq. All variables in data must\n",
-             "be in at least one clique."))
+    stop(paste("The column names of data must be the same as the",
+               "variable names in tch_cliq. All variables in data must",
+               "be in at least one clique.", collapse = " "))
   }
 
   if (length(unique(sapply(tch_cliq, length))) != 1){
-    stop(cat("tch_cliq should be the cliques of a k'th order t-cherry\n",
-             "tree. Therefore they should all have the same length k."))
+    stop(paste("tch_cliq should be the cliques of a k'th order t-cherry",
+               "tree. Therefore they should all have the same length k.",
+               collapse = " "))
   }
 
   nodes <- colnames(data)
@@ -48,14 +49,15 @@ increase_order_weightoptim <- function(tch_cliq, data, ...){
   }
 
   if (! all(gRbase::triangulateMAT(tch_adj) == tch_adj)){
-    stop(cat("The cliques do not come from a triangulated graph.\n",
-             "The cliques should correspond to a k'th order t-cherry\n",
-             "tree so it must be triangulated."))
+    stop(paste("The cliques do not come from a triangulated graph.",
+               "The cliques should correspond to a k'th order t-cherry",
+               "tree so it must be triangulated.", collapse = " "))
   }
 
   if (sum(tch_adj) / 2 != (k - 1) * n_var - (1 / 2) * (k - 1) * k){
-    stop(cat("The graph corresponding to the cliques does not have\n",
-            "the correct number of edges for a k'th order t-cherry tree."))
+    stop(paste("The graph corresponding to the cliques does not have",
+               "the correct number of edges for a k'th order t-cherry",
+               "tree.", collapse = " "))
   }
 
   cliques <- as.list(rep(NA, n_var - k))

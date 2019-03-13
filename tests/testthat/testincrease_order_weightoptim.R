@@ -98,33 +98,35 @@ test_that("error messages work", {
                                           smooth = 0.001),
                "data must be a data frame or a matrix.")
   expect_error(increase_order_weightoptim(vec, data, smooth = 0.1),
-          cat("Cliques must be given in a list, each entry containing\n",
-             "a vector with the names of the variables in the clique."
-               ))
+               paste("Cliques must be given in a list, each entry containing",
+                     "a vector with the names of the variables in the clique.",
+                     collapse = " "))
   expect_error(increase_order_weightoptim(ChowLiu_cliques[-1], data,
                                           smooth = 0.1),
-              cat("The column names of data must be the same as the\n",
-              "variable names in tch_cliq. All variables in data must\n",
-              "be in at least one clique."))
+               paste("The column names of data must be the same as the",
+                     "variable names in tch_cliq. All variables in data must",
+                     "be in at least one clique.", collapse = " "))
   expect_error(increase_order_weightoptim(cliques_error, data,
                                           smooth = 0.1),
-              cat("The column names of data must be the same as the\n",
-              "variable names in tch_cliq. All variables in data must\n",
-              "be in at least one clique."))
+               paste("The column names of data must be the same as the",
+                     "variable names in tch_cliq. All variables in data must",
+                     "be in at least one clique.", collapse = " "))
   expect_error(increase_order_weightoptim(cliques_error2, data,
                                           smooth = 0.1),
-        cat("tch_cliq should be the cliques of a k'th order t-cherry\n",
-              "tree. Therefore they should all have the same length k."))
+               paste("tch_cliq should be the cliques of a k'th order t-cherry",
+                     "tree. Therefore they should all have the same length k.",
+                     collapse = " "))
   expect_error(increase_order_weightoptim(cliques_small, data[,1:2],
                                           smooth = 0.1),
                "It takes at least k plus 1 variables to fit a k plus 1'th order t-cherry tree.")
   expect_error(increase_order_weightoptim(cliques_not_triang, data,
                                           smooth = 0.1),
-              cat("The cliques do not come from a triangulated graph.\n",
-              "The cliques should correspond to a k'th order t-cherry\n",
-              "tree so it must be triangulated."))
+               paste("The cliques do not come from a triangulated graph.",
+                     "The cliques should correspond to a k'th order t-cherry",
+                     "tree so it must be triangulated.", collapse = " "))
   expect_error(increase_order_weightoptim(cliques_wrong_nedges, data[, 1:5],
                                           smooth = 0.1),
-            cat("The graph corresponding to the cliques does not have\n",
-            "the correct number of edges for a k'th order t-cherry tree."))
+               paste("The graph corresponding to the cliques does not have",
+                     "the correct number of edges for a k'th order t-cherry",
+                     "tree.", collapse = " "))
 })
