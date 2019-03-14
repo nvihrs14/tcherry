@@ -51,6 +51,7 @@
 #' \itemize{
 #' \item \code{adj_matrix} The adjacency matrix for the (k+1)'th order
 #' t-cherry tree.
+#' \item \code{weight} Weight of the junction tree (only for \code{increase_order2})
 #' \item \code{cliques} A list containing the cliques (cherries) of
 #'  the (k+1)'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
