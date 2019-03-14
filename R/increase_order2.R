@@ -1,7 +1,7 @@
-#' @rdname increase_order_MIcliqoptim
+#' @rdname increase_order1
 #' @export
 
-increase_order_weightoptim <- function(tch_cliq, data, ...){
+increase_order2 <- function(tch_cliq, data, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }

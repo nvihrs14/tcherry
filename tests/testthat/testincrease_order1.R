@@ -1,4 +1,4 @@
-context("increase_order_MIcliqoptim")
+context("increase_order1")
 library(tcherry)
 
 set.seed(43)
@@ -28,7 +28,7 @@ ChowLiu_cliques <- list(c("var1", "var5"),
                         c("var5", "var6"))
 
 tcherryCL <- tcherry_CL(data, smooth = 0.1)
-tcherry_ord_inc <- increase_order_MIcliqoptim(ChowLiu_cliques, data,
+tcherry_ord_inc <- increase_order1(ChowLiu_cliques, data,
                                           smooth = 0.1)
 
 test_that("results are corrects", {
@@ -72,38 +72,38 @@ cliques_wrong_nedges <- list(c("var1", "var3", "var5"),
                              c("var1", "var2", "var4"))
 
 test_that("error messages work", {
-  expect_error(increase_order_MIcliqoptim(ChowLiu_cliques, data_numeric,
+  expect_error(increase_order1(ChowLiu_cliques, data_numeric,
                                       smooth = 0.001),
                "Some columns are not characters or factors.")
-  expect_error(increase_order_MIcliqoptim(ChowLiu_cliques, vec,
+  expect_error(increase_order1(ChowLiu_cliques, vec,
                                       smooth = 0.001),
                "data must be a data frame or a matrix.")
-  expect_error(increase_order_MIcliqoptim(vec, data, smooth = 0.1),
+  expect_error(increase_order1(vec, data, smooth = 0.1),
                "Cliques must be given in a list, each entry containing a vector
          with the names of the variables in the clique.")
-  expect_error(increase_order_MIcliqoptim(ChowLiu_cliques[-1], data,
+  expect_error(increase_order1(ChowLiu_cliques[-1], data,
                                       smooth = 0.1),
                "The column names of data must be the same as the variable
          names in tch_cliq. All variables in data must be in at least
          one clique.")
-  expect_error(increase_order_MIcliqoptim(cliques_error, data,
+  expect_error(increase_order1(cliques_error, data,
                                       smooth = 0.1),
                "The column names of data must be the same as the variable
          names in tch_cliq. All variables in data must be in at least
          one clique.")
-  expect_error(increase_order_MIcliqoptim(cliques_error2, data,
+  expect_error(increase_order1(cliques_error2, data,
                                       smooth = 0.1),
                "tch_cliq should be the cliques of a k'th order t-cherry tree.
          Therefore they should all have the same length k.")
-  expect_error(increase_order_MIcliqoptim(cliques_small, data[,1:2],
+  expect_error(increase_order1(cliques_small, data[,1:2],
                                       smooth = 0.1),
                "It takes at least k plus 1 variables to fit a k plus 1'th order t-cherry tree.")
-  expect_error(increase_order_MIcliqoptim(cliques_not_triang, data,
+  expect_error(increase_order1(cliques_not_triang, data,
                                       smooth = 0.1),
                "The cliques do not come from a triangulated graph.
          The cliques should correspond to a k'th order t-cherry tree
          so it must be triangulated.")
-  expect_error(increase_order_MIcliqoptim(cliques_wrong_nedges, data[, 1:5],
+  expect_error(increase_order1(cliques_wrong_nedges, data[, 1:5],
                                       smooth = 0.1),
                "The graph corresponding to the cliques does not have the
          correct number of edges for a k'th order t-cherry tree.")

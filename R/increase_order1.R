@@ -11,7 +11,7 @@
 #'
 #' @details The algorithms for constructing the (k+1)'th order t-cherry
 #' tree from a k'th order t-cherry tree are greedy algorithms.
-#' \code{increase_order_MIcliqoptim} attempts to maximize the sum of
+#' \code{increase_order1} attempts to maximize the sum of
 #' mutual information of the cliques and
 #' \code{increase_order_weightoptim} attempts to maximize the weight of
 #' the junction tree. \code{increase_order_weightoptim} is also a faster
@@ -20,7 +20,7 @@
 #' therefore recommended to use this one, and \code{increase_order_
 #' MIcliqoptim} is primarily kept for historical reasons.
 #'
-#' In \code{increase_order_MIcliqoptim} the procedure is:
+#' In \code{increase_order1} the procedure is:
 #' \itemize{
 #' \item Starting from the k'th order t-cherry tree make a complete set
 #' of the (k+1) variables with highest mutual information which satisfies
@@ -91,8 +91,8 @@
 #'                         c("var4", "var6"),
 #'                         c("var5", "var6"))
 #' # smooth used in MIk
-#' (tch <- increase_order_MIcliqoptim(ChowLiu_cliques, data, smooth = 0.1))
-#' (tch2 <- increase_order_weightoptim(ChowLiu_cliques, data, smooth = 0.1))
+#' (tch <- increase_order1(ChowLiu_cliques, data, smooth = 0.1))
+#' (tch2 <- increase_order2(ChowLiu_cliques, data, smooth = 0.1))
 #'
 #' # For plotting
 #' library(gRbase)
@@ -106,7 +106,7 @@
 #' querygrain(model)
 #' @export
 
-increase_order_MIcliqoptim <- function(tch_cliq, data, ...){
+increase_order1 <- function(tch_cliq, data, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }

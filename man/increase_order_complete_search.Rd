@@ -86,7 +86,7 @@ querygrain(model)
 }
 \seealso{
 \code{\link{weight_junction_tree}} for calculation of the
-weight and \code{\link{increase_order_weightoptim}} for a more
+weight and \code{\link{increase_order2}} for a more
 efficient but greedy algorithm.
 }
 \author{
