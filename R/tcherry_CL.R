@@ -22,8 +22,6 @@
 #'  the t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the t-cherry tree.
-#' \item \code{MI} A data frame containing the mutual information
-#' of all triplets.
 #' }
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
@@ -103,8 +101,6 @@ tcherry_CL <- function(data, ...){
   MI3_tab <- MI3_tab[ord_idx, ]
   rownames(MI3_tab) <- NULL
 
-  MI <- MI3_tab
-
   n_edges <- sum(tree) / 2
   tcherry_nodes <- c()
 
@@ -179,7 +175,6 @@ tcherry_CL <- function(data, ...){
 
   return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
-              "separators" = separators,
-              "MI" = MI))
+              "separators" = separators))
 
 }

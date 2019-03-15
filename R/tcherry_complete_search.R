@@ -117,7 +117,7 @@ tcherry_complete_search <- function(data, k, ...){
 
   if (n_iter != 0){
     for (iter in 1:n_iter) {
-      new_models <- models
+      new_models <- list()
       idx <- 1
       for (model in models) {
         for (clique in model$cliques) {
