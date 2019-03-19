@@ -1,0 +1,166 @@
+---
+title: "Short introduction to the tcherry package"
+author: "Katrine Kirkeby, Maria Knudsen and Ninna Vihrs"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::pdf_document:
+    toc: true
+bibliography: biblio_vignette.bib
+vignette: >
+  %\VignetteIndexEntry{Short introduction to the tcherry package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1. Introduction
+
+The tcherry package has a variety of functions for learning a $k$'th order $t$-cherry tree stucture from a given data set. 
+
+## 2. The concept of a k'th order t-cherry tree
+
+The concepts in this section are based on @EKTShyp.
+
+A $k$'th order $t$-cherry tree is a graph which can be defined in the following recursive way: 
+\begin{itemize}
+  \item A complete set of $k-1$ vertives is the smallest $k$'th order $t$-cherry tree.
+  \item A $k$'th order $t$-cherry tree is extended with a new vertex by adding an edge between this vertex and $k-1$ vertices already mutually connected by edges.
+\end{itemize}
+
+The nodes $A_1,\ldots,A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree. This junction tree suggests the joint probability distribution
+\begin{equation*}
+\tilde{P}(A_1,\ldots,A_n) = \frac{\prod\limits_{C\in\mathcal{C}}P(C)}{\prod\limits_{S\in\mathcal{S}}P(S)}
+\end{equation*}
+where $\mathcal{C}$ is the set of cliques and $\mathcal{S}$ is the set of separators (separators used more than once should appear as many times as they are used).
+
+If $P$ is the true probability distribution the Kullback-Leibler divergence becomes
+
+\begin{equation*}
+KL(P,\tilde{P}) = -H(A_1,\ldots,A_p)- \left(\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)\right) + \sum_{i=1}^p H(A_i)
+\end{equation*}
+where $H(A_i)$ is the entropy $MI$ is mutual information given by
+\begin{equation*}
+MI(A_1, \ldots, A_p) = \sum_{A_1,\ldots,A_p}P(A_1,\ldots,A_p)\log\left(\frac{P(A_1,\ldots,A_p)}{P(A_1)\cdots P(A_p)}\right).
+\end{equation*}
+
+In practice the exact probability distributions are not known, and they are therefore estimated by data. Then the expression 
+\begin{equation*}
+\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)
+\end{equation*}
+is called the weight of the junction tree. In order to minimize the Kullback-Leibler divergence it is enough to maximize the weight, which all the construction algorithms in this package are attempting to do.
+
+## 3. Learning the structure
+
+The purpose of the structure learning functions is to find a $k$'th order $t$-cherry tree from data, so let us first make some data. The function \texttt{random\_tcherry} makes a random 3. order $t$-cherry tree. It also returns some random conditional probability tables belonging to a bayesian network with the $t$-cherry tree as moral graph.
+
+```{r}
+library(tcherry)
+
+set.seed(94)
+tch_random <- random_tcherry(n = 6, n_levels = rep(2, 6))
+tch_random$adj_matrix
+```
+
+This makes a 3. order $t$-cherry tree with six binary variables. To work further with this network the gRain package is used [@SH].
+
+A plot could be achieved by
+
+```{r, message=FALSE, fig.height=3}
+library(gRain)
+library(Rgraphviz)
+
+tch_random_graph <- as(tch_random$adj_matrix, "graphNEL")
+plot(tch_random_graph)
+```
+
+To make probability propagation one could then do
+
+```{r}
+library(gRain)
+
+CPTs <- compileCPT(tch_random$CPTs)
+G <- grain(CPTs)
+querygrain(G, nodes = c("V1", "V2"), type = "joint", evidence = list("V3" = "l1"))
+```
+
+This gives the joint probability distribution of $V1$ and $V2$ given that $V4=l1$. 
+
+The gRain package can also be used to simulate a data set from this network.
+
+```{r}
+sim <- simulate.grain(object = G, nsim = 100, seed = 43)
+```
+
+This data set is now used to learn some $k$'th order $t$-cherry structures. 
+
+First a 2. order $t$-cherry tree is constructed. This is also known as a Chow-Liu tree.
+
+```{r}
+tch2 <- k_tcherry_step(data = sim, k = 2, smooth = 0.001)
+```
+
+The smooth arguments is added to all tables before normalisation in connection with estimating probabilities for mutual information. The algorithm behind this function is a greedy algorithm attempting to maximize the weight of the junction tree by stepwise adding one clique at a time to the $t$-cherry tree. For $k=2$ this is known to give the optimal solution. For higher values of $k$ this is no longer the case.
+
+A 3. order $t$-cherry tree is also fitted with the same approach, and the weight of the constructed junction tree is extracted.
+
+```{r}
+tch3_step <- k_tcherry_step(data = sim, k = 3, smooth = 0.001)
+tch3_step$weight
+```
+
+It can be time consuming to construct a $k$'th order $t$-cherry tree directly from data for large problems. A faster approach is to expand a $(k-1)$'th order $t$-cherry tree instead. This is done by a greedy approach trying to maximize the weight of the resulting junction tree.
+
+```{r}
+tch3_increase <- increase_order2(tch_cliq = tch2$cliques, data = sim, smooth = 0.001)
+tch3_increase$weight
+```
+
+This expands the Chow-Liu tree fitted before to a 3. order $t$-cherry tree. There is also a function called \texttt{increase\_order1} which does not attempt to maximize the weight but only the sum of mutual information of the cliques. This algorithm is also greedy and inspired by @EKTS.
+
+As mentioned before the greedy algorithms are not garanteed to yield the optimal solution, and since the problem is not larger than it is, it is actually possible to conduct a complete search.
+
+```{r}
+tch3_complete <- tcherry_complete_search(data = sim, k = 3, smooth = 0.001)
+tch3_complete$model$weight
+tch3_complete$n_models
+
+tch3_increse_complete <- 
+  increase_order_complete_search(tch_cliq = tch2$cliques, data = sim, smooth = 0.001)
+tch3_increse_complete$model$weight
+```
+
+Again to make probability propagation gRain can be used.
+
+```{r}
+library(gRain)
+
+graph_tch3_step <- as(tch3_step$adj_matrix, "graphNEL")
+G_tch3_step <- grain(x = graph_tch3_step, data = sim, smooth = 0.001)
+querygrain(G_tch3_step, nodes = c("V1", "V2"), type = "joint",
+           evidence = list("V3" = "l1"))
+```
+
+Using grain this way extracts the necessary probability tables from data.
+It can also be used for prediction.
+
+```{r}
+new_data <- data.frame("V1" = rep(NA, 3),
+                       "V2" = c(NA, "l1", "l2"),
+                       "V3" = c("l2", "l2", "l2"),
+                       "V4" = c("l1", NA, NA),
+                       "V5" = c("l1", NA, "l1"),
+                       "V6" = c(NA, NA, "l2"))
+predict.grain(object = G_tch3_step, response = "V1", newdata = new_data)
+predict.grain(object = G_tch3_step, response = "V1", newdata = new_data,
+              type = "distribution")
+
+```
+
+
+## References

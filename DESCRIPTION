@@ -23,4 +23,7 @@ RdMacros: Rdpack
 Suggests: 
     testthat,
     Rgraphviz,
-    gRain
+    gRain,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

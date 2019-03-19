@@ -21,8 +21,6 @@ tree.
  the t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the t-cherry tree.
-\item \code{MI} A data frame containing the mutual information
-of all triplets.
 }
 }
 \description{
