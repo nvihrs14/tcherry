@@ -114,6 +114,15 @@ tch3_step <- k_tcherry_step(data = sim, k = 3, smooth = 0.001)
 tch3_step$weight
 ```
 
+This function only adds one clique in each step, chosen as the choice which gives the highest contribution to the weight. It is also possible to consider alle possibilities for adding $p$ cliques in each step. To add for instance two cliques at a time use
+
+```{r}
+tch3_2_lookahead <- k_tcherry_p_lookahead(data = sim, k = 3, p = 2,
+                                          smooth = 0.001)
+tch3_2_lookahead$weight
+```
+
+
 It can be time consuming to construct a $k$'th order $t$-cherry tree directly from data for large problems. A faster approach is to expand a $(k-1)$'th order $t$-cherry tree instead. This is done by a greedy approach trying to maximize the weight of the resulting junction tree.
 
 ```{r}
