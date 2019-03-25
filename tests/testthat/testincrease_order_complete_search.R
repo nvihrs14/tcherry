@@ -8,7 +8,6 @@ var3 <- var1 + c(sample(c(0, 1), 100, replace = TRUE,
                         prob = c(0.9, 0.1)))
 var4 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -26,7 +25,6 @@ adj_mat <- matrix(c(0, 1, 1, 1,
                     1, 1, 1, 0), nrow = 4)
 
 colnames(adj_mat) <- rownames(adj_mat) <- names(data)
-
 
 test_that("results are corrects", {
   expect_equal(tch_complete$model$adj_matrix, adj_mat)
