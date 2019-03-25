@@ -1,10 +1,11 @@
-#' Calculates Kullback-Leibler divergence.
+#' Calculates the Kullback-Leibler divergence
 #'
 #' @description Calculates the Kullback-Leibler divergence for two
 #' discrete probability distributions over the same universe.
 #'
 #' @param target_p Named array with the target distribution.
-#' @param approx_p Named arrays with the approximate distribution.
+#' @param approx_p Named array with the approximate distribution.
+#' @param log_base The base used for the logarithm.
 #'
 #' @details The Kullback-Leibler divergence between two probability
 #' distributions p and q is calculated by the
@@ -38,7 +39,7 @@
 #' kullback(p_target, p_approx)
 #' @export
 
-kullback <- function(target_p, approx_p){
+kullback <- function(target_p, approx_p, log_base = 2){
   if (! is.array(target_p) | !is.array(approx_p)){
     stop("The input is not arrays.")
   }
@@ -70,5 +71,5 @@ kullback <- function(target_p, approx_p){
     stop("Distributions are not over the same universe.")
   }
   frac <- gRbase::ar_div(target_p, approx_p)
-  sum(gRbase::ar_prod(target_p, log2(frac)))
+  sum(gRbase::ar_prod(target_p, log(frac, base = log_base)))
 }

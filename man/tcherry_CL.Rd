@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcherry_CL.R
 \name{tcherry_CL}
 \alias{tcherry_CL}
-\title{Determine t-cherry tree from a Chow-Liu tree}
+\title{Determines a t-cherry tree from a Chow-Liu tree}
 \usage{
 tcherry_CL(data, ...)
 }
@@ -17,15 +17,15 @@ A list containing the following components:
 \itemize{
 \item \code{adj_matrix} The adjacency matrix for the t-cherry
 tree.
-\item \code{cliques} A list containing the cliques (cherries) of
+\item \code{cliques} A list containing the cliques of
  the t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the t-cherry tree.
 }
 }
 \description{
-Determine the structure of a t-cherry tree
-from a Chow-Liu tree for data.
+Determines the structure of a t-cherry tree
+by expanding a Chow-Liu tree.
 }
 \details{
 The algorithm for constructing the t-cherry tree from

@@ -3,7 +3,7 @@
 \name{MI2}
 \alias{MI2}
 \alias{MI3}
-\title{Calculate mutual information}
+\title{Calculates mutual information}
 \usage{
 MI2(x, y, smooth = 0, log_base = 2)
 
@@ -12,7 +12,8 @@ MI3(x, y, z, smooth = 0, log_base = 2)
 \arguments{
 \item{x, y, z}{Vectors of class character or factor.}
 
-\item{smooth}{A single numeric non-negative value. See "details"      below.}
+\item{smooth}{Additional cell counts for bayesian estimation of
+probabilities.}
 
 \item{log_base}{The base of the logarithmic function to be used.}
 }
@@ -20,22 +21,26 @@ MI3(x, y, z, smooth = 0, log_base = 2)
 The mutual information given by a single numeric value.
 }
 \description{
-Calculate mutual information for two or three            categorical variables.
+Calculate mutual information for two or three
+categorical variables.
 }
 \details{
-The \code{smooth} argument is added to all cell counts in     tables before normalisation. This is meant as a way to avoid zero     counts, leading to zero probabilities.
+The mutual information for two variables is calculated by the
+formula \deqn{MI(x, y) = \sum P(x, y) log(P(x, y) / (P(x)P(y)))}
+where the sum is over alle possible values of x and y.
 
-The mutual information for two variables is calculated by the         formula \deqn{MI(x, y) = \sum P(x, y) log(P(x, y) / (P(x)P(y)))}     where the sum is over alle possible values of x and y.
-
-The mutual information for three variables is calculated by the      formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P      (x)P(y)P(z)))} where the sum is over all possible values of x, y     and z.
+The mutual information for three variables is calculated by the
+formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P
+(x)P(y)P(z)))} where the sum is over all possible values of x, y and
+z.
 }
 \examples{
 
-x <- c("hund","kat","kat","kat","hund","hund","hund","hund","hund")
-y <- c("a","b","c","a","c","b","a","a","b")
-MI2(x, y)
-MI2(x, y, smooth = 1)
-MI2(x, y, log_base = exp(1))
+var1 <- c(sample(c(1, 2), 100, replace = TRUE))
+var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+MI2(var1, var2)
+MI2(var1, var2, smooth = 1)
+MI2(var1, var2, log_base = exp(1))
 }
 \references{
 \insertRef{TCJT}{tcherry}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/diff_edges.R
 \name{diff_edges_tch}
 \alias{diff_edges_tch}
-\title{Determine the number of differing edges for t-cherry trees.}
+\title{Determine the number of differing edges for t-cherry trees}
 \usage{
 diff_edges_tch(adj_mat_1, adj_mat_2)
 }
@@ -10,13 +10,13 @@ diff_edges_tch(adj_mat_1, adj_mat_2)
 \item{adj_mat_1, adj_mat_2}{Adjacency matrices for the two graphs.}
 }
 \value{
-The number of edges where the two graphs differ.
+The number of edges for which the two graphs differ.
 }
 \description{
 Determines the number of differing edges for two t-cherry
 trees over the same universe represented by adjacency matrices,
-i.e. the total number of edges minus the number of edges common to both
-t-cherry trees.
+i.e. the number of edges in each graph minus the number of edges
+common to both t-cherry trees.
 }
 \examples{
 m1 <- matrix(c(0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0),

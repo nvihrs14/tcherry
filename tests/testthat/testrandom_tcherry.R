@@ -9,23 +9,21 @@ test_that("error messages work", {
                "n must be a positive integer and at least 2.")
   expect_error(random_tcherry(1, c(2, 3)),
                "n must be a positive integer and at least 2.")
-  expect_error(random_tcherry(-1, c(2, 3)),
+  expect_error(random_tcherry(- 1, c(2, 3)),
                "n must be a positive integer and at least 2.")
-
   expect_error(random_tcherry(2, c(2, 3), "a"),
                "noise must be a single numeric number.")
   expect_error(random_tcherry(2, c(2, 3), c(1, 1, 2)),
                "noise must be a single numeric number.")
-  expect_error(random_tcherry(2, c(2, 3), -3),
+  expect_error(random_tcherry(2, c(2, 3), - 3),
                "noise must be non-negative.")
-
   expect_error(random_tcherry(2, c("a", 3)),
                "n_levels must be a numeric vector.")
   expect_error(random_tcherry(2, matrix(1, 2, 2)),
                "n_levels must be a numeric vector.")
   expect_error(random_tcherry(2, c(2.1, 3)),
                "n_levels must be all positive integers.")
-  expect_error(random_tcherry(2, c(-2, 3)),
+  expect_error(random_tcherry(2, c(- 2, 3)),
                "n_levels must be all positive integers.")
   expect_error(random_tcherry(2, c(0, 3)),
                "n_levels must be all positive integers.")

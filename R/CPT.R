@@ -7,7 +7,7 @@
 #' @param adj_matrix The adjacency matrix for the DAG.
 #' @param data The data the probabilities should be estimated from.
 #' @param bayes_smooth The additional cell counts for
-#' bayesian estimation.
+#' bayesian estimation of probability tables.
 #'
 #' @return A list of the conditional probability tables for the
 #' bayesian network. If the \code{bayes_smooth} argument is zero,

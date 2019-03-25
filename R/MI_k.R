@@ -1,31 +1,40 @@
-#' Calculate mutual information
-#' @description Calculate mutual information for k categorical variables.
+#' Calculates mutual information
+#'
+#' @description Calculates mutual information for k categorical
+#' variables.
 #'
 #' @param variables Vector of variable names.
 #' @param data Data frame or matrix with the variables.
-#' @param smooth A single numeric non-negative value. See "details"      below.
+#' @param smooth Additional cell counts for bayesian estimation of
+#' probabilities.
 #' @param log_base The base of the logarithmic function to be used.
-#' @details The \code{smooth} argument is added to all cell counts in     tables before normalisation. This is meant as a way to avoid zero     counts, leading to zero probabilities.
 #'
+#' @details
 #' The mutual information for variables \eqn{V1,\ldots,Vk} is calculated
-#' by the formula \deqn{MI(V1,\ldots,Vk) = \sum P(V1,\ldots,Vk) log(P(V1,\ldots,Vk) / (P(V1)\dots P(Vk)))} where the sum is over all
+#' by the formula \deqn{MI(V1,\ldots,Vk) = \sum P(V1,\ldots,Vk) log(P
+#' (V1,\ldots,Vk) / (P(V1)\dots P(Vk)))} where the sum is over all
 #' possible values of \eqn{V1,\ldots,Vk}.
 #'
 #' If the function is used for two variables it corresponds to using
 #' \code{MI2} and for three variables it corresponds to \code{MI3}.
+#'
 #' @return The mutual information given by a single numeric value.
+#'
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
 #' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
 #'
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#'
 #' @importFrom Rdpack reprompt
 #' @references
 #' \insertRef{EKTShyp}{tcherry}
+#'
 #' @seealso
 #' \code{\link{MI2}} and \code{\link{MI3}} for mutual infomation for two
 #' or three variables respectively.
+#'
 #' @examples
 #' set.seed(43)
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
@@ -46,6 +55,7 @@
 #'                    "var7" = as.character(var7))
 #' MIk(c("var1", "var2", "var7"), data, smooth = 0.001)
 #' @export
+
 MIk <- function(variables, data, smooth = 0, log_base = 2){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")

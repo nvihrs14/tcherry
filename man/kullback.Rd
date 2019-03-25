@@ -2,14 +2,16 @@
 % Please edit documentation in R/kullback.R
 \name{kullback}
 \alias{kullback}
-\title{Calculates Kullback-Leibler divergence.}
+\title{Calculates the Kullback-Leibler divergence}
 \usage{
-kullback(target_p, approx_p)
+kullback(target_p, approx_p, log_base = 2)
 }
 \arguments{
 \item{target_p}{Named array with the target distribution.}
 
-\item{approx_p}{Named arrays with the approximate distribution.}
+\item{approx_p}{Named array with the approximate distribution.}
+
+\item{log_base}{The base used for the logarithm.}
 }
 \value{
 The Kullback-Leibler divergence.

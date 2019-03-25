@@ -1,5 +1,5 @@
 #' Determine the k'th order t-cherry tree from data with the greatest
-#' weight.
+#' weight
 #'
 #' @description Determine the structure of the k'th order t-cherry tree
 #' from data with the greatest weight based on a complete search.
@@ -23,7 +23,7 @@
 #' \item \code{model} A list with the following components:
 #' \itemize{
 #' \item \code{weight} The weight of the final k'th order t-cherry tree.
-#' \item \code{cliques} A list containing the cliques (cherries) of
+#' \item \code{cliques} A list containing the cliques of
 #'  the k'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the k'th order t-cherry tree.

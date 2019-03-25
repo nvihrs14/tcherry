@@ -7,8 +7,8 @@
 #' @param k The order of the t-cherry tree.
 #' @param ... Additional arguments passed to \code{MIk}.
 #'
-#' @details Notice that for \eqn{k=3} it is the same as using
-#' \code{tcherry_step} and for \eqn{k=2} it is the same as using
+#' @details Notice that for \eqn{k = 3} it is the same as using
+#' \code{tcherry_step} and for \eqn{k = 2} it is the same as using
 #' \code{ChowLiu}.
 #'
 #' The algorithm for constructing the t-cherry tree from
@@ -16,7 +16,7 @@
 #' divergence. The first cherry is chosen as the k variables with
 #' highest mutual information. This is the preliminary t-cherry
 #' tree. Then all possible new cherries are added stepwise to this
-#' tree and the weight \deqn{\sum MI(Clique) - \sum MI(Separator)} is
+#' tree and the weight \deqn{\sum MI(clique) - \sum MI(separator)} is
 #' calculated.
 #' The first sum is over the cliques and the second over the
 #' separators of the junction tree of the preliminary t-cherry tree.
@@ -29,7 +29,7 @@
 #' \item \code{adj_matrix} The adjacency matrix for the k'th order
 #' t-cherry tree.
 #' \item \code{weight} The weight of the final k'th order t-cherry tree.
-#' \item \code{cliques} A list containing the cliques (cherries) of
+#' \item \code{cliques} A list containing the cliques of
 #'  the k'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the k'th order t-cherry tree.
@@ -106,7 +106,7 @@ k_tcherry_step <- function(data, k, ...){
   cliques <- as.list(rep(NA, n_var - (k - 1)))
   separators <- as.list(rep(NA, n_var - k))
 
-  # Adding first cherry
+  # Adding first cherry.
   poss_cliq <- utils::combn(nodes, k)
   poss_cliq <- split(poss_cliq, rep(1:ncol(poss_cliq),
                                     each = nrow(poss_cliq)))
@@ -126,6 +126,8 @@ k_tcherry_step <- function(data, k, ...){
   diag(adj_matrix[tcherry_nodes, tcherry_nodes]) <- 0
 
   weight <- max(MI)
+
+  # Adding remaining cherries.
   idx.dat <- 1
   idx.list <- 1
 

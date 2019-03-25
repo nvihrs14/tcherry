@@ -12,7 +12,7 @@ CPT(adj_matrix, data, bayes_smooth = 0)
 \item{data}{The data the probabilities should be estimated from.}
 
 \item{bayes_smooth}{The additional cell counts for
-bayesian estimation.}
+bayesian estimation of probability tables.}
 }
 \value{
 A list of the conditional probability tables for the

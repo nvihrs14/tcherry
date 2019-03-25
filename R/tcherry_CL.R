@@ -1,7 +1,7 @@
-#' Determine t-cherry tree from a Chow-Liu tree
+#' Determines a t-cherry tree from a Chow-Liu tree
 #'
-#' @description Determine the structure of a t-cherry tree
-#' from a Chow-Liu tree for data.
+#' @description Determines the structure of a t-cherry tree
+#' by expanding a Chow-Liu tree.
 #'
 #' @param data The data the tree structure should be based on.
 #' @param ... Additional arguments passed to \code{MI2} and
@@ -18,7 +18,7 @@
 #' \itemize{
 #' \item \code{adj_matrix} The adjacency matrix for the t-cherry
 #' tree.
-#' \item \code{cliques} A list containing the cliques (cherries) of
+#' \item \code{cliques} A list containing the cliques of
 #'  the t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the t-cherry tree.
@@ -104,7 +104,7 @@ tcherry_CL <- function(data, ...){
   n_edges <- sum(tree) / 2
   tcherry_nodes <- c()
 
-  # Find the first cherry
+  # Find the first cherry.
   i <- 1
   while (length(tcherry_nodes) == 0) {
     adj_matrix_temp <- tree

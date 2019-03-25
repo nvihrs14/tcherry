@@ -35,7 +35,7 @@ The constructed conditional probability tables are based on the
 structures of a bayesian network with the t-cherry tree as domain
 graph.
 The two nodes firstly added to the graph are considered to have no
-parents in the bayesian network, and there probability tables are
+parents in the bayesian network, and their probability tables are
 constructed by normalised random tables.
 All other nodes have exactly two parents. If the argument \code{noise}
 is \code{NULL} these conditional probability tables are also made by
@@ -49,7 +49,7 @@ second parent is then constructed from the first one by adding
 uniformly distributed simulations in the interval [0 ; \code{noise}].
 
 This makes it possible to control whether the child should depend
-strongly on one parents and not necessarily both. For instance
+strongly on one parent and not necessarily both. For instance
 \code{noise = 0} would mean that the child is actually independent of
 the second parent given the first.
 }

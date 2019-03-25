@@ -1,13 +1,13 @@
-#' Determine the number of differing edges for t-cherry trees.
+#' Determine the number of differing edges for t-cherry trees
 #'
 #' @description Determines the number of differing edges for two t-cherry
 #' trees over the same universe represented by adjacency matrices,
-#' i.e. the total number of edges minus the number of edges common to both
-#' t-cherry trees.
+#' i.e. the number of edges in each graph minus the number of edges
+#' common to both t-cherry trees.
 #'
 #' @param adj_mat_1,adj_mat_2 Adjacency matrices for the two graphs.
 #'
-#' @return The number of edges where the two graphs differ.
+#' @return The number of edges for which the two graphs differ.
 #'
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
@@ -48,22 +48,23 @@ diff_edges_tch <- function(adj_mat_1, adj_mat_2){
 
   if (! isSymmetric(adj_mat_1) | ! isSymmetric(adj_mat_2)){
     stop("Only undirected graphs are supported so arguments must be
-         symmetric.")
+         symmetric. This includes that rownames must equal colnames.")
   }
 
   if (any(c(diag(adj_mat_1), diag(adj_mat_2)) != 0)){
     stop("Loops are not supported so diagonal must be all 0.")
   }
 
-  if (! is.null(colnames(adj_mat_1)) | ! is.null(rownames(adj_mat_1))
-     | ! is.null(colnames(adj_mat_2)) | ! is.null(rownames(adj_mat_2))){
-
-    if (! compare::compare(rownames(adj_mat_1), rownames(adj_mat_2),
-                           ignoreOrder = TRUE)$result[1]){
-      stop("The node names must be the same in both graphs.")
-    }
-    adj_mat_1 <- adj_mat_1[rownames(adj_mat_2), colnames(adj_mat_2)]
+  if (is.null(colnames(adj_mat_1)) | is.null(rownames(adj_mat_1))
+      | is.null(colnames(adj_mat_2)) | is.null(rownames(adj_mat_2))){
+    stop("The matrices must be named.")
   }
+
+  if (! compare::compare(rownames(adj_mat_1), rownames(adj_mat_2),
+                         ignoreOrder = TRUE)$result[1]){
+    stop("The node names must be the same in both graphs.")
+  }
+  adj_mat_1 <- adj_mat_1[rownames(adj_mat_2), colnames(adj_mat_2)]
 
   u_tri_1_idx <- upper.tri(adj_mat_1)
   u_tri_2_idx <- upper.tri(adj_mat_2)

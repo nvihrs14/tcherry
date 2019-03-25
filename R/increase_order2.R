@@ -104,6 +104,8 @@ increase_order2 <- function(tch_cliq, data, ...){
 
   n_edges <- n_edges + 1
 
+  # Adding remaining cherries.
+
   idx.dat <- 1
   idx.list <- 1
 

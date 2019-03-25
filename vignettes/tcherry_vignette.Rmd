@@ -114,7 +114,7 @@ tch3_step <- k_tcherry_step(data = sim, k = 3, smooth = 0.001)
 tch3_step$weight
 ```
 
-This function only adds one clique in each step, chosen as the choice which gives the highest contribution to the weight. It is also possible to consider alle possibilities for adding $p$ cliques in each step. To add for instance two cliques at a time use
+This function only adds one clique in each step, chosen as the one which gives the highest contribution to the weight. It is also possible to consider all possibilities for adding $p$ cliques in each step. To add for instance two cliques at a time use
 
 ```{r}
 tch3_2_lookahead <- k_tcherry_p_lookahead(data = sim, k = 3, p = 2,
@@ -132,7 +132,7 @@ tch3_increase$weight
 
 This expands the Chow-Liu tree fitted before to a 3. order $t$-cherry tree. There is also a function called \texttt{increase\_order1} which does not attempt to maximize the weight but only the sum of mutual information of the cliques. This algorithm is also greedy and inspired by @EKTS.
 
-As mentioned before the greedy algorithms are not garanteed to yield the optimal solution, and since the problem is not larger than it is, it is actually possible to conduct a complete search.
+As mentioned before the greedy algorithms are not garanteed to yield the optimal solution, and since the problem is no larger than it is, a complete search is actually possible.
 
 ```{r}
 tch3_complete <- tcherry_complete_search(data = sim, k = 3, smooth = 0.001)
@@ -144,7 +144,7 @@ tch3_increse_complete <-
 tch3_increse_complete$model$weight
 ```
 
-Again to make probability propagation gRain can be used.
+Again to make probability propagation \texttt{gRain} can be used.
 
 ```{r}
 library(gRain)
@@ -155,7 +155,7 @@ querygrain(G_tch3_step, nodes = c("V1", "V2"), type = "joint",
            evidence = list("V3" = "l1"))
 ```
 
-Using grain this way extracts the necessary probability tables from data.
+Using \texttt{grain} this way extracts the necessary probability tables from data.
 It can also be used for prediction.
 
 ```{r}

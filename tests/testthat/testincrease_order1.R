@@ -49,18 +49,18 @@ vec <- rep(1:2, 5)
 cliques_small <- list(c("var1", "var2"))
 
 cliques_error <- list(c("var1", "var5"),
-                        c("va2", "var5"),
-                        c("var3", "var5"),
-                        c("var3", "var7"),
-                        c("var4", "var6"),
-                        c("var5", "var6"))
-
-cliques_error2 <- list(c("var1", "var5"),
-                      c("var2", "var5"),
+                      c("va2", "var5"),
                       c("var3", "var5"),
                       c("var3", "var7"),
-                      c("var4"),
+                      c("var4", "var6"),
                       c("var5", "var6"))
+
+cliques_error2 <- list(c("var1", "var5"),
+                       c("var2", "var5"),
+                       c("var3", "var5"),
+                       c("var3", "var7"),
+                       c("var4"),
+                       c("var5", "var6"))
 
 cliques_not_triang <- list(c("var1", "var2"),
                            c("var1", "var3"),
@@ -68,6 +68,7 @@ cliques_not_triang <- list(c("var1", "var2"),
                            c("var3", "var4"),
                            c("var5", "var7"),
                            c("var6", "var7"))
+
 cliques_wrong_nedges <- list(c("var1", "var3", "var5"),
                              c("var1", "var2", "var4"))
 
@@ -95,7 +96,7 @@ test_that("error messages work", {
                                       smooth = 0.1),
                "tch_cliq should be the cliques of a k'th order t-cherry tree.
          Therefore they should all have the same length k.")
-  expect_error(increase_order1(cliques_small, data[,1:2],
+  expect_error(increase_order1(cliques_small, data[, 1:2],
                                       smooth = 0.1),
                "It takes at least k plus 1 variables to fit a k plus 1'th order t-cherry tree.")
   expect_error(increase_order1(cliques_not_triang, data,

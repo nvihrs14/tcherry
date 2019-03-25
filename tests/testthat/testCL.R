@@ -12,11 +12,13 @@ adj_matrix_acyclic <- matrix(c(0, 0, 1, 1,
                               1, 0, 0, 0,
                               1, 1, 0, 0),
                             nrow = 4)
+
 adj_matrix_loop <- matrix(c(1, 0, 1, 1,
                             0, 0, 0, 1,
                             1, 0, 0, 0,
                             1, 1, 0, 0),
                           nrow = 4)
+
 adj_matrix_acyclic_disconnected <- matrix(c(0, 0, 1, 1,
                                             0, 0, 0, 0,
                                             1, 0, 0, 0,
@@ -91,6 +93,7 @@ rownames(adj_matrix_skeleton) <-
 
 CL <- ChowLiu(data, root = "var1", smooth = 0.1)
 CL_mat <- ChowLiu(data_matrix, root = "var1", smooth = 0.1)
+
 test_that("Adjacency matrices are correct", {
   expect_equal(CL$adj_DAG, adj_matrix_DAG)
   expect_equal(CL$skeleton_adj, adj_matrix_skeleton)

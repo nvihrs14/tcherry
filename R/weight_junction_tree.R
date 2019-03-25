@@ -1,15 +1,15 @@
-#' Calculate the weight of a junction tree
-#' @description Calculates the weight of a junction tree by the given
-#' cliques and separarators.
+#' Calculates the weight of a junction tree
+#' @description Calculates the weight of a junction tree with the given
+#' cliques and separators.
 #'
-#' @param cliques,separators List with cliques and separators containing
-#' variable names.
+#' @param cliques,separators Lists containing cliques and separators
+#' given by variable names.
 #' @param data A data frame or matrix containing the variables.
 #' @param ... Additional arguments passed to \code{MIk}.
 #'
-#' @details The weight of the junction tree with cliques is calculated
-#' as \deqn{\sum MI(C)-\sum MI(S)} where MI is mutual information
-#' and the sum is over all cliques C and separators S respectively.
+#' @details The weight of the junction tree is calculated
+#' as \deqn{\sum MI(clique)-\sum MI(separator)} where the sum is over
+#' all cliques and separators respectively.
 #' @return The weight of the junction tree.
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}

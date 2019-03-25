@@ -1,11 +1,11 @@
-#' Determine a (k+1)'th order t-cherry tree from a k'th order t-cherry
+#' Determine a (k + 1)'th order t-cherry tree from a k'th order t-cherry
 #' tree
 #'
-#' @description Determine the structure of a (k+1)'th order t-cherry tree
-#' from a k'th order t-cherry tree for data.
+#' @description Determine the structure of a (k + 1)'th order
+#' t-cherry tree from a k'th order t-cherry tree.
 #'
-#' @param tch_cliq A list with the cliques of the k'th order t-cherry
-#' tree.
+#' @param tch_cliq A list containing the cliques of the k'th order
+#' t-cherry tree.
 #' @param data The data the tree structure should be based on.
 #' @param ... Additional arguments passed to \code{MIk}.
 #'
@@ -13,33 +13,36 @@
 #' tree from a k'th order t-cherry tree are greedy algorithms.
 #' \code{increase_order1} attempts to maximize the sum of
 #' mutual information of the cliques and
-#' \code{increase_order_weightoptim} attempts to maximize the weight of
-#' the junction tree. \code{increase_order_weightoptim} is also a faster
-#' implementation and a faster alternative to create a (k+1)'th order
+#' \code{increase_order2} attempts to maximize the weight of
+#' the junction tree. \code{increase_order2} is also a faster
+#' implementation and a faster alternative to creating a (k + 1)'th order
 #' t-cherry tree directly from data with \code{k_tcherry_step}. It is
-#' therefore recommended to use this one, and \code{increase_order_
-#' MIcliqoptim} is primarily kept for historical reasons.
+#' therefore recommended to use this one, and \code{increase_order1}
+#' is primarily kept for historical reasons.
 #'
 #' In \code{increase_order1} the procedure is:
 #' \itemize{
 #' \item Starting from the k'th order t-cherry tree make a complete set
-#' of the (k+1) variables with highest mutual information which satisfies
-#' that this only adds one edge to the original graph. Remove these (k+1)
+#' of the (k + 1) variables with highest mutual information which
+#' satisfies
+#' that this only adds one edge to the original graph. Remove these
+#' (k + 1)
 #' variables from later consideration.
-#' \item Make a complete set of the (k+1) variables with highest mutual
+#' \item Make a complete set of the (k + 1) variables with highest mutual
 #' information which satisfies that this only adds one edge to the graph
 #' and that k of the variables are in earlier created cliques of size
-#' (k+1). Remove these (k+1) variables from later consideration.
-#' \item Continue until all variables are in a clique of size (k+1).
+#' (k + 1). Remove these (k + 1) variables from later consideration.
+#' \item Continue until all variables are in a clique of size (k + 1).
 #' }
 #'
-#' For \code{increase_order_weightoptim} the procedure is to start from
+#' For \code{increase_order2} the procedure is to start from
 #' the k'th order t-cherry tree and then choose the first cherry as the
-#' k + 1 variables with highest mutual information which satisfies that
+#' (k + 1) variables with highest mutual information which satisfies that
 #' it only adds one edge to the existing graph. This is the preliminary
-#' t-cherry tree. Then all possible new cherries of size k+1 are added
-#' stepwise to this tree and the weight \deqn{\sum MI(Clique) -
-#' \sum MI(Separator)} is calculated. The first sum is over the cliques
+#' t-cherry tree. Then all possible new cherries of size (k + 1) are
+#' added
+#' stepwise to this tree and the weight \deqn{\sum MI(clique) -
+#' \sum MI(separator)} is calculated. The first sum is over the cliques
 #' and the second over the separators of the junction tree of the
 #' preliminary t-cherry tree. Again new cherries are only possible if
 #' only one edge is added to the existing graph.
@@ -49,13 +52,13 @@
 #'
 #' @return A list containing the following components:
 #' \itemize{
-#' \item \code{adj_matrix} The adjacency matrix for the (k+1)'th order
+#' \item \code{adj_matrix} The adjacency matrix for the (k + 1)'th order
 #' t-cherry tree.
 #' \item \code{weight} Weight of the junction tree (only for \code{increase_order2})
 #' \item \code{cliques} A list containing the cliques (cherries) of
-#'  the (k+1)'th order t-cherry tree.
+#'  the (k + 1)'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
-#' junction tree for the (k+1)'th order t-cherry tree.
+#' junction tree for the (k + 1)'th order t-cherry tree.
 #' }
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
@@ -176,7 +179,7 @@ increase_order1 <- function(tch_cliq, data, ...){
   n_edges <- sum(tch_adj) / 2
   tcherry_nodes <- c()
 
-  # Find the first cherry
+  # Adding the first cherry.
   i <- 1
   while (length(tcherry_nodes) == 0) {
 
@@ -195,8 +198,8 @@ increase_order1 <- function(tch_cliq, data, ...){
     i <- i + 1
   }
 
-  # Add remaining nodes via new cherries.
-  i <- k <- 1
+  # Adding remaining nodes via new cherries.
+  i <- l <- 1
   j <- 2
 
   separators <- list()
@@ -214,7 +217,7 @@ increase_order1 <- function(tch_cliq, data, ...){
       if ((sum(adj_matrix_temp) / 2 ) == (n_edges + 1)){
         adj_matrix <- adj_matrix_temp
         cliques[[j]] <- k_plus_1_pairs[[i]]
-        separators[[k]] <- intersect(cliques[[j]], tcherry_nodes)
+        separators[[l]] <- intersect(cliques[[j]], tcherry_nodes)
 
         tcherry_nodes <- unique(c(tcherry_nodes, cliques[[j]]))
         n_edges <- n_edges + 1
@@ -224,7 +227,7 @@ increase_order1 <- function(tch_cliq, data, ...){
 
         i <- 0
         j <- j + 1
-        k <- k + 1
+        l <- l + 1
       }
     }
 

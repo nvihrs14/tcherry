@@ -1,6 +1,6 @@
-#' Determine a t-cherry tree from data
+#' Determines a t-cherry tree from data
 #'
-#' @description Determine the structure of a t-cherry tree
+#' @description Determines the structure of a t-cherry tree
 #' from data based on a greedy stepwise approach.
 #'
 #' @param data The data the tree structure should be based on.
@@ -17,7 +17,7 @@
 #' divergence. The first cherry is chosen as the triplet with
 #' highest mutual information. This is the preliminary t-cherry
 #' tree. Then all possible new cherries are added stepwise to this
-#' tree and the weight \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
+#' tree and the weight \deqn{\sum MI3(clique) - \sum MI2(separator)}
 #' is calculated.
 #' The first sum is over the cliques and the second over the
 #' separators of the junction tree of the preliminary t-cherry tree.
@@ -99,12 +99,13 @@ tcherry_step <- function(data, ...){
                        dimnames = list(nodes, nodes))
   cliques <- as.list(rep(NA, n_var - 2))
   separators <- as.list(rep(NA, n_var - 3))
-  # For use in for-loop
+
+  # For use in for-loop.
   MI2_fun <- function(var1, var2){
     MI2(data[, var1], data[, var2], ...)
   }
 
-  # Adding first cherry
+  # Adding first cherry.
   triples <- t(utils::combn(nodes, 3))
 
   MI3_fun <- function(var1, var2, var3){
@@ -135,6 +136,7 @@ tcherry_step <- function(data, ...){
 
   weight <- MI3_tab$MI3[idx.max]
 
+  # Adding remaining cherries.
   idx_list <- 1
 
   while (length(tcherry_nodes) != n_var) {

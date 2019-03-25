@@ -21,7 +21,7 @@ A list containing the following components:
 \item \code{adj_matrix} The adjacency matrix for the k'th order
 t-cherry tree.
 \item \code{weight} The weight of the final k'th order t-cherry tree.
-\item \code{cliques} A list containing the cliques (cherries) of
+\item \code{cliques} A list containing the cliques of
  the k'th order t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the k'th order t-cherry tree.
@@ -40,10 +40,10 @@ as using \code{tcherry_complete_search}.
 The algorithm for constructing the t-cherry tree from
 data is based on an atempt to minimize the Kullback-Leibler
 divergence by maximizing the weight
-\deqn{\sum MI(Clique) - \sum MI(Separator).}
+\deqn{\sum MI(clique) - \sum MI(separator).}
 The first sum is over the cliques and the second over the
 separators of the junction tree of the preliminary t-cherry tree.
-In each step all possibilities of $p$ new cliques are added to the
+In each step all possibilities of p new cliques are added to the
 preliminary tree.
 The one with the highest weight is chosen as the new preliminary
 t-cherry tree, and the procedure is repeated untill all variables

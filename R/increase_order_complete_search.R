@@ -1,17 +1,18 @@
-#' Determine the (k+1)'th order t-cherry tree from a k'th order t-cherry
-#' tree with the greatest weight.
+#' Determine the (k + 1)'th order t-cherry tree from a k'th order
+#' t-cherry tree with the greatest weight
 #'
 #' @description Determine the structure of the (k + 1)'th order t-cherry
 #' tree from a k'th order t-cherry tree with the greatest weight based
 #' on a complete search.
 #'
-#' @param tch_cliq A list with the cliques of a k'th order t-cherry tree.
-#' @param data The data the structure should be based on.
+#' @param tch_cliq A list containing the cliques of a k'th order
+#' t-cherry tree.
+#' @param data The data the structure of the tree should be based on.
 #' @param ... Additional arguments passed to \code{weight_junction_tree}.
 #'
 #' @details
 #'
-#' The algorithm for constructing the (k+1)'th order t-cherry tree from
+#' The algorithm for constructing the (k + 1)'th order t-cherry tree from
 #' a k'th order t-cherry tree is based on an atempt to minimize the
 #' Kullback-Leibler divergence, by mazimising the weight. All possible
 #' structures are determined and the one with the highest weight is
@@ -22,14 +23,15 @@
 #'
 #' @return A list containing the following components:
 #' \itemize{
-#' \item \code{model} A list with the following components:
+#' \item \code{model} A list containing the following components:
 #' \itemize{
-#' \item \code{weight} The weight of the final k'th order t-cherry tree.
-#' \item \code{cliques} A list containing the cliques (cherries) of
-#'  the k'th order t-cherry tree.
+#' \item \code{weight} The weight of the final (k + 1)'th order
+#' t-cherry tree.
+#' \item \code{cliques} A list containing the cliques of
+#'  the (k + 1)'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
-#' junction tree for the k'th order t-cherry tree.
-#' \item \code{adj_matrix} The adjacency matrix for the k'th order
+#' junction tree for the (k + 1)'th order t-cherry tree.
+#' \item \code{adj_matrix} The adjacency matrix for the (k + 1)'th order
 #' t-cherry tree.
 #' }
 #' \item \code{n_models} The number of considered models.
@@ -44,7 +46,7 @@
 #'
 #' @seealso \code{\link{weight_junction_tree}} for calculation of the
 #' weight and \code{\link{increase_order2}} for a more
-#' efficient but greedy algorithm.
+#' efficient, but greedy algorithm.
 #'
 #' @examples
 #' set.seed(43)
@@ -117,6 +119,8 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
              collapse = " "))
   }
 
+  # Reconstruct k and k'th order t-cherry tree.
+
   nodes <- names(data)
   n_var <- length(nodes)
 
@@ -147,6 +151,8 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
   }
 
   n_edges <- sum(tch_adj) / 2
+
+  # Making all possible structures.
 
   first_cliques <- utils::combn(nodes, k + 1)
   models <- list()

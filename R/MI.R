@@ -1,14 +1,21 @@
-#' Calculate mutual information
-#' @description Calculate mutual information for two or three            categorical variables.
+#' Calculates mutual information
+#' @description Calculate mutual information for two or three
+#' categorical variables.
 #'
 #' @param x,y,z Vectors of class character or factor.
-#' @param smooth A single numeric non-negative value. See "details"      below.
+#' @param smooth Additional cell counts for bayesian estimation of
+#' probabilities.
 #' @param log_base The base of the logarithmic function to be used.
-#' @details The \code{smooth} argument is added to all cell counts in     tables before normalisation. This is meant as a way to avoid zero     counts, leading to zero probabilities.
+#' @details
 #'
-#' The mutual information for two variables is calculated by the         formula \deqn{MI(x, y) = \sum P(x, y) log(P(x, y) / (P(x)P(y)))}     where the sum is over alle possible values of x and y.
+#' The mutual information for two variables is calculated by the
+#' formula \deqn{MI(x, y) = \sum P(x, y) log(P(x, y) / (P(x)P(y)))}
+#' where the sum is over alle possible values of x and y.
 #'
-#' The mutual information for three variables is calculated by the      formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P      (x)P(y)P(z)))} where the sum is over all possible values of x, y     and z.
+#' The mutual information for three variables is calculated by the
+#' formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P
+#' (x)P(y)P(z)))} where the sum is over all possible values of x, y and
+#' z.
 #' @return The mutual information given by a single numeric value.
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
@@ -25,12 +32,13 @@
 #' \code{\link{MIk}} for mutual information for k variables.
 #' @examples
 #'
-#' x <- c("hund","kat","kat","kat","hund","hund","hund","hund","hund")
-#' y <- c("a","b","c","a","c","b","a","a","b")
-#' MI2(x, y)
-#' MI2(x, y, smooth = 1)
-#' MI2(x, y, log_base = exp(1))
+#' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
+#' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+#' MI2(var1, var2)
+#' MI2(var1, var2, smooth = 1)
+#' MI2(var1, var2, log_base = exp(1))
 #' @export
+
 MI2 <- function(x, y, smooth = 0, log_base = 2){
   if (! all(sapply(list(x, y), function(x){
     is.character(x) | is.factor(x)
@@ -71,6 +79,7 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
 
 #' @rdname MI2
 #' @export
+
 MI3 <- function(x, y, z, smooth = 0, log_base = 2){
   if (! all(sapply(list(x, y, z), function(x){
     is.character(x) | is.factor(x)

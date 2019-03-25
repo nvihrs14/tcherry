@@ -16,7 +16,7 @@
 #' structures of a bayesian network with the t-cherry tree as domain
 #' graph.
 #' The two nodes firstly added to the graph are considered to have no
-#' parents in the bayesian network, and there probability tables are
+#' parents in the bayesian network, and their probability tables are
 #' constructed by normalised random tables.
 #' All other nodes have exactly two parents. If the argument \code{noise}
 #' is \code{NULL} these conditional probability tables are also made by
@@ -30,7 +30,7 @@
 #' uniformly distributed simulations in the interval [0 ; \code{noise}].
 #'
 #' This makes it possible to control whether the child should depend
-#' strongly on one parents and not necessarily both. For instance
+#' strongly on one parent and not necessarily both. For instance
 #' \code{noise = 0} would mean that the child is actually independent of
 #' the second parent given the first.
 #'
@@ -61,6 +61,7 @@
 #' sim <- simulate(network, nsim = 500)
 #'
 #' @export
+
 random_tcherry <- function(n, n_levels, noise = NULL){
   if (length(n) != 1 | ! is.numeric(n)){
     stop("n must be a single integer.")
@@ -98,6 +99,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
   adj_matrix <- matrix(0, nrow = n, ncol = n)
   rownames(adj_matrix) <- colnames(adj_matrix) <- var_names
 
+  # Choosing first edge.
   idx_1_edge <- sample(1:n, 2)
   adj_matrix[idx_1_edge[1], idx_1_edge[2]] <-
     adj_matrix[idx_1_edge[2], idx_1_edge[1]] <- 1
@@ -105,6 +107,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
   tcherry_nodes <- var_names[idx_1_edge]
   nodes_remaining <- setdiff(var_names, tcherry_nodes)
 
+  # CPTs for first two nodes.
   level_names_1 <- paste("l", 1:n_levels[idx_1_edge[1]], sep = "")
   CPT1 <- as.table(stats::runif(n_levels[idx_1_edge[1]]))
   CPT1 <- CPT1 / sum(CPT1)
@@ -120,6 +123,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
   CPTs <- list(CPT1, CPT2)
   names(CPTs) <- var_names[idx_1_edge]
 
+  # Choosing how to add remaining nodes.
   i <- 3
   while (length(nodes_remaining) != 0){
     new_var <- sample(nodes_remaining, 1)

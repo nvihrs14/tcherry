@@ -2,13 +2,13 @@
 % Please edit documentation in R/weight_junction_tree.R
 \name{weight_junction_tree}
 \alias{weight_junction_tree}
-\title{Calculate the weight of a junction tree}
+\title{Calculates the weight of a junction tree}
 \usage{
 weight_junction_tree(cliques, separators, data, ...)
 }
 \arguments{
-\item{cliques, separators}{List with cliques and separators containing
-variable names.}
+\item{cliques, separators}{Lists containing cliques and separators
+given by variable names.}
 
 \item{data}{A data frame or matrix containing the variables.}
 
@@ -18,13 +18,13 @@ variable names.}
 The weight of the junction tree.
 }
 \description{
-Calculates the weight of a junction tree by the given
-cliques and separarators.
+Calculates the weight of a junction tree with the given
+cliques and separators.
 }
 \details{
-The weight of the junction tree with cliques is calculated
-as \deqn{\sum MI(C)-\sum MI(S)} where MI is mutual information
-and the sum is over all cliques C and separators S respectively.
+The weight of the junction tree is calculated
+as \deqn{\sum MI(clique)-\sum MI(separator)} where the sum is over
+all cliques and separators respectively.
 }
 \examples{
 set.seed(43)

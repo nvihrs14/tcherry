@@ -3,7 +3,7 @@
 \name{tcherry_complete_search}
 \alias{tcherry_complete_search}
 \title{Determine the k'th order t-cherry tree from data with the greatest
-weight.}
+weight}
 \usage{
 tcherry_complete_search(data, k, ...)
 }
@@ -20,7 +20,7 @@ A list containing the following components:
 \item \code{model} A list with the following components:
 \itemize{
 \item \code{weight} The weight of the final k'th order t-cherry tree.
-\item \code{cliques} A list containing the cliques (cherries) of
+\item \code{cliques} A list containing the cliques of
  the k'th order t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the k'th order t-cherry tree.

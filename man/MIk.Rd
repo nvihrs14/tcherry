@@ -2,7 +2,7 @@
 % Please edit documentation in R/MI_k.R
 \name{MIk}
 \alias{MIk}
-\title{Calculate mutual information}
+\title{Calculates mutual information}
 \usage{
 MIk(variables, data, smooth = 0, log_base = 2)
 }
@@ -11,7 +11,8 @@ MIk(variables, data, smooth = 0, log_base = 2)
 
 \item{data}{Data frame or matrix with the variables.}
 
-\item{smooth}{A single numeric non-negative value. See "details"      below.}
+\item{smooth}{Additional cell counts for bayesian estimation of
+probabilities.}
 
 \item{log_base}{The base of the logarithmic function to be used.}
 }
@@ -19,13 +20,13 @@ MIk(variables, data, smooth = 0, log_base = 2)
 The mutual information given by a single numeric value.
 }
 \description{
-Calculate mutual information for k categorical variables.
+Calculates mutual information for k categorical
+variables.
 }
 \details{
-The \code{smooth} argument is added to all cell counts in     tables before normalisation. This is meant as a way to avoid zero     counts, leading to zero probabilities.
-
 The mutual information for variables \eqn{V1,\ldots,Vk} is calculated
-by the formula \deqn{MI(V1,\ldots,Vk) = \sum P(V1,\ldots,Vk) log(P(V1,\ldots,Vk) / (P(V1)\dots P(Vk)))} where the sum is over all
+by the formula \deqn{MI(V1,\ldots,Vk) = \sum P(V1,\ldots,Vk) log(P
+(V1,\ldots,Vk) / (P(V1)\dots P(Vk)))} where the sum is over all
 possible values of \eqn{V1,\ldots,Vk}.
 
 If the function is used for two variables it corresponds to using

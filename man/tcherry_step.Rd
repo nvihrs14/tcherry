@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcherry_step.R
 \name{tcherry_step}
 \alias{tcherry_step}
-\title{Determine a t-cherry tree from data}
+\title{Determines a t-cherry tree from data}
 \usage{
 tcherry_step(data, ...)
 }
@@ -25,7 +25,7 @@ junction tree for the t-cherry tree.
 }
 }
 \description{
-Determine the structure of a t-cherry tree
+Determines the structure of a t-cherry tree
 from data based on a greedy stepwise approach.
 }
 \details{
@@ -38,7 +38,7 @@ data is based on an atempt to minimize the Kullback-Leibler
 divergence. The first cherry is chosen as the triplet with
 highest mutual information. This is the preliminary t-cherry
 tree. Then all possible new cherries are added stepwise to this
-tree and the weight \deqn{\sum MI3(Clique) - \sum MI2(Separator)}
+tree and the weight \deqn{\sum MI3(clique) - \sum MI2(separator)}
 is calculated.
 The first sum is over the cliques and the second over the
 separators of the junction tree of the preliminary t-cherry tree.

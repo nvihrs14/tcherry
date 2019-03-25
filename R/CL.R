@@ -55,11 +55,11 @@ is_acyclic <- function(adj_matrix){
 #' @description Determines the structure and the conditional
 #' probability tables for the Chow-Liu tree fitted to data.
 #'
-#' @param data The data set the model should be fitted for.
+#' @param data The data the tree structure should be based on.
 #' @param root An optional argument, choosing a userspecified
 #' root for the tree.
 #' @param bayes_smooth Additional cell counts for bayesian
-#' estimation.
+#' estimation of probability tables.
 #' @param CPTs A logical value indicating whether conditional probability
 #' tables should be estimated from data or not.
 #' @param ... Additional parameters passed to \code{MI2}.
@@ -72,7 +72,6 @@ is_acyclic <- function(adj_matrix){
 #' \item \code{CPTs} The estimated conditional probability tables
 #' of the bayesian network if estimated. Otherwise the logical value
 #' \code{FALSE}.
-#' \item \code{MI} A data frame with the mutual informations.
 #' }
 #'
 #' @author
@@ -189,7 +188,6 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
 
   return(list("skeleton_adj" = skeleton_adj,
               "adj_DAG" = adj_matrix_directed,
-              "CPTs" = CPTs,
-              "MI" = MI_tab))
+              "CPTs" = CPTs))
 
 }

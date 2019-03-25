@@ -19,7 +19,7 @@ A list containing the following components:
 \item \code{adj_matrix} The adjacency matrix for the k'th order
 t-cherry tree.
 \item \code{weight} The weight of the final k'th order t-cherry tree.
-\item \code{cliques} A list containing the cliques (cherries) of
+\item \code{cliques} A list containing the cliques of
  the k'th order t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the k'th order t-cherry tree.
@@ -30,8 +30,8 @@ Determine the structure of a k'th order t-cherry tree
 from data based on a greedy stepwise approach.
 }
 \details{
-Notice that for \eqn{k=3} it is the same as using
-\code{tcherry_step} and for \eqn{k=2} it is the same as using
+Notice that for \eqn{k = 3} it is the same as using
+\code{tcherry_step} and for \eqn{k = 2} it is the same as using
 \code{ChowLiu}.
 
 The algorithm for constructing the t-cherry tree from
@@ -39,7 +39,7 @@ data is based on an atempt to minimize the Kullback-Leibler
 divergence. The first cherry is chosen as the k variables with
 highest mutual information. This is the preliminary t-cherry
 tree. Then all possible new cherries are added stepwise to this
-tree and the weight \deqn{\sum MI(Clique) - \sum MI(Separator)} is
+tree and the weight \deqn{\sum MI(clique) - \sum MI(separator)} is
 calculated.
 The first sum is over the cliques and the second over the
 separators of the junction tree of the preliminary t-cherry tree.
