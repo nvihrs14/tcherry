@@ -21,6 +21,8 @@
 #'              nrow = 4, ncol = 4)
 #' m2 <- matrix(c(0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0),
 #'              nrow = 4, ncol = 4)
+#' colnames(m1) <- rownames(m1) <- letters[1:4]
+#' colnames(m2) <- rownames(m2) <- letters[1:4]
 #'
 #' diff_edges_tch(m1, m1)
 #' diff_edges_tch(m1, m2)

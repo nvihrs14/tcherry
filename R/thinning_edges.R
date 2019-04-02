@@ -1,8 +1,109 @@
+#' Thinning of edges in a graphical model with a triangulated graph
+#'
+#' @description Thinning of edges in a graphical model with a
+#' triangulated graph based on a likelihood ratio test for conditional
+#' independence.
+#'
+#' @param cliques A list containing the cliques of the triangulated
+#' graph, which should be thinned.
+#' @param data Data with realisations of the variables in the graph.
+#' @param alpha Significance level used in the conditional
+#' independece test.
+#' @param ... Additional arguments passed to
+#' \code{cond_independence_test}
+#'
+#' @details
+#' The edges in the graph are removed one by one if the respetive
+#' conditional independence test cannot be rejected. An edge is only
+#' considered if its removal results in a new triangulated graph. This
+#' means that only edges in one clique only are considered.
+#'
+#' @return A list containing the following components:
+#' \itemize{
+#' \item \code{adj_matrix} The adjacency matrix of the thinned graph.
+#' \item \code{cliques} The cliques of the thinned graph.
+#' \item \code{n_edges_removed} The number of removed edges.
+#' }
+#'
+#' @author
+#' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
+#'
+#' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
+#'
+#' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#'
+#' @seealso \code{\link{cond_independence_test}} for the test used.
+#'
+#' @examples
+#' set.seed(43)
+#' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
+#' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+#' var3 <- var1 + c(sample(c(0, 1), 100, replace = TRUE,
+#'                         prob = c(0.9, 0.1)))
+#' var4 <- c(sample(c(1, 2), 100, replace = TRUE))
+#' var5 <- var2 + var3
+#' var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
+#' var7 <- c(sample(c(1, 2), 100, replace = TRUE))
+#'
+#' data <- data.frame("var1" = as.character(var1),
+#'                    "var2" = as.character(var2),
+#'                    "var3" = as.character(var3),
+#'                    "var4" = as.character(var4),
+#'                    "var5" = as.character(var5),
+#'                    "var6" = as.character(var6),
+#'                    "var7" = as.character(var7))
+#'
+#' cliques <- list(c("var1", "var2", "var3"),
+#'                 c("var2", "var3", "var5"),
+#'                 c("var5", "var6", "var7"),
+#'                 c("var1", "var4"),
+#'                 c("var2", "var5", "var6"))
+#'
+#' thinning_edges(cliques, data = data, alpha = 0.1, smooth = 0.1)
+#'
+#' @export
 
 thinning_edges <- function(cliques, data, alpha = 0.05, ...){
 
+  if (! (is.data.frame(data) | is.matrix(data))) {
+    stop("data must be a data frame or a matrix.")
+  }
+
+  if (! all(sapply(data, function(x){
+    is.character(x) | is.factor(x)
+  }
+  ))){
+    stop("Some columns are not characters or factors.")
+  }
+
+  if (! is.list(cliques)){
+    stop(paste("Cliques must be given in a list, each entry containing",
+               "a vector with the names of the variables in the clique.",
+               collapse = " "))
+  }
+
+  if (! compare::compare(unique(unlist(cliques)), colnames(data),
+                         ignoreOrder = TRUE)$result){
+    stop(paste("The column names of data must be the same as the",
+               "variable names in tch_cliq. All variables in data must",
+               "be in at least one clique.", collapse = " "))
+  }
+
+  if (length(alpha) > 1){
+    stop("alpha must be a single non-negative value.")
+  }
+  else if (!is.numeric(alpha)) {
+    stop("alpha must be numeric.")
+  }
+  else if (alpha <= 0){
+    stop("alpha must be a positive numeric value.")
+  }
+
+  cliques <- lapply(cliques, sort)
+
   edge_information <- edges_in_one_clique(cliques)
   data_edges_yes <- edge_information$data
+  data_edges_yes$edge <- lapply(data_edges_yes$edge, sort)
 
   n_edges <- edge_information$n
 
@@ -33,7 +134,7 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
 
       cliques <- setdiff(cliques, list(clique))
       new_cliques <- list()
-      new_clique_1 <- c(var1, cond)
+      new_clique_1 <- sort(c(var1, cond))
 
       is_subset_1 <- lapply(cliques, function(cliq){
         length(setdiff(new_clique_1, cliq)) == 0
@@ -43,7 +144,7 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
         new_cliques <- c(new_cliques, list(new_clique_1))
       }
 
-      new_clique_2 <- c(var2, cond)
+      new_clique_2 <- sort(c(var2, cond))
 
       is_subset_2 <- lapply(cliques, function(cliq){
         length(setdiff(new_clique_2, cliq)) == 0
@@ -56,6 +157,7 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
       cliques <- c(cliques, new_cliques)
 
       data_edges_yes <- edges_in_one_clique(cliques)$data
+      data_edges_yes$edge <- lapply(data_edges_yes$edge, sort)
       data_edges_yes <-
         data_edges_yes[! data_edges_yes$edge %in% have_tested, ]
 
@@ -88,8 +190,4 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
 
 
 
-cliques <- list(c("var1", "var2", "var3"),
-                c("var2", "var3", "var5"),
-                c("var5", "var6", "var7"),
-                c("var1", "var4"),
-                c("var2", "var5", "var6"))
+

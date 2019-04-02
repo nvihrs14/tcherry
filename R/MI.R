@@ -34,9 +34,10 @@
 #'
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
-#' MI2(var1, var2)
+#' var1 <- as.character(var1)
+#' var2 <- as.character(var2)
 #' MI2(var1, var2, smooth = 1)
-#' MI2(var1, var2, log_base = exp(1))
+#' MI2(var1, var2, smooth = 0.1, log_base = exp(1))
 #' @export
 
 MI2 <- function(x, y, smooth = 0, log_base = 2){
