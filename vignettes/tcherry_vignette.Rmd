@@ -34,9 +34,9 @@ A $k$'th order $t$-cherry tree is a graph which can be defined in the following 
 \end{itemize}
 
 The nodes $A_1,\ldots,A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree. This junction tree suggests the joint probability distribution
-\begin{equation*}
+\begin{equation}\label{eq:prop_dist_junc}
 \tilde{P}(A_1,\ldots,A_n) = \frac{\prod\limits_{C\in\mathcal{C}}P(C)}{\prod\limits_{S\in\mathcal{S}}P(S)}
-\end{equation*}
+\end{equation}
 where $\mathcal{C}$ is the set of cliques and $\mathcal{S}$ is the set of separators (separators used more than once should appear as many times as they are used).
 
 If $P$ is the true probability distribution the Kullback-Leibler divergence becomes
@@ -71,7 +71,7 @@ This makes a 3. order $t$-cherry tree with six binary variables. To work further
 
 A plot could be achieved by
 
-```{r, message=FALSE, fig.height=3}
+```{r, message=FALSE, fig.height=2.5}
 library(gRain)
 library(Rgraphviz)
 
@@ -171,5 +171,68 @@ predict.grain(object = G_tch3_step, response = "V1", newdata = new_data,
 
 ```
 
+## 4. Thinning edges in a given structure
+
+If a high order $t$-cherry tree has been chosen for a problem, the high number of edges increases the risk of overfitting. To take care of this problem, the number of edges in the graph can be reduced. The function \texttt{thinning\_edges} offers a method which succesively deletes one edge such that the resulting graph is still triangulated. This means that the cliques of this new graph can also be organised in a junction tree and the probability distibution approximated by \eqref{eq:prop_dist_junc}. The two models may then be compared by a likelihood ratio test with the test statistic
+
+\begin{equation*}
+2\sum_{A_i, A_j, S}N(A_i, A_j, S)\log\left(\frac{P^L(A_i, A_j|S)}{P^L(A_i|S)P^L(A_j|S)}\right)
+\end{equation*}
+where the sum is over all possible states of the variables, $N()$ is the number of accurences of the current combination of states seen in data and $\{A_i, A_j\}$ is the edge to be tested. For the resulting graph to be trianguled this edge can be in one clique only in the original model. If this clique is denoted $K$, $S = K\setminus\{A_i, A_j\}$. This is actually a test for whether $A_i$ and $A_j$ are independent given $S$. Under the null hypothesis that the edge is needless this test statistic follows asymptotically a chi-squared distribution with $(n_i-1)(n_j-1)n_S$ degrees of freedom where $n_i$ and $n_j$ are the number of possible states of $A_i$ and $A_j$ and $n_S$ are the number of konfigurations of the states of $S$.
+
+To thin the edges of an undirected graphical model with a triangulated graph this test is carried out for each edge which can be deleated such that the resulting graph is still triangulated. Each time an edge is removed the cliques and edges which can be removed are updated.
+
+Consider the following data set.
+```{r}
+set.seed(43)
+var1 <- c(sample(c(1, 2), 100, replace = TRUE))
+var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+var3 <- var1 + c(sample(c(0, 1), 100, replace = TRUE,
+                        prob = c(0.9, 0.1)))
+var4 <- c(sample(c(1, 2), 100, replace = TRUE))
+var5 <- var2 + var3
+var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
+var7 <- c(sample(c(1, 2), 100, replace = TRUE))
+
+
+data <- data.frame("var1" = as.character(var1),
+                   "var2" = as.character(var2),
+                   "var3" = as.character(var3),
+                   "var4" = as.character(var4),
+                   "var5" = as.character(var5),
+                   "var6" = as.character(var6),
+                   "var7" = as.character(var7))
+```
+
+A 3. order $t$-cherry tree is now fitted and subsequently thinned. Notice that \texttt{smooth} is necessary to avoid zero probabilities.
+
+```{r, message=FALSE, fig.height=2.5}
+tch3 <- k_tcherry_step(data = data, k = 3, smooth = 0.001)
+thinned <- thinning_edges(tch3$cliques, data, smooth = 0.001)
+thinned$n_edges_removed
+
+library(gRain)
+library(Rgraphviz)
+
+tch3_graph <- as(tch3$adj_matrix, "graphNEL")
+thinned_graph <- as(thinned$adj_matrix, "graphNEL")
+par(mfrow = c(1, 2))
+plot(tch3_graph)
+plot(thinned_graph)
+
+```
+
+The function used for the independence test is \texttt{cond\_independence\_test} which can also be used to check the independence of some variables.
+
+```{r}
+cond_independence_test("var1", "var4", data = data, smooth = 0.001)
+cond_independence_test("var2", "var3", cond = "var1", data = data, smooth = 0.001)
+cond_independence_test("var2", "var1", cond = c("var7", "var4"), data = data,
+                       smooth = 0.001)
+
+```
+These statements fits very well with the construction of the data.
+
+Notice that this thinning procedure can be used for any triangulated graph and not just $t$-cherry trees.
 
 ## References
