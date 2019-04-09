@@ -1,4 +1,4 @@
-context("thinning_edges")
+context("BIC_junction_tree")
 library(tcherry)
 
 set.seed(43)
@@ -46,43 +46,27 @@ cliques_wrong <- list(c("var1", "var2", "var3"),
                       c("var2", "var5", "var8"))
 
 test_that("error messages work", {
-  expect_error(thinning_edges(cliques, separators, data = 1:2),
+  expect_error(BIC_junction_tree(cliques, separators, data = 1:2),
                "data must be a data frame or a matrix.")
-  expect_error(thinning_edges(cliques, separators, data = data_numeric),
+  expect_error(BIC_junction_tree(cliques, separators, data = data_numeric),
                "Some columns are not characters or factors.")
-  expect_error(thinning_edges(1:2, separators, data = data),
+  expect_error(BIC_junction_tree(1:2, separators, data = data),
                paste("Cliques must be given in a list, each entry containing",
                      "a vector with the names of the variables in the clique.",
                      collapse = " "))
-  expect_error(thinning_edges(cliques, 1:2, data = data),
+  expect_error(BIC_junction_tree(cliques, 1:2, data = data),
                paste("Separators must be given in a list, each entry containing",
                      "a vector with the names of the variables in the separator.",
                      collapse = " "))
-  expect_error(thinning_edges(cliques_wrong, separators, data = data),
+  expect_error(BIC_junction_tree(cliques_wrong, separators, data = data),
                paste("The column names of data must be the same as the",
                      "variable names in tch_cliq. All variables in data must",
                      "be in at least one clique.", collapse = " "))
-  expect_error(thinning_edges(cliques, separators_wrong, data = data),
+  expect_error(BIC_junction_tree(cliques, separators_wrong, data = data),
                "All variable names in separators should be in data.")
-  expect_error(thinning_edges(cliques, separators, data = data, alpha = 1:2),
-               "alpha must be a single non-negative value.")
-  expect_error(thinning_edges(cliques, separators, data = data, alpha = "a"),
-               "alpha must be numeric.")
-  expect_error(thinning_edges(cliques, separators, data = data, alpha = - 1),
-               "alpha must be a positive numeric value.")
 })
 
-graph <- thinning_edges(cliques, separators, data = data, smooth = 0.1)
-target_mat <- matrix(c(0, 1, 1, 0, 0, 0, 0,
-                       1, 0, 1, 0, 1, 0, 0,
-                       1, 1, 0, 0, 1, 0, 0,
-                       0, 0, 0, 0, 0, 0, 0,
-                       0, 1, 1, 0, 0, 1, 0,
-                       0, 0, 0, 0, 1, 0, 0,
-                       0, 0, 0, 0, 0, 0, 0), nrow = 7)
-colnames(target_mat) <- rownames(target_mat) <- names(data)
-
 test_that("results are correct", {
-  expect_equal(graph$adj_matrix, target_mat)
-  expect_equal(graph$n_edges_removed, 4)
+  expect_equal(BIC_junction_tree(cliques, separators, data, smooth = 0.1),
+               -1321.338, tolerance = 10e-5)
 })

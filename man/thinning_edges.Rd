@@ -4,11 +4,14 @@
 \alias{thinning_edges}
 \title{Thinning of edges in a graphical model with a triangulated graph}
 \usage{
-thinning_edges(cliques, data, alpha = 0.05, ...)
+thinning_edges(cliques, separators, data, alpha = 0.05, ...)
 }
 \arguments{
 \item{cliques}{A list containing the cliques of the triangulated
 graph, which should be thinned.}
+
+\item{separators}{A list containing the separators of the junction
+tree of the triangulated graph, which should be thinned.}
 
 \item{data}{Data with realisations of the variables in the graph.}
 
@@ -23,6 +26,8 @@ A list containing the following components:
 \itemize{
 \item \code{adj_matrix} The adjacency matrix of the thinned graph.
 \item \code{cliques} The cliques of the thinned graph.
+\item \code{separators} The separators of the junction tree for
+the thinned graph.
 \item \code{n_edges_removed} The number of removed edges.
 }
 }
@@ -62,7 +67,13 @@ cliques <- list(c("var1", "var2", "var3"),
                 c("var1", "var4"),
                 c("var2", "var5", "var6"))
 
-thinning_edges(cliques, data = data, alpha = 0.1, smooth = 0.1)
+separators <- list(c("var1"),
+                   c("var2", "var3"),
+                   c("var2", "var5"),
+                   c("var5", "var6"))
+
+thinning_edges(cliques, separators, data = data, alpha = 0.1,
+               smooth = 0.1)
 
 }
 \seealso{

@@ -33,16 +33,16 @@ A $k$'th order $t$-cherry tree is a graph which can be defined in the following 
   \item A $k$'th order $t$-cherry tree is extended with a new vertex by adding an edge between this vertex and $k-1$ vertices already mutually connected by edges.
 \end{itemize}
 
-The nodes $A_1,\ldots,A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree. This junction tree suggests the joint probability distribution
+The nodes $A_1,\ldots,A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree $T$. This junction tree suggests the joint probability distribution
 \begin{equation}\label{eq:prop_dist_junc}
-\tilde{P}(A_1,\ldots,A_n) = \frac{\prod\limits_{C\in\mathcal{C}}P(C)}{\prod\limits_{S\in\mathcal{S}}P(S)}
+\tilde{P^T}(A_1,\ldots,A_n) = \frac{\prod\limits_{C\in\mathcal{C}}P(C)}{\prod\limits_{S\in\mathcal{S}}P(S)}
 \end{equation}
 where $\mathcal{C}$ is the set of cliques and $\mathcal{S}$ is the set of separators (separators used more than once should appear as many times as they are used).
 
 If $P$ is the true probability distribution the Kullback-Leibler divergence becomes
 
 \begin{equation*}
-KL(P,\tilde{P}) = -H(A_1,\ldots,A_p)- \left(\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)\right) + \sum_{i=1}^p H(A_i)
+KL(P,P^T) = -H(A_1,\ldots,A_p)- \left(\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)\right) + \sum_{i=1}^p H(A_i)
 \end{equation*}
 where $H(A_i)$ is the entropy $MI$ is mutual information given by
 \begin{equation*}
@@ -51,7 +51,7 @@ MI(A_1, \ldots, A_p) = \sum_{A_1,\ldots,A_p}P(A_1,\ldots,A_p)\log\left(\frac{P(A
 
 In practice the exact probability distributions are not known, and they are therefore estimated by data. Then the expression 
 \begin{equation*}
-\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)
+w(T) = \sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)
 \end{equation*}
 is called the weight of the junction tree. In order to minimize the Kullback-Leibler divergence it is enough to maximize the weight, which all the construction algorithms in this package are attempting to do.
 
@@ -194,7 +194,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -208,7 +207,7 @@ A 3. order $t$-cherry tree is now fitted and subsequently thinned. Notice that \
 
 ```{r, message=FALSE, fig.height=2.5}
 tch3 <- k_tcherry_step(data = data, k = 3, smooth = 0.001)
-thinned <- thinning_edges(tch3$cliques, data, smooth = 0.001)
+thinned <- thinning_edges(tch3$cliques, tch3$separators, data, smooth = 0.001)
 thinned$n_edges_removed
 
 library(gRain)
@@ -221,6 +220,32 @@ plot(tch3_graph)
 plot(thinned_graph)
 
 ```
+
+The two models can be compared by the value of the likelihood function,
+the BIC criterion and the number of free parameters. The value of the log-likelihood function for a junction tree $T$ is calculated as
+
+\begin{equation*}
+l(T;\mathcal{D})=|\mathcal{D}| \left(w(T)-\sum_{i=1}^nH(A_i)\right)
+\end{equation*}
+where $|\mathcal{D}|$ is the number of observations in data and $H()$ is the entropy. All probabilities are estimated with maximum likelihood estimation unless a correction is necessary to avoid zero probabilities. The BIC criterion is calculated as
+
+\begin{equation*}
+BIC(T) = l(T) - \frac{n_p}{2} \cdot \log(|\mathcal{D}|)
+\end{equation*}
+where $n_p$ is the number of free parameters in the model. Notice that a high value of BIC is preffered. 
+
+```{r}
+loglikelihood(tch3$cliques, tch3$separators, data = data, smooth = 0.001)
+loglikelihood(thinned$cliques, thinned$separators, data = data, smooth = 0.001)
+
+BIC_junction_tree(tch3$cliques, tch3$separators, data = data, smooth = 0.001)
+BIC_junction_tree(thinned$cliques, thinned$separators, data = data, smooth = 0.001)
+
+n_params_junction_tree(tch3$cliques, tch3$separators, data = data)
+n_params_junction_tree(thinned$cliques, thinned$separators, data = data)
+
+```
+The BIC criterion for the thinned model is higher, which confirms that this is just as good as the more complicated model.
 
 The function used for the independence test is \texttt{cond\_independence\_test} which can also be used to check the independence of some variables.
 

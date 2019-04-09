@@ -82,7 +82,7 @@ MIk <- function(variables, data, smooth = 0, log_base = 2){
     stop("smooth must be a non-negative numeric value.")
   }
 
-  if (length(variables) == 1){
+  if (length(variables) == 1 | length(variables) == 0){
     return(0)
   }
 

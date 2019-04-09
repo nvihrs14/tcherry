@@ -6,6 +6,8 @@
 #'
 #' @param cliques A list containing the cliques of the triangulated
 #' graph, which should be thinned.
+#' @param separators A list containing the separators of the junction
+#' tree of the triangulated graph, which should be thinned.
 #' @param data Data with realisations of the variables in the graph.
 #' @param alpha Significance level used in the conditional
 #' independece test.
@@ -22,6 +24,8 @@
 #' \itemize{
 #' \item \code{adj_matrix} The adjacency matrix of the thinned graph.
 #' \item \code{cliques} The cliques of the thinned graph.
+#' \item \code{separators} The separators of the junction tree for
+#' the thinned graph.
 #' \item \code{n_edges_removed} The number of removed edges.
 #' }
 #'
@@ -59,11 +63,17 @@
 #'                 c("var1", "var4"),
 #'                 c("var2", "var5", "var6"))
 #'
-#' thinning_edges(cliques, data = data, alpha = 0.1, smooth = 0.1)
+#' separators <- list(c("var1"),
+#'                    c("var2", "var3"),
+#'                    c("var2", "var5"),
+#'                    c("var5", "var6"))
+#'
+#' thinning_edges(cliques, separators, data = data, alpha = 0.1,
+#'                smooth = 0.1)
 #'
 #' @export
 
-thinning_edges <- function(cliques, data, alpha = 0.05, ...){
+thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
 
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
@@ -89,6 +99,16 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
                "be in at least one clique.", collapse = " "))
   }
 
+  if (! is.list(separators)){
+  stop(paste("Separators must be given in a list, each entry containing",
+           "a vector with the names of the variables in the separator.",
+               collapse = " "))
+  }
+
+  if (length(setdiff(unique(unlist(separators)), colnames(data))) != 0){
+    stop("All variable names in separators should be in data.")
+  }
+
   if (length(alpha) > 1){
     stop("alpha must be a single non-negative value.")
   }
@@ -100,6 +120,7 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
   }
 
   cliques <- lapply(cliques, sort)
+  separators <- lapply(separators, sort)
 
   edge_information <- edges_in_one_clique(cliques)
   data_edges_yes <- edge_information$data
@@ -136,25 +157,34 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
       new_cliques <- list()
       new_clique_1 <- sort(c(var1, cond))
 
-      is_subset_1 <- lapply(cliques, function(cliq){
-        length(setdiff(new_clique_1, cliq)) == 0
+      is_sep_1 <- sapply(separators, function(sep){
+        compare::compare(new_clique_1, sep)$result
       })
 
-      if (! any(unlist(is_subset_1))){
+      if (! any(is_sep_1)){
         new_cliques <- c(new_cliques, list(new_clique_1))
+      } else {
+        idx_sep <- which(is_sep_1)[1]
+        separators <- separators[- idx_sep]
       }
+
 
       new_clique_2 <- sort(c(var2, cond))
 
-      is_subset_2 <- lapply(cliques, function(cliq){
-        length(setdiff(new_clique_2, cliq)) == 0
+      is_sep_2 <- sapply(separators, function(sep){
+        compare::compare(new_clique_2, sep)$result
       })
 
-      if (! any(unlist(is_subset_2))){
+      if (! any(is_sep_2)){
         new_cliques <- c(new_cliques, list(new_clique_2))
+      } else {
+        idx_sep <- which(is_sep_2)[1]
+        separators <- separators[- idx_sep]
       }
 
       cliques <- c(cliques, new_cliques)
+      new_sep <- intersect(new_clique_1, new_clique_2)
+      separators <- c(separators, list(new_sep))
 
       data_edges_yes <- edges_in_one_clique(cliques)$data
       data_edges_yes$edge <- lapply(data_edges_yes$edge, sort)
@@ -182,6 +212,7 @@ thinning_edges <- function(cliques, data, alpha = 0.05, ...){
 
   return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
+              "separators" = separators,
               "n_edges_removed" = n_edges_removed))
 }
 
