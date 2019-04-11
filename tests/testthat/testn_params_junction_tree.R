@@ -67,5 +67,5 @@ test_that("error messages work", {
 })
 
 test_that("results are correct", {
-  expect_equal(n_params_junction_tree(cliques, separators, data), 204)
+  expect_equal(n_params_junction_tree(cliques, separators, data), 120)
 })

@@ -68,5 +68,5 @@ test_that("error messages work", {
 
 test_that("results are correct", {
   expect_equal(BIC_junction_tree(cliques, separators, data, smooth = 0.1),
-               -1321.338, tolerance = 10e-5)
+               -1042.296, tolerance = 10e-5)
 })

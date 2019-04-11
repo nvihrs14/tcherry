@@ -87,24 +87,24 @@ n_params_junction_tree <- function(cliques, separators, data){
     stop("All variable names in separators should be in data.")
   }
 
-  params_cliq <- sapply(cliques, function(C){
+  prod_cliq <- sapply(cliques, function(C){
   data_C <- data[, C, drop = FALSE]
   levels <- sapply(data_C, function(col){
     length(unique(col))
   })
-  prod(levels) - 1
+  prod(levels)
   })
 
-  params_sep <- sapply(separators, function(S){
+  prod_sep <- sapply(separators, function(S){
     if (length(S) == 0){
-      return(0)
+      return(1)
     }
     data_S <- data[, S, drop = FALSE]
     levels <- sapply(data_S, function(col){
       length(unique(col))
     })
-    prod(levels) - 1
+    prod(levels)
   })
 
-  sum(params_cliq, params_sep)
+  sum(prod_cliq) - sum(prod_sep) - 1
 }
