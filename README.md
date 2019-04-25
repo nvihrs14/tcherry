@@ -3,7 +3,7 @@
 Learning the structure of the type of graphical models called t-cherry trees.
 
 ## Install
-"remotes::install_github("nvihrs14/tcherry")"
+'remotes::install_github("nvihrs14/tcherry")'
 
 ## Getting started
 
