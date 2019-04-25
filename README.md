@@ -26,13 +26,22 @@ Note that the package requres the following R-packages, which are automatically 
 ## Example usage
 To demonstrate the main functions in this package consider the car evaluation data set from UCI Machine Learning Repository (Dau & Graff 2017). This data set contains 7 variables (all categorical) with 1728 observations for each and no missing values. The variables are describing different aspects of the car such as the estimated safety of the car, the number of doors etc. To find a graphical structure of a third order t-cherry tree for this data the function k_tcherry_p_lookahead is used. It is chosen to add just one clique at a time in the greedy search procedure.
 
-```{r, eval = TRUE}
+``` r
 library(tcherry)
 car <- read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data", header = FALSE, sep = ",", dec = ".")
 names(car) <- c("buying", "maint", "doors", "persons", "lug_boot",
                   "safety", "class")
 tch3 <- k_tcherry_p_lookahead(data = car, k = 3, p = 1, smooth = 0.001)
-tch3
+tch3$adj_matrix
+#>            buying maint doors persons lug_boot safety class
+#> buying        0     1     0       0        0      1     1
+#> maint         1     0     0       0        0      0     1
+#> doors         0     0     0       0        1      0     1
+#> persons       0     0     0       0        0      1     1
+#> lug_boot      0     0     1       0        0      1     1
+#> safety        1     0     0       1        1      0     1
+#> class         1     1     1       1        1      1     0
+
 ```
 Note that the smooth argument is added to cell count when estimating probabilities to avoid zero probabilities, which would make some calculations invalid.
 ## For more help
