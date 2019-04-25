@@ -1,0 +1,17 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+citHeader("To cite 'tcherry' in publications use:")
+
+citEntry(entry = "Manual",
+         title = "tcherry: Learning the structure of tcherry trees",
+         author = c(person("Katrine", "Kirkeby"),
+                    person("Maria", "Knudsen"),
+                    person("Ninna", "Vihrs")),
+         year = year,
+         note = note,
+         url = "https://github.com/nvihrs14/tcherry",
+         textVersion = paste0("Katrine Kirkeby, Maria Knudsen ",
+         "and Ninna Vihrs (", year, "). ",
+         "tcherry: Learning the structure of tcherry trees. ",
+         note, ". ", "https://github.com/nvihrs14/tcherry"))
