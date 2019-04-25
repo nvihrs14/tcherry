@@ -33,6 +33,7 @@ tcherry_ord_inc <- increase_order1(ChowLiu_cliques, data,
 
 test_that("results are corrects", {
   expect_equal(tcherry_ord_inc$adj_matrix, tcherryCL$adj_matrix)
+  expect_equal(tcherry_ord_inc$n_edges, 11)
   expect_true(compare::compare(tcherry_ord_inc$cliques,
                                tcherryCL$cliques,
                                ignoreOrder = TRUE)$result)

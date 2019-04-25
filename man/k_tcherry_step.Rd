@@ -23,6 +23,7 @@ t-cherry tree.
  the k'th order t-cherry tree.
 \item \code{separators} A list containing the separators of a
 junction tree for the k'th order t-cherry tree.
+\item \code{n_edges} The number of edges in the resulting graph.
 }
 }
 \description{

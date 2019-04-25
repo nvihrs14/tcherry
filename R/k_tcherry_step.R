@@ -33,6 +33,7 @@
 #'  the k'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the k'th order t-cherry tree.
+#' \item \code{n_edges} The number of edges in the resulting graph.
 #' }
 #'
 #' @author
@@ -202,8 +203,11 @@ k_tcherry_step <- function(data, k, ...){
   idx.dat <- which(is.na(dat_new_poss$new_var))[1]
   }
 
+  n_edges_graph <- sum(adj_matrix) / 2
+
   return(list("adj_matrix" = adj_matrix,
               "weight" = weight,
               "cliques" = cliques,
-              "separators" = separators))
+              "separators" = separators,
+              "n_edges" = n_edges_graph))
 }

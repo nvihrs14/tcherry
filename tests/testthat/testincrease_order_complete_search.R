@@ -28,6 +28,7 @@ colnames(adj_mat) <- rownames(adj_mat) <- names(data)
 
 test_that("results are corrects", {
   expect_equal(tch_complete$model$adj_matrix, adj_mat)
+  expect_equal(tch_complete$model$n_edges, 5)
   expect_equal(tch_complete$n_models, 3)
 })
 

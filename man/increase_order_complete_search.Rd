@@ -28,6 +28,7 @@ t-cherry tree.
 junction tree for the (k + 1)'th order t-cherry tree.
 \item \code{adj_matrix} The adjacency matrix for the (k + 1)'th order
 t-cherry tree.
+\item \code{n_edges} The number of edges in the resulting graph.
 }
 \item \code{n_models} The number of considered models.
 }

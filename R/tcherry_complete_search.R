@@ -29,6 +29,7 @@
 #' junction tree for the k'th order t-cherry tree.
 #' \item \code{adj_matrix} The adjacency matrix for the k'th order
 #' t-cherry tree.
+#' \item \code{n_edges} The number of edges in the resulting graph.
 #' }
 #' \item \code{n_models} The number of considered models.
 #' }
@@ -160,6 +161,7 @@ tcherry_complete_search <- function(data, k, ...){
   model <- models[[idx.max]]
   model$weight <- weights[idx.max]
   model <- model[- 3]
+  model$n_edges <- sum(model$adj_matrix) / 2
 
   return(list("model" = model,
               "n_models" = length(models)))

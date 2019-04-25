@@ -188,8 +188,11 @@ increase_order2 <- function(tch_cliq, data, ...){
     n_edges <- n_edges + 1
   }
 
+  n_edges_graph <- sum(adj_matrix) / 2
+
   return(list("adj_matrix" = adj_matrix,
               "weight" = weight,
               "cliques" = cliques,
-              "separators" = separators))
+              "separators" = separators,
+              "n_edges" = n_edges_graph))
 }

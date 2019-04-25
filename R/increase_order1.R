@@ -59,6 +59,7 @@
 #'  the (k + 1)'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the (k + 1)'th order t-cherry tree.
+#' \item \code{n_edges} The number of edges in the resulting graph.
 #' }
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
@@ -239,8 +240,11 @@ increase_order1 <- function(tch_cliq, data, ...){
     i <- i + 1
   }
 
+  n_edges_graph <- sum(adj_matrix) / 2
+
   return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
-              "separators" = separators))
+              "separators" = separators,
+              "n_edges" = n_edges_graph))
 
 }

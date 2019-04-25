@@ -54,6 +54,7 @@ seps <- list(c("var3", "var5"),
 
 test_that("results are corrects", {
   expect_equal(tcherry_ord_inc$adj_matrix, adj_mat)
+  expect_equal(tcherry_ord_inc$n_edges, 11)
   expect_true(compare::compare(tcherry_ord_inc$cliques, cliques,
                                ignoreOrder = TRUE)$result)
   expect_true(compare::compare(tcherry_ord_inc$separators, seps,

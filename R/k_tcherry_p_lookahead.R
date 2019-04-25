@@ -34,6 +34,7 @@
 #'  the k'th order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the k'th order t-cherry tree.
+#' \item \code{n_edges} The number of edges in the resulting graph.
 #' }
 #'
 #' @author
@@ -217,6 +218,8 @@ k_tcherry_p_lookahead <- function(data, k, p, ...){
 
   }
 
-  return(current_model[- 3])
+  current_model$n_edges <- sum(current_model$adj_matrix) / 2
+
+  return(c(current_model[- 3]))
 
 }

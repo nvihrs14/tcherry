@@ -28,6 +28,7 @@ A list containing the following components:
 \item \code{cliques} The cliques of the thinned graph.
 \item \code{separators} The separators of the junction tree for
 the thinned graph.
+\item \code{n_edges} The number of edges in the resulting graph.
 \item \code{n_edges_removed} The number of removed edges.
 }
 }

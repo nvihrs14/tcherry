@@ -66,4 +66,6 @@ test_that("results are correct", {
   expect_equal(tch3_pall$adj_matrix, tch3_complete$adj_matrix)
   expect_equal(tch3_p1$weight, tch3_step$weight)
   expect_equal(tch3_pall$weight, tch3_complete$weight)
+  expect_equal(tch3_p1$n_edges, 9)
+  expect_equal(tch3_pall$n_edges, 9)
 })

@@ -26,6 +26,7 @@
 #' \item \code{cliques} The cliques of the thinned graph.
 #' \item \code{separators} The separators of the junction tree for
 #' the thinned graph.
+#' \item \code{n_edges} The number of edges in the resulting graph.
 #' \item \code{n_edges_removed} The number of removed edges.
 #' }
 #'
@@ -210,9 +211,12 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
     }
   }
 
+  n_edges_graph <- sum(adj_matrix) / 2
+
   return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
               "separators" = separators,
+              "n_edges" = n_edges_graph,
               "n_edges_removed" = n_edges_removed))
 }
 

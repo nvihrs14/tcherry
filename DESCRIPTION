@@ -1,7 +1,7 @@
 Package: tcherry
 Type: Package
 Title: Learning the structure of tcherry trees
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Katrine", "Kirkeby", email = "enir_tak@hotmail.com", role = c("aut")),
     person("Maria", "Knudsen", email = "mariaknudsen@hotmail.dk", role = c("aut")),
@@ -29,4 +29,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-Date/Publication: 2019-04-24
+Date/Publication: 2019-04-25

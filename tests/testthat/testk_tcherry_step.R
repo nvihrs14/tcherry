@@ -51,6 +51,8 @@ tchstep <- tcherry_step(data, smooth = 0.1)
 test_that("results are correct", {
   expect_equal(tch2$adj_matrix, CL$skeleton_adj)
   expect_equal(tch3$adj_matrix, tchstep$adj_matrix)
+  expect_equal(tch3$n_edges, 11)
+  expect_equal(tch2$n_edges, 6)
   expect_equal(tch3$weight, tchstep$weight)
   expect_true(compare::compare(tch3$cliques, tchstep$cliques,
                                ignoreOrder = TRUE)$result)

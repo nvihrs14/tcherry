@@ -85,4 +85,5 @@ colnames(target_mat) <- rownames(target_mat) <- names(data)
 test_that("results are correct", {
   expect_equal(graph$adj_matrix, target_mat)
   expect_equal(graph$n_edges_removed, 4)
+  expect_equal(graph$n_edges, 6)
 })
