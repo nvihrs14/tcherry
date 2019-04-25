@@ -28,7 +28,8 @@ To demonstrate the main functions in this package consider the car evaluation da
 
 ``` r
 library(tcherry)
-car <- read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data", header = FALSE, sep = ",", dec = ".")
+car <- read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data",
+header = FALSE, sep = ",", dec = ".")
 names(car) <- c("buying", "maint", "doors", "persons", "lug_boot",
                   "safety", "class")
 tch3 <- k_tcherry_p_lookahead(data = car, k = 3, p = 1, smooth = 0.001)
@@ -42,8 +43,62 @@ tch3$adj_matrix
 #> safety        1     0     0       1        1      0     1
 #> class         1     1     1       1        1      1     0
 
+tch3$weight
+#> 0.8973644
+
+tch3$n_edges
+#> 11
+
 ```
+
 Note that the smooth argument is added to cell count when estimating probabilities to avoid zero probabilities, which would make some calculations invalid.
+
+The graphical structure of af fouth order t-cherry tree for this data can be found by using the same function as above whit k = 4 or with the function increase_order2.
+
+``` r
+tch4 <- increase_order2(tch3$cliques, car, smooth = 0.001)
+tch4$adj_matrix
+#>            buying maint doors persons lug_boot safety class
+#> buying        0     1     0       1        1      1     1
+#> maint         1     0     0       0        0      1     1
+#> doors         0     0     0       0        1      1     1
+#> persons       1     0     0       0        0      1     1
+#> lug_boot      1     0     1       0        0      1     1
+#> safety        1     1     1       1        1      0     1
+#> class         1     1     1       1        1      1     0
+
+tch4$weight
+#> 1.00457
+
+tch4$n_edges
+#> 15
+
+```
+
+Note that the smooth argument is added for the same reasons as above.
+
+
+
+``` r
+tch_thinning <- thinning_edges(tch4$cliques, tch4$separators, car, smooth = 0.001)
+tch_thinning$adj_matrix
+#>            buying class doors lug_boot maint persons safety
+#> buying        0     1     0        0     1       0      1
+#> class         1     0     0        1     1       1      1
+#> doors         0     0     0        0     0       0      0
+#> lug_boot      0     1     0        0     0       0      1
+#> maint         1     1     0        0     0       0      0
+#> persons       0     1     0        0     0       0      1
+#> safety        1     1     0        1     0       1      0
+
+tch_thinning$n_edges
+#> 9
+
+tch_thinning$n_edges_removed
+#> 6
+
+```
+
 ## For more help
 
 See documentation included in package (vignettes and man) at <https://github.com/nvihrs14/tcherry>
