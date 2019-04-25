@@ -99,6 +99,9 @@ tch_thinning$n_edges_removed
 
 ```
 
+## Feedback
+If you think some fuctions needs better documentation, we happily accept feedback here at GitHub.
+
 ## For more help
 
 See documentation included in package (vignettes and man) at <https://github.com/nvihrs14/tcherry>
