@@ -3,6 +3,7 @@ title: 'tcherry: Learning the structure of tcherry trees'
 authors:
 - affiliation: 1
   name: Katrine Kirkeby
+  orcid: 0000-0001-6065-1583
 - affiliation: 1
   name: Maria Knudsen
 - affiliation: 1
