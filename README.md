@@ -23,6 +23,8 @@ Note that the package requres the following R-packages, which are automatically 
 
 -__`thinning_edges`__: Thinning of edges in a graphical model with a triangulated graph.
 
+-__`BIC_junction_tree`__: Calculates the BIC value for a graphical model where the graph has the given junction tree.
+
 ## Example usage
 To demonstrate the main functions in this package consider the car evaluation data set from UCI Machine Learning Repository (Dau & Graff 2017). This data set contains 7 variables (all categorical) with 1728 observations for each and no missing values. The variables are describing different aspects of the car such as the estimated safety of the car, the number of doors etc. To find a graphical structure of a third order t-cherry tree for this data the function k_tcherry_p_lookahead is used. It is chosen to add just one clique at a time in the greedy search procedure.
 
@@ -43,17 +45,11 @@ tch3$adj_matrix
 #> safety        1     0     0       1        1      0     1
 #> class         1     1     1       1        1      1     0
 
-tch3$weight
-#> 0.8973644
-
-tch3$n_edges
-#> 11
-
 ```
 
-Note that the smooth argument is added to cell count when estimating probabilities to avoid zero probabilities, which would make some calculations invalid.
+Note that the smooth argument is added to cell count when estimating probabilities to avoid zero probabilities, which would make some calculations invalid. 
 
-The graphical structure of af fouth order t-cherry tree for this data can be found by using the same function as above whit k = 4 or with the function increase_order2.
+The graphical structure of af fourth order t-cherry tree for this data can be found by using the same function as above whit k = 4. However in this case, it is chosen to show how increase_order2 can be used to increase the order of the fitted third order t-cherry tree. The typical reason for this choice will be to save time, but often at the cost of a fitted structure of smaller likelihood.
 
 ``` r
 tch4 <- increase_order2(tch3$cliques, car, smooth = 0.001)
@@ -67,17 +63,11 @@ tch4$adj_matrix
 #> safety        1     1     1       1        1      0     1
 #> class         1     1     1       1        1      1     0
 
-tch4$weight
-#> 1.00457
-
-tch4$n_edges
-#> 15
-
 ```
 
-Note that the smooth argument is added for the same reasons as above.
+Note that the smooth argument is added for the same reasons as above, and the given third order t-cherry tree is represented by its cliques. 
 
-
+It can now be attempted to simplify this model by thinning the edges.
 
 ``` r
 tch_thinning <- thinning_edges(tch4$cliques, tch4$separators, car, smooth = 0.001)
@@ -91,13 +81,15 @@ tch_thinning$adj_matrix
 #> persons       0     1     0        0     0       0      1
 #> safety        1     1     0        1     0       1      0
 
-tch_thinning$n_edges
-#> 9
-
 tch_thinning$n_edges_removed
 #> 6
 
 ```
+Notice that in this function the structure is represented by the cliques and separators of its junction tree. In this case six edges has been deleted from the graph. 
+
+The three fitted structures can be compared by calculating a BIC score.
+
+
 
 ## For more help
 
