@@ -9,7 +9,7 @@ authors:
   orcid: 0000-0002-0067-6671
 - affiliation: 1
   name: Ninna Vihrs
-  orcid:
+  orcid: 0000-0002-7507-8473
 date: "26 April 2019"
 bibliography: paper.bib
 tags:
