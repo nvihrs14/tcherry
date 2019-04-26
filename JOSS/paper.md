@@ -6,8 +6,10 @@ authors:
   orcid: 0000-0001-6065-1583
 - affiliation: 1
   name: Maria Knudsen
+  orcid:
 - affiliation: 1
   name: Ninna Vihrs
+  orcid:
 date: "26 April 2019"
 bibliography: paper.bib
 tags:
