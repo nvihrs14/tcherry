@@ -19,4 +19,4 @@ affiliations:
 ---
 
 # Summary
-The R package `tcherry` contains a variety of functions for finding the structure of k'th order t-cherry trees from data. This is a type of graphical models extending what is known as Chow-Liu trees @EKTShyp
+The R package `tcherry` contains a variety of functions for finding the structure of k'th order t-cherry trees from data. This is a type of graphical models extending what is known as Chow-Liu trees [@EKTShyp]
