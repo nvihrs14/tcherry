@@ -88,9 +88,16 @@ tch_thinning$n_edges_removed
 Notice that in this function the structure is represented by the cliques and separators of its junction tree. In this case six edges has been deleted from the graph. 
 
 The three fitted structures can be compared by calculating a BIC score.
+``` r
+BIC_junction_tree(tch3$cliques, tch3$separators, car, smooth = 0.001)
+#> -20079.89
 
+BIC_junction_tree(tch4$cliques, tch4$separators, car, smooth = 0.001)
+#> -21572.4
 
-
+BIC_junction_tree(tch_thinning$cliques, tch_thinning$separators, car, smooth = 0.001)
+#> -19923.95
+```
 ## For more help
 
 See documentation included in package (vignettes and man) at <https://github.com/nvihrs14/tcherry>
