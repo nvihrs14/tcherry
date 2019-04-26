@@ -29,3 +29,5 @@ The following figure shows an example of a fourth order t-cherry tree learned fr
 ![](inst/images/tch.png)
 
 The R package `tcherry` is available on [GitHub](https://github.com/nvihrs14/tcherry).
+
+# References
