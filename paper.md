@@ -27,4 +27,4 @@ The R [@R] package `tcherry` contains a variety of functions for learning the st
 The R package `tcherry` is available on [GitHub](https://github.com/nvihrs14/tcherry).
 
 
-![](inst/images/tch.png)
+![](inst/images/tch.png) 
