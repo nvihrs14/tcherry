@@ -1,6 +1,6 @@
 # tcherry
 
-The package is meant for learning the structure of the type of graphical models called t-cherry trees from data. The functions can only be used for categorical data. The purpose of the package is only to provide functions for learning the structure of the graph from given data with no missing values. The functions are attempting to find structures of maximal likelihood. If the corresponding graphical model is to be used in connection with probability propagation or prediction other packages are needed (see the vignette for examples).
+The package is meant for learning the structure of the type of graphical models called t-cherry trees from data. For more information about t-cherry trees see for instance the vignette or Kovács & Szántai (2012). The functions can only be used for categorical data. The purpose of the package is only to provide functions for learning the structure of the graph from given data with no missing values. The functions are attempting to find structures of maximal likelihood. If the corresponding graphical model is to be used in connection with probability propagation or prediction other packages are needed (see the vignette for examples). 
 
 ## Install
 Without vignettes
@@ -52,7 +52,7 @@ Note that the smooth argument is added to cell count when estimating probabiliti
 The graphical structure of af fourth order t-cherry tree for this data can be found by using the same function as above whit k = 4. However in this case, it is chosen to show how increase_order2 can be used to increase the order of the fitted third order t-cherry tree. The typical reason for this choice will be to save time, but often at the cost of a fitted structure of smaller likelihood.
 
 ``` r
-tch4 <- increase_order2(tch3$cliques, car, smooth = 0.001)
+tch4 <- increase_order2(cliques = tch3$cliques, data = car, smooth = 0.001)
 tch4$adj_matrix
 #>            buying maint doors persons lug_boot safety class
 #> buying        0     1     0       1        1      1     1
@@ -70,7 +70,7 @@ Note that the smooth argument is added for the same reasons as above, and the gi
 It can now be attempted to simplify this model by thinning the edges.
 
 ``` r
-tch_thinning <- thinning_edges(tch4$cliques, tch4$separators, car, smooth = 0.001)
+tch_thinning <- thinning_edges(cliques = tch4$cliques, separators = tch4$separators, data = car, smooth = 0.001)
 tch_thinning$adj_matrix
 #>            buying class doors lug_boot maint persons safety
 #> buying        0     1     0        0     1       0      1
@@ -85,22 +85,32 @@ tch_thinning$n_edges_removed
 #> 6
 
 ```
-Notice that in this function the structure is represented by the cliques and separators of its junction tree. In this case six edges has been deleted from the graph. 
+Notice that in this function the structure is represented by the cliques and separators of its junction tree and that the resulting graph is no longer a t-cherry tree. However, the function will always return a triangulated graph. In this case, six edges has been deleted from the graph. The order in which the edges are deleted is random, so the resulting structure may vary.   
 
 The three fitted structures can be compared by calculating a BIC score.
+
 ``` r
-BIC_junction_tree(tch3$cliques, tch3$separators, car, smooth = 0.001)
+BIC_junction_tree(cliques = tch3$cliques, separators = tch3$separators, data = car, smooth = 0.001)
 #> -20079.89
 
-BIC_junction_tree(tch4$cliques, tch4$separators, car, smooth = 0.001)
+BIC_junction_tree(cliques = tch4$cliques, separators = tch4$separators, data = car, smooth = 0.001)
 #> -21572.4
 
-BIC_junction_tree(tch_thinning$cliques, tch_thinning$separators, car, smooth = 0.001)
+BIC_junction_tree(cliques = tch_thinning$cliques, separators = tch_thinning$separators, data = car, smooth = 0.001)
 #> -19923.95
 ```
+Because of the way this score is calculated, it is desired to get a high BIC score. The structure with the highest score is the thinned fourth order t-cherry tree. 
+
 ## For more help
 
 See documentation included in package (vignettes and man) at <https://github.com/nvihrs14/tcherry>
 
+## Feedback
+
+If you experience any problems with this package, you are welcome to contact the authors by email. Notice however that this package was developed as part of our Master Thesis and because we have graduated and no longer work with this subject, it may take a while before issues are addressed. 
+
 ## References
+
 Dua, D. & Graff, C. (2017). UCI machine learning repository.
+
+Kovács, E. & Szántai, T. (2012). Hypergraphs as a mean of discovering the dependence structure of a discrete multivariate probability distribution. Ann Oper Res, 193, 71-90. <https://doi.org/10.1007/s10479-010-0814-y>
