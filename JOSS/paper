@@ -1,1 +1,17 @@
 ---
+title: 'scanstatistics: space-time anomaly detection using scan statistics'
+authors:
+- affiliation: 1
+  name: Benjamin Allévius
+  orcid: 0000-0002-0927-7183
+date: "2 May 2018"
+bibliography: paper.bib
+tags:
+- scan statistic
+- cluster detection
+- anomaly detection
+- spatiotemporal
+affiliations:
+- index: 1
+  name: Department of Mathematics, Stockholm University
+---
