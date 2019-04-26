@@ -6,7 +6,7 @@ authors:
   orcid: 0000-0001-6065-1583
 - affiliation: 1
   name: Maria Knudsen
-  orcid:
+  orcid: 0000-0002-0067-6671
 - affiliation: 1
   name: Ninna Vihrs
   orcid:
