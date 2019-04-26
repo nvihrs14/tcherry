@@ -1,17 +1,21 @@
 ---
-title: 'scanstatistics: space-time anomaly detection using scan statistics'
+title: 'tcherry: Learning the structure of tcherry trees'
 authors:
 - affiliation: 1
-  name: Benjamin Allévius
-  orcid: 0000-0002-0927-7183
-date: "2 May 2018"
+  name: Katrine Kirkeby
+- affiliation: 1
+  name: Maria Knudsen
+- affiliation: 1
+  name: Ninna Vihrs
+date: "26 April 2019"
 bibliography: paper.bib
 tags:
-- scan statistic
-- cluster detection
-- anomaly detection
-- spatiotemporal
+- t-cherry trees
+- Undirected triangulated graphical models
+- Dependencies between variables
 affiliations:
 - index: 1
-  name: Department of Mathematics, Stockholm University
+  name: Department of Mathematical Sciences, Aalborg University
 ---
+
+
