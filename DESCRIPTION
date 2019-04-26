@@ -1,7 +1,7 @@
 Package: tcherry
 Type: Package
 Title: Learning the structure of tcherry trees
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Katrine", "Kirkeby", email = "enir_tak@hotmail.com", role = c("aut")),
     person("Maria", "Knudsen", email = "mariaknudsen@hotmail.dk", role = c("aut")),

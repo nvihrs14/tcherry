@@ -2,7 +2,8 @@
 % Please edit documentation in R/k_tcherry_p_lookahead.R
 \name{k_tcherry_p_lookahead}
 \alias{k_tcherry_p_lookahead}
-\title{Determine a k'th order t-cherry tree from data}
+\title{Determine a k'th order t-cherry tree from data by adding p cliques
+at a time.}
 \usage{
 k_tcherry_p_lookahead(data, k, p, ...)
 }

@@ -68,6 +68,15 @@
 BIC_junction_tree <- function(cliques, separators, data,
                               base_log = 2, ...){
 
+  if (any(is.na(data))){
+    warning(paste("The data contains NA values.",
+                  "Theese will be excluded from tables,",
+                  "which may be problematic.",
+                  "It is highly recommended to manually take",
+                  "care of NA values before using the data as input.",
+                  sep = " "))
+  }
+
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }

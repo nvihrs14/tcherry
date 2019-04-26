@@ -43,6 +43,16 @@
 #' @export
 
 CPT <- function(adj_matrix, data, bayes_smooth = 0){
+
+  if (any(is.na(data))){
+    warning(paste("The data contains NA values.",
+                  "Theese will be excluded from tables,",
+                  "which may be problematic.",
+                  "It is highly recommended to manually take",
+                  "care of NA values before using the data as input.",
+                  sep = " "))
+  }
+
   data <- data.frame(data, stringsAsFactors = FALSE)
   nodes <- rownames(adj_matrix)
   FUN <- function(node){

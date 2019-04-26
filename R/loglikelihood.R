@@ -73,6 +73,16 @@ entropy <- function(var, smooth = 0, log_base = 2){
 #' @export
 
 loglikelihood <- function(cliques, separators, data, ...){
+
+  if (any(is.na(data))){
+    warning(paste("The data contains NA values.",
+                  "Theese will be excluded from tables,",
+                  "which may be problematic.",
+                  "It is highly recommended to manually take",
+                  "care of NA values before using the data as input.",
+                  sep = " "))
+  }
+
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }
