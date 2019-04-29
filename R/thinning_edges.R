@@ -129,6 +129,8 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
     stop("alpha must be a positive numeric value.")
   }
 
+  data <- as.data.frame(data)
+
   cliques <- lapply(cliques, sort)
   separators <- lapply(separators, sort)
 
