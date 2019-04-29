@@ -20,6 +20,8 @@ data <- data.frame("var1" = as.character(var1),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
 
+data_mat <- as.matrix(data)
+
 ChowLiu_cliques <- list(c("var1", "var5"),
                         c("var2", "var5"),
                         c("var3", "var5"),
@@ -30,6 +32,8 @@ ChowLiu_cliques <- list(c("var1", "var5"),
 tcherryCL <- tcherry_CL(data, smooth = 0.1)
 tcherry_ord_inc <- increase_order1(ChowLiu_cliques, data,
                                           smooth = 0.1)
+tcherry_ord_inc2 <- increase_order1(ChowLiu_cliques, data_mat,
+                                   smooth = 0.1)
 
 test_that("results are corrects", {
   expect_equal(tcherry_ord_inc$adj_matrix, tcherryCL$adj_matrix)
@@ -38,6 +42,15 @@ test_that("results are corrects", {
                                tcherryCL$cliques,
                                ignoreOrder = TRUE)$result)
   expect_true(compare::compare(tcherry_ord_inc$separators,
+                               tcherryCL$separators,
+                               ignoreOrder = TRUE)$result)
+
+  expect_equal(tcherry_ord_inc2$adj_matrix, tcherryCL$adj_matrix)
+  expect_equal(tcherry_ord_inc2$n_edges, 11)
+  expect_true(compare::compare(tcherry_ord_inc2$cliques,
+                               tcherryCL$cliques,
+                               ignoreOrder = TRUE)$result)
+  expect_true(compare::compare(tcherry_ord_inc2$separators,
                                tcherryCL$separators,
                                ignoreOrder = TRUE)$result)
 })

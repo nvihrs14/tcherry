@@ -104,6 +104,8 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
     stop("data must be a data frame or a matrix.")
   }
 
+  data <- as.data.frame(data)
+
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
   }

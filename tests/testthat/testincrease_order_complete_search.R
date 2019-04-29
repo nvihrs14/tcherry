@@ -13,12 +13,18 @@ data <- data.frame("var1" = as.character(var1),
                    "var3" = as.character(var3),
                    "var4" = as.character(var4))
 
+data_mat <- as.matrix(data)
+
 ChowLiu_cliques <- list(c("var1", "var2"),
                         c("var1", "var3"),
                         c("var3", "var4"))
 
 tch_complete <- increase_order_complete_search(ChowLiu_cliques, data,
                                               smooth = 0.1)
+tch_complete2 <- increase_order_complete_search(ChowLiu_cliques,
+                                                data_mat,
+                                               smooth = 0.1)
+
 adj_mat <- matrix(c(0, 1, 1, 1,
                     1, 0, 0, 1,
                     1, 0, 0, 1,
@@ -30,6 +36,10 @@ test_that("results are corrects", {
   expect_equal(tch_complete$model$adj_matrix, adj_mat)
   expect_equal(tch_complete$model$n_edges, 5)
   expect_equal(tch_complete$n_models, 3)
+
+  expect_equal(tch_complete2$model$adj_matrix, adj_mat)
+  expect_equal(tch_complete2$model$n_edges, 5)
+  expect_equal(tch_complete2$n_models, 3)
 })
 
 set.seed(43)

@@ -37,6 +37,11 @@ test_that("results are correct", {
                mat_res)
   expect_equal(tcherry_step(data, smooth = 0.001)$weight, 4.269289,
                tolerance = 1e-6)
+
+  expect_equal(tcherry_step(data_matrix, smooth = 0.001)$adj_matrix,
+               mat_res)
+  expect_equal(tcherry_step(data_matrix, smooth = 0.001)$weight, 4.269289,
+               tolerance = 1e-6)
 })
 
 data_numeric <- data

@@ -71,6 +71,8 @@ MIk <- function(variables, data, smooth = 0, log_base = 2){
     stop("data must be a data frame or a matrix.")
   }
 
+  data <- as.data.frame(data)
+
   if (!all(variables %in% colnames(data))){
     stop("All names in variables must be column names of data.")
   }

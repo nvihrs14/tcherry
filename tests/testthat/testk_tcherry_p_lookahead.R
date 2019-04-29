@@ -61,6 +61,9 @@ tch3_complete <- tcherry_complete_search(data, 3, smooth = 0.1)$model
 tch3_p1 <- k_tcherry_p_lookahead(data, 3, 1, smooth = 0.1)
 tch3_pall <- k_tcherry_p_lookahead(data, 3, 4, smooth = 0.1)
 
+tch3_p1m <- k_tcherry_p_lookahead(data_matrix, 3, 1, smooth = 0.1)
+tch3_pallm <- k_tcherry_p_lookahead(data_matrix, 3, 4, smooth = 0.1)
+
 test_that("results are correct", {
   expect_equal(tch3_p1$adj_matrix, tch3_step$adj_matrix)
   expect_equal(tch3_pall$adj_matrix, tch3_complete$adj_matrix)
@@ -68,4 +71,11 @@ test_that("results are correct", {
   expect_equal(tch3_pall$weight, tch3_complete$weight)
   expect_equal(tch3_p1$n_edges, 9)
   expect_equal(tch3_pall$n_edges, 9)
+
+  expect_equal(tch3_p1m$adj_matrix, tch3_step$adj_matrix)
+  expect_equal(tch3_pallm$adj_matrix, tch3_complete$adj_matrix)
+  expect_equal(tch3_p1m$weight, tch3_step$weight)
+  expect_equal(tch3_pallm$weight, tch3_complete$weight)
+  expect_equal(tch3_p1m$n_edges, 9)
+  expect_equal(tch3_pallm$n_edges, 9)
 })

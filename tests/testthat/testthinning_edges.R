@@ -19,6 +19,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var5" = as.character(var5),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
+data_mat <- as.matrix(data)
 
 data_numeric <- data
 data_numeric$var2 <- as.numeric(data_numeric$var2)
@@ -73,6 +74,10 @@ test_that("error messages work", {
 })
 
 graph <- thinning_edges(cliques, separators, data = data, smooth = 0.1)
+graph2 <- thinning_edges(cliques, separators, data = data_mat,
+                         smooth = 0.1)
+
+
 target_mat <- matrix(c(0, 1, 1, 0, 0, 0, 0,
                        1, 0, 1, 0, 1, 0, 0,
                        1, 1, 0, 0, 1, 0, 0,
@@ -80,10 +85,15 @@ target_mat <- matrix(c(0, 1, 1, 0, 0, 0, 0,
                        0, 1, 1, 0, 0, 1, 0,
                        0, 0, 0, 0, 1, 0, 0,
                        0, 0, 0, 0, 0, 0, 0), nrow = 7)
+
 colnames(target_mat) <- rownames(target_mat) <- names(data)
 
 test_that("results are correct", {
   expect_equal(graph$adj_matrix, target_mat)
   expect_equal(graph$n_edges_removed, 4)
   expect_equal(graph$n_edges, 6)
+
+  expect_equal(graph2$adj_matrix, target_mat)
+  expect_equal(graph2$n_edges_removed, 4)
+  expect_equal(graph2$n_edges, 6)
 })

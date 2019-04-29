@@ -67,6 +67,7 @@
 
 cond_independence_test <- function(var1, var2, cond = c(), data,
                                    smooth = 0){
+
   if (any(is.na(data))){
     warning(paste("The data contains NA values.",
                   "Theese will be excluded from tables,",
@@ -79,6 +80,8 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }
+
+  data <- as.data.frame(data)
 
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
@@ -100,6 +103,8 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   else if (smooth < 0){
     stop("smooth must be a non-negative numeric value.")
   }
+
+
 
   if (length(cond) == 0){
     ncond <- 1

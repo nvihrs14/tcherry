@@ -20,10 +20,15 @@ data <- data.frame("var1" = as.character(var1),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
 
+data_mat <- as.matrix(data)
+
 tch <- tcherry_step(data, smooth = 0.001)
 
 test_that("weight is correct", {
   expect_equal(weight_junction_tree(tch$cliques, tch$separators, data,
+                                    smooth = 0.001),
+               tch$weight)
+  expect_equal(weight_junction_tree(tch$cliques, tch$separators, data_mat,
                                     smooth = 0.001),
                tch$weight)
 })

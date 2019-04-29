@@ -45,9 +45,17 @@ test_that("error messages work", {
 tch4 <- tcherry_complete_search(data, 4, smooth = 0.1)
 tch5 <- tcherry_complete_search(data, 5, smooth = 0.1)
 
+tch4m <- tcherry_complete_search(data_matrix, 4, smooth = 0.1)
+tch5m <- tcherry_complete_search(data_matrix, 5, smooth = 0.1)
+
 test_that("number of models and edges are correct", {
   expect_equal(tch4$n_models, 5915)
   expect_equal(tch5$n_models, 455)
   expect_equal(tch4$model$n_edges, 15)
   expect_equal(tch5$model$n_edges, 18)
+
+  expect_equal(tch4m$n_models, 5915)
+  expect_equal(tch5m$n_models, 455)
+  expect_equal(tch4m$model$n_edges, 15)
+  expect_equal(tch5m$model$n_edges, 18)
 })

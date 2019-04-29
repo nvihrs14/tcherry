@@ -20,6 +20,8 @@ data <- data.frame("var1" = as.character(var1),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
 
+data_mat <- as.matrix(data)
+
 data_numeric <- data
 data_numeric$var2 <- as.numeric(data_numeric$var2)
 
@@ -59,9 +61,20 @@ object <- cond_independence_test("var1", "var4",
                                  data = data, smooth = 0.1)
 object_cond <- cond_independence_test("var2", "var3", cond = "var1",
                                       data = data, smooth = 0.1)
+
+object2 <- cond_independence_test("var1", "var4",
+                                 data = data_mat, smooth = 0.1)
+object_cond2 <- cond_independence_test("var2", "var3", cond = "var1",
+                                      data = data_mat, smooth = 0.1)
+
 test_that("results are correct", {
   expect_equal(object$chi_sq_statistic, 0.7512572)
   expect_equal(object$df, 1)
   expect_equal(object_cond$chi_sq_statistic, 0.6297737, tolerance = 1e-7)
   expect_equal(object_cond$df, 8)
+
+  expect_equal(object2$chi_sq_statistic, 0.7512572)
+  expect_equal(object2$df, 1)
+  expect_equal(object_cond2$chi_sq_statistic, 0.6297737, tolerance = 1e-7)
+  expect_equal(object_cond2$df, 8)
 })

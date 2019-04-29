@@ -45,6 +45,9 @@ test_that("error messages work", {
 tch2 <- k_tcherry_step(data, 2, smooth = 0.1)
 tch3 <- k_tcherry_step(data, 3, smooth = 0.1)
 
+tch2m <- k_tcherry_step(data_matrix, 2, smooth = 0.1)
+tch3m <- k_tcherry_step(data_matrix, 3, smooth = 0.1)
+
 CL <- ChowLiu(data, CPTs = FALSE, smooth = 0.1)
 tchstep <- tcherry_step(data, smooth = 0.1)
 
@@ -57,5 +60,15 @@ test_that("results are correct", {
   expect_true(compare::compare(tch3$cliques, tchstep$cliques,
                                ignoreOrder = TRUE)$result)
   expect_true(compare::compare(tch3$separators, tchstep$separators,
+                               ignoreOrder = TRUE)$result)
+
+  expect_equal(tch2m$adj_matrix, CL$skeleton_adj)
+  expect_equal(tch3m$adj_matrix, tchstep$adj_matrix)
+  expect_equal(tch3m$n_edges, 11)
+  expect_equal(tch2m$n_edges, 6)
+  expect_equal(tch3m$weight, tchstep$weight)
+  expect_true(compare::compare(tch3m$cliques, tchstep$cliques,
+                               ignoreOrder = TRUE)$result)
+  expect_true(compare::compare(tch3m$separators, tchstep$separators,
                                ignoreOrder = TRUE)$result)
 })

@@ -19,6 +19,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var5" = as.character(var5),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
+
 data_matrix <- as.matrix(data)
 
 adj_matrix_tcherry <- matrix(c(0, 1, 0, 0, 1, 0, 0,
@@ -29,6 +30,7 @@ adj_matrix_tcherry <- matrix(c(0, 1, 0, 0, 1, 0, 0,
                                0, 1, 0, 1, 1, 0, 0,
                                0, 0, 1, 0, 1, 0, 0),
                              nrow = 7)
+
 colnames(adj_matrix_tcherry) <- rownames(adj_matrix_tcherry) <-
   names(data)
 

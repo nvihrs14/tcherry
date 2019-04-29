@@ -50,4 +50,9 @@ test_that("results are correct", {
                MI2(data$var1, data$var2, smooth = 0.001))
   expect_equal(MIk(c("var1", "var2", "var3"), data, smooth = 0.001),
                MI3(data$var1, data$var2, data$var3, smooth = 0.001))
+
+  expect_equal(MIk(c("var1", "var2"), data_matrix, smooth = 0.001),
+               MI2(data$var1, data$var2, smooth = 0.001))
+  expect_equal(MIk(c("var1", "var2", "var3"), data_matrix, smooth = 0.001),
+               MI3(data$var1, data$var2, data$var3, smooth = 0.001))
 })
