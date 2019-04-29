@@ -87,6 +87,8 @@ n_params_junction_tree <- function(cliques, separators, data){
     stop("All variable names in separators should be in data.")
   }
 
+  data <- as.data.frame(data)
+
   prod_cliq <- sapply(cliques, function(C){
   data_C <- data[, C, drop = FALSE]
   levels <- sapply(data_C, function(col){
