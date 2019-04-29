@@ -117,6 +117,8 @@ loglikelihood <- function(cliques, separators, data, ...){
     stop("All variable names in separators should be in data.")
   }
 
+  data <- as.data.frame(data)
+
   n_obs <- nrow(data)
 
   weight <- weight_junction_tree(cliques, separators, data, ...)
