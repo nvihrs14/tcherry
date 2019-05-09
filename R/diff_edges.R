@@ -1,7 +1,8 @@
 #' Determine the number of differing edges for t-cherry trees
 #'
 #' @description Determines the number of differing edges for two t-cherry
-#' trees over the same universe represented by adjacency matrices,
+#' trees over the same universe and of the same order represented by
+#' adjacency matrices,
 #' i.e. the number of edges in each graph minus the number of edges
 #' common to both t-cherry trees.
 #'
