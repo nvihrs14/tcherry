@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -36,7 +35,7 @@ test_that("error messages work", {
                "k must be a single positive integer.")
   expect_error(tcherry_complete_search(data, 1.1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
-  expect_error(tcherry_complete_search(data, -1, smooth = 0.001),
+  expect_error(tcherry_complete_search(data, - 1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
   expect_error(tcherry_complete_search(data, 1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
@@ -48,12 +47,24 @@ tch5 <- tcherry_complete_search(data, 5, smooth = 0.1)
 tch4m <- tcherry_complete_search(data_matrix, 4, smooth = 0.1)
 tch5m <- tcherry_complete_search(data_matrix, 5, smooth = 0.1)
 
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(tcherry_complete_search(data_na, 5, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
+
 test_that("number of models and edges are correct", {
   expect_equal(tch4$n_models, 5915)
   expect_equal(tch5$n_models, 455)
   expect_equal(tch4$model$n_edges, 15)
   expect_equal(tch5$model$n_edges, 18)
-
   expect_equal(tch4m$n_models, 5915)
   expect_equal(tch5m$n_models, 455)
   expect_equal(tch4m$model$n_edges, 15)

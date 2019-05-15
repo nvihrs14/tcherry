@@ -28,6 +28,9 @@ Determines the structure of a t-cherry tree
 by expanding a Chow-Liu tree.
 }
 \details{
+This function i mainly kept for historical purposes, and it is
+recommended to use \code{\link{increase_order2}} instead.
+
 The algorithm for constructing the t-cherry tree from
 a Chow-Liu tree is as described in \insertRef{EKTS}{tcherry}.
 
@@ -56,17 +59,6 @@ data <- data.frame("var1" = as.character(var1),
 
 # smooth used in both MI2 and MI3
 (tch <- tcherry_CL(data, smooth = 0.1))
-
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \references{
 \insertRef{EKTS}{tcherry}

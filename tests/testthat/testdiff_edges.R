@@ -26,6 +26,20 @@ rownames(m_names_2) <- colnames(m_names_2) <- letters[4:6]
 
 m_nonames <- matrix(c(0, 1, 1, 0), 2, 2)
 
+m4 <- matrix(c(0, 1, 1, 0,
+               1, 0, 1, 1,
+               1, 1, 0, 1,
+               0, 1, 1, 0),
+             nrow = 4, ncol = 4)
+m5 <- matrix(c(0, 1, 1, 1,
+               1, 0, 1, 1,
+               1, 1, 0, 1,
+               1, 1, 1, 0),
+             nrow = 4, ncol = 4)
+
+rownames(m4) <- colnames(m4) <- letters[1:4]
+rownames(m5) <- colnames(m5) <- letters[1:4]
+
 test_that("error messages work", {
   expect_error(diff_edges_tch(l, l), "Arguments must be matrices.")
   expect_error(diff_edges_tch(letters, letters), "Arguments must be numeric.")
@@ -53,6 +67,9 @@ test_that("error messages work", {
                "The node names must be the same in both graphs.")
   expect_error(diff_edges_tch(m_nonames, m_nonames),
                "The matrices must be named.")
+  expect_error(diff_edges_tch(m4, m5),
+               paste("The graphs do not have the same number of edges indicating",
+                     "that the t-cherry trees do not have the same order", sep = " "))
 })
 
 m1 <- matrix(c(0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0),
@@ -62,7 +79,6 @@ m2 <- matrix(c(0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0),
 
 rownames(m1) <- colnames(m1) <- letters[1:4]
 rownames(m2) <- colnames(m2) <- letters[1:4]
-
 
 m1_names <- m1
 colnames(m1_names) <- rownames(m1_names) <- letters[1:4]

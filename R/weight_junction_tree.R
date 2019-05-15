@@ -1,4 +1,5 @@
 #' Calculates the weight of a junction tree
+#' 
 #' @description Calculates the weight of a junction tree with the given
 #' cliques and separators.
 #'
@@ -10,18 +11,24 @@
 #' @details The weight of the junction tree is calculated
 #' as \deqn{\sum MI(clique)-\sum MI(separator)} where the sum is over
 #' all cliques and separators respectively.
+#' 
 #' @return The weight of the junction tree.
+#' 
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
 #' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
 #'
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#' 
 #' @importFrom Rdpack reprompt
+#' 
 #' @references
 #' \insertRef{EKTShyp}{tcherry}
+#' 
 #' @seealso
 #' \code{\link{MIk}} for mutual infomation for k variables.
+#' 
 #' @examples
 #' set.seed(43)
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
@@ -34,6 +41,7 @@
 #'                    "var2" = as.character(var2),
 #'                    "var3" = as.character(var3),
 #'                    "var4" = as.character(var4))
+#'                    
 #' cliques <- list(c("var1", "var2", "var4"), c("var1", "var3", "var4"))
 #' separators <- list(c("var1", "var4"))
 #'

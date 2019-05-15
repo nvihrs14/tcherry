@@ -22,8 +22,8 @@ tree.}
 The BIC value.
 }
 \description{
-Calculates the BIC value for a graphical model where the
-graph has the given junction tree.
+Calculates the BIC value for a graphical model from a junction tree
+for the graph.
 }
 \details{
 The BIC is calculated as \deqn{loglik - (n_param / 2)
@@ -33,7 +33,6 @@ function, \eqn{n_param} is the number of free parameters and
 BIC criterion is to be preferred.
 }
 \examples{
-
 set.seed(43)
 var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))

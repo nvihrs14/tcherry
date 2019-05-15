@@ -32,12 +32,14 @@ p_target <- array(c(0.1, 0.2, 0.05, 0.4, 0.005, 0.015, 0.13, 0.1),
                   dimnames = list("V1" = c("a", "b"),
                                   "V2" = c("a", "b"),
                                   "V3" = c("a", "b")))
+                                  
 p_approx <- array(c(0.01, 0.23, 0.06, 0.4, 0.005, 0.018,
                     0.137, 0.14),
                   dim = c(2, 2, 2),
                   dimnames = list("V1" = c("a", "b"),
                                   "V2" = c("a", "b"),
                                   "V3" = c("a", "b")))
+                                  
 kullback(p_target, p_approx)
 }
 \references{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/random_tcherry.R
 \name{random_tcherry}
 \alias{random_tcherry}
-\title{Constructs a random t-cherry tree}
+\title{Constructs a random third order t-cherry tree}
 \usage{
 random_tcherry(n, n_levels, noise = NULL)
 }
@@ -12,41 +12,42 @@ random_tcherry(n, n_levels, noise = NULL)
 \item{n_levels}{Vector with the number of levels for each variable.}
 
 \item{noise}{If given makes it possible to control the strength
-of dependences. See details.}
+of dependencies. See details.}
 }
 \value{
 A list containing the following components:
 \itemize{
-\item \code{adj_matrix} The adjacency matrix for the t-cherry tree.
+\item \code{adj_matrix} The adjacency matrix for the third order t-cherry tree.
 \item \code{CPTs} Conditional probability tables for a corresponding
 bayesian network.
 }
 }
 \description{
-Constructs a random t-cherry tree with conditional
+Constructs a random third order t-cherry tree with conditional
 probability tables.
 }
 \details{
-The t-cherry tree is constructed by choosing the first edge
+The third order t-cherry tree is constructed by choosing the first edge
 at random. Then a random node is chosen to be connected to the two
 nodes of a random already existing edge.
 
 The constructed conditional probability tables are based on the
-structures of a bayesian network with the t-cherry tree as domain
+structure of a bayesian network with the third order t-cherry tree as domain
 graph.
 The two nodes firstly added to the graph are considered to have no
 parents in the bayesian network, and their probability tables are
 constructed by normalised random tables.
 All other nodes have exactly two parents. If the argument \code{noise}
 is \code{NULL} these conditional probability tables are also made by
-random tables with suiting normalisation.
+random tables with proper normalisation.
 
 If \code{noise} is given,
 the conditional probability table is first constructed for the child
 given one parent and a specific level for the second parent.
 The conditional probability tables for the remaining levels of the
 second parent is then constructed from the first one by adding
-uniformly distributed simulations in the interval [0 ; \code{noise}].
+uniformly distributed simulations in the interval [0 ; \code{noise}]
+before normalisation.
 
 This makes it possible to control whether the child should depend
 strongly on one parent and not necessarily both. For instance
@@ -57,14 +58,6 @@ the second parent given the first.
 set.seed(43)
 graph <- random_tcherry(5, rep(2, 5))
 graph_noise <- random_tcherry(5, rep(2, 5), noise = 0.01)
-# For simulation
-library(gRain)
-comp <- compileCPT(graph$CPTs)
-network <- grain(comp)
-# Bayesian network
-plot(network)
-sim <- simulate(network, nsim = 500)
-
 }
 \author{
 Katrine Kirkeby, \email{enir_tak@hotmail.com}

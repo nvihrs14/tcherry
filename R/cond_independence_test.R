@@ -4,8 +4,8 @@
 #' likelihood ratio test.
 #'
 #' @param var1,var2 Variables to test independence for.
-#' @param cond Variables to condition on. If empty the test is just an
-#' independence test.
+#' @param cond Vector of variable names to condition on. If empty, the test is just
+#' an independence test.
 #' @param data Data with realisations of the variables.
 #' @param smooth Additional cell counts when estimating probabilities.
 #' May be used to avoid zero probabilities.
@@ -19,10 +19,10 @@
 #' number of times the current combination of states has been seen in
 #' the data and the probability distributions are estimated. This
 #' estimation is done with maximum likelihood if \code{smooth} is set
-#' to 0. If this gives zero probabilities the \code{smooth} argument
+#' to 0. If this gives zero probabilities, the \code{smooth} argument
 #' must be used to prevent it in order to calculate the test size.
 #'
-#' The test statistic follows assymptotically a chi-square distribution
+#' The test statistic follows assymptotically a chi-squared distribution
 #' with \eqn{(n1 - 1)(n2 - 1)n_cond} degrees of freedom, where \eqn{n1}
 #' and \eqn{n2}
 #' are the number of states for \code{var1} and \code{var2} and
@@ -58,11 +58,9 @@
 #'                    "var4" = as.character(var4),
 #'                    "var5" = as.character(var5))
 #'
-#'
 #' cond_independence_test("var1", "var4", data = data, smooth = 0.1)
 #' cond_independence_test("var2", "var3", cond = c("var1", "var5"),
 #'                        data = data, smooth = 0.1)
-#'
 #' @export
 
 cond_independence_test <- function(var1, var2, cond = c(), data,
@@ -89,7 +87,18 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   ))){
     stop("Some columns are not characters or factors.")
   }
-
+  
+  if (! is.null(cond)){
+    if (class(cond) != "character" | ! is.vector(cond)){
+      stop(paste("cond must either be a single variable name or a vector,",
+                 "possibly empty, of names.", sep = " "))
+    }
+  }
+  
+  if (length(var1) != 1 | length(var2) != 1){
+    stop("var1 and var2 must each be a single name.")
+  }
+  
   if (length(setdiff(c(var1, var2, cond), names(data))) != 0){
     stop("var1, var2 and the variables in cond must be variable names in data.")
   }
@@ -103,8 +112,6 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   else if (smooth < 0){
     stop("smooth must be a non-negative numeric value.")
   }
-
-
 
   if (length(cond) == 0){
     ncond <- 1
@@ -173,5 +180,4 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   return(list("chi_sq_statistic" = chi_sq,
               "df" = df,
               "p_value" = p))
-
 }

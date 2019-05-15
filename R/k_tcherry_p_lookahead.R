@@ -1,5 +1,5 @@
 #' Determine a k'th order t-cherry tree from data by adding p cliques
-#' at a time.
+#' at a time
 #'
 #' @description Determine the structure of a k'th order t-cherry tree
 #' from data with realisations of n variables based on a greedy stepwise
@@ -13,18 +13,19 @@
 #' @details Notice that for \eqn{p = 1} it is the same as using
 #' \code{k_tcherry_step} and for \eqn{p = n - (k - 1)} it is the same
 #' as using \code{tcherry_complete_search}.
+#' Note that for \eqn{p = 1} it is faster to use \code{\link{k_tcherry_step}}
 #'
 #' The algorithm for constructing the t-cherry tree from
 #' data is based on an atempt to minimize the Kullback-Leibler
 #' divergence by maximizing the weight
 #' \deqn{\sum MI(clique) - \sum MI(separator).}
 #' The first sum is over the cliques and the second over the
-#' separators of the junction tree of the preliminary t-cherry tree.
+#' separators of the junction tree of the t-cherry tree.
 #' In each step all possibilities of p new cliques are added to the
 #' preliminary tree.
 #' The one with the highest weight is chosen as the new preliminary
 #' t-cherry tree, and the procedure is repeated untill all variables
-#' has been added.
+#' have been added.
 #'
 #' @return A list containing the following components:
 #' \itemize{
@@ -67,17 +68,6 @@
 #'
 #' # smooth used in MIk
 #' (tch <- k_tcherry_p_lookahead(data, k = 3, p = 2, smooth = 0.1))
-#'
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 k_tcherry_p_lookahead <- function(data, k, p, ...){
@@ -118,6 +108,12 @@ k_tcherry_p_lookahead <- function(data, k, p, ...){
 
   nodes <- names(data)
   n_var <- length(nodes)
+  
+  if (p >= n_var - (k - 1)){
+    message(paste("Note that p is greather than or equal to the number of cliques",
+                  "in the graph. Therfore, all cliques will be added in one step.",
+                  sep = " "))
+  }
 
   first_cliques <- utils::combn(nodes, k)
 
@@ -153,13 +149,13 @@ k_tcherry_p_lookahead <- function(data, k, p, ...){
 
     if (first_time){
       n_iter <- min(p - 1, n_cliques_remaining)
-    }else{
+    } else {
       n_iter <- min(p, n_cliques_remaining)
     }
 
     if (n_iter == 0){
       iterations <- c()
-    }else{
+    } else {
       iterations <- 1:n_iter
     }
 
@@ -228,11 +224,9 @@ k_tcherry_p_lookahead <- function(data, k, p, ...){
 
   n_cliques_remaining <- n_cliques_remaining - n_iter
   first_time <- FALSE
-
   }
 
   current_model$n_edges <- sum(current_model$adj_matrix) / 2
 
   return(c(current_model[- 3]))
-
 }

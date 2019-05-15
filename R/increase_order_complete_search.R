@@ -1,8 +1,8 @@
-#' Determine the (k + 1)'th order t-cherry tree from a k'th order
-#' t-cherry tree with the greatest weight
+#' Determine the (k + 1)'th order t-cherry tree with the highest weight from
+#' a k'th order t-cherry tree 
 #'
 #' @description Determine the structure of the (k + 1)'th order t-cherry
-#' tree from a k'th order t-cherry tree with the greatest weight based
+#' tree with the highest weight from a k'th order t-cherry tree based
 #' on a complete search.
 #'
 #' @param tch_cliq A list containing the cliques of a k'th order
@@ -11,7 +11,6 @@
 #' @param ... Additional arguments passed to \code{weight_junction_tree}.
 #'
 #' @details
-#'
 #' The algorithm for constructing the (k + 1)'th order t-cherry tree from
 #' a k'th order t-cherry tree is based on an atempt to minimize the
 #' Kullback-Leibler divergence, by mazimising the weight. All possible
@@ -77,16 +76,6 @@
 #'
 #' (tch <- increase_order_complete_search(ChowLiu_cliques, data,
 #'                                        smooth = 0.1))
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$model$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 increase_order_complete_search <- function(tch_cliq, data, ...){
@@ -133,10 +122,8 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
   }
 
   # Reconstruct k and k'th order t-cherry tree.
-
   nodes <- names(data)
   n_var <- length(nodes)
-
   n_cliq <- length(tch_cliq)
   k <- length(tch_cliq[[1]])
 
@@ -146,6 +133,7 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
 
   tch_adj <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(tch_adj) <- colnames(tch_adj) <- nodes
+  
   for (i in 1:n_cliq) {
     tch_adj[tch_cliq[[i]], tch_cliq[[i]]] <- 1
     diag(tch_adj[tch_cliq[[i]], tch_cliq[[i]]]) <- 0
@@ -166,7 +154,6 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
   n_edges <- sum(tch_adj) / 2
 
   # Making all possible structures.
-
   first_cliques <- utils::combn(nodes, k + 1)
   models <- list()
 
@@ -240,5 +227,4 @@ increase_order_complete_search <- function(tch_cliq, data, ...){
 
   return(list("model" = model,
               "n_models" = length(models)))
-
 }

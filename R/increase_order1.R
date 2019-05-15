@@ -9,7 +9,7 @@
 #' @param data The data the tree structure should be based on.
 #' @param ... Additional arguments passed to \code{MIk}.
 #'
-#' @details The algorithms for constructing the (k+1)'th order t-cherry
+#' @details The algorithms for constructing the (k + 1)'th order t-cherry
 #' tree from a k'th order t-cherry tree are greedy algorithms.
 #' \code{increase_order1} attempts to maximize the sum of
 #' mutual information of the cliques and
@@ -22,7 +22,7 @@
 #'
 #' In \code{increase_order1} the procedure is:
 #' \itemize{
-#' \item Starting from the k'th order t-cherry tree make a complete set
+#' \item Starting from the k'th order t-cherry tree, make a complete set
 #' of the (k + 1) variables with highest mutual information which
 #' satisfies
 #' that this only adds one edge to the original graph. Remove these
@@ -35,20 +35,19 @@
 #' \item Continue until all variables are in a clique of size (k + 1).
 #' }
 #'
-#' For \code{increase_order2} the procedure is to start from
-#' the k'th order t-cherry tree and then choose the first cherry as the
-#' (k + 1) variables with highest mutual information which satisfies that
-#' it only adds one edge to the existing graph. This is the preliminary
-#' t-cherry tree. Then all possible new cherries of size (k + 1) are
-#' added
-#' stepwise to this tree and the weight \deqn{\sum MI(clique) -
-#' \sum MI(separator)} is calculated. The first sum is over the cliques
-#' and the second over the separators of the junction tree of the
-#' preliminary t-cherry tree. Again new cherries are only possible if
-#' only one edge is added to the existing graph.
-#' The one with the highest weight is chosen as the new preliminary
-#' t-cherry tree, and the procedure is repeated untill all variables
-#' has been added.
+#' For \code{increase_order2} the procedure is: Start with
+#' the k'th order t-cherry tree T_k and set T_(k + 1) = T_k.
+#' Choose the set of (k + 1) variables with highest mutual information which
+#' satisfies that making the set complete in T_(k + 1) adds only one edge.
+#' Let this set be the first cherry/clique and make it complete in T_(k + 1).
+#' Consider all possible new cherries of size (k + 1).
+#' A new cherry is possible if k of the variables are already in an
+#' existing cherry, and making the set complete only adds one edge in T_(k + 1).
+#' For each new cherry, calculate the weight \deqn{MI(clique) - MI(separator)}
+#' for the new clique and separator of the junction tree for the preliminary
+#' (k + 1)'th order t-cherry tree. Add the cherry with the highest weight to
+#' T_(k + 1). Repeat the procedure until T_(k + 1) is a (k + 1)'th order
+#' t-cherry tree. 
 #'
 #' @return A list containing the following components:
 #' \itemize{
@@ -61,6 +60,7 @@
 #' junction tree for the (k + 1)'th order t-cherry tree.
 #' \item \code{n_edges} The number of edges in the resulting graph.
 #' }
+#' 
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
@@ -95,20 +95,10 @@
 #'                         c("var3", "var7"),
 #'                         c("var4", "var6"),
 #'                         c("var5", "var6"))
+#'                         
 #' # smooth used in MIk
 #' (tch <- increase_order1(ChowLiu_cliques, data, smooth = 0.1))
 #' (tch2 <- increase_order2(ChowLiu_cliques, data, smooth = 0.1))
-#'
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 increase_order1 <- function(tch_cliq, data, ...){
@@ -258,5 +248,4 @@ increase_order1 <- function(tch_cliq, data, ...){
               "cliques" = cliques,
               "separators" = separators,
               "n_edges" = n_edges_graph))
-
 }

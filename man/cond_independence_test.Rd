@@ -9,8 +9,8 @@ cond_independence_test(var1, var2, cond = c(), data, smooth = 0)
 \arguments{
 \item{var1, var2}{Variables to test independence for.}
 
-\item{cond}{Variables to condition on. If empty the test is just an
-independence test.}
+\item{cond}{Vector of variable names to condition on. If empty, the test is just
+an independence test.}
 
 \item{data}{Data with realisations of the variables.}
 
@@ -38,10 +38,10 @@ where the sum is over all states of the variables, n_comb is the
 number of times the current combination of states has been seen in
 the data and the probability distributions are estimated. This
 estimation is done with maximum likelihood if \code{smooth} is set
-to 0. If this gives zero probabilities the \code{smooth} argument
+to 0. If this gives zero probabilities, the \code{smooth} argument
 must be used to prevent it in order to calculate the test size.
 
-The test statistic follows assymptotically a chi-square distribution
+The test statistic follows assymptotically a chi-squared distribution
 with \eqn{(n1 - 1)(n2 - 1)n_cond} degrees of freedom, where \eqn{n1}
 and \eqn{n2}
 are the number of states for \code{var1} and \code{var2} and
@@ -63,11 +63,9 @@ data <- data.frame("var1" = as.character(var1),
                    "var4" = as.character(var4),
                    "var5" = as.character(var5))
 
-
 cond_independence_test("var1", "var4", data = data, smooth = 0.1)
 cond_independence_test("var2", "var3", cond = c("var1", "var5"),
                        data = data, smooth = 0.1)
-
 }
 \author{
 Katrine Kirkeby, \email{enir_tak@hotmail.com}

@@ -15,10 +15,10 @@
 #' \code{cond_independence_test}
 #'
 #' @details
-#' The edges in the graph are removed one by one if the respetive
+#' The edges in the graph are removed one by one if the respective
 #' conditional independence test cannot be rejected. An edge is only
-#' considered if its removal results in a new triangulated graph. This
-#' means that only edges in one clique only are considered.
+#' considered if its removal results in a new triangulated graph,
+#' i.e. the edge is in one clique only.
 #'
 #' @return A list containing the following components:
 #' \itemize{
@@ -71,7 +71,6 @@
 #'
 #' thinning_edges(cliques, separators, data = data, alpha = 0.1,
 #'                smooth = 0.1)
-#'
 #' @export
 
 thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
@@ -88,6 +87,8 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }
+  
+  data <- as.data.frame(data)
 
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
@@ -128,8 +129,6 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
   else if (alpha <= 0){
     stop("alpha must be a positive numeric value.")
   }
-
-  data <- as.data.frame(data)
 
   cliques <- lapply(cliques, sort)
   separators <- lapply(separators, sort)
@@ -180,7 +179,6 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
         separators <- separators[- idx_sep]
       }
 
-
       new_clique_2 <- sort(c(var2, cond))
 
       is_sep_2 <- sapply(separators, function(sep){
@@ -195,7 +193,7 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
       }
 
       cliques <- c(cliques, new_cliques)
-      new_sep <- intersect(new_clique_1, new_clique_2)
+      new_sep <- cond
       separators <- c(separators, list(new_sep))
 
       data_edges_yes <- edges_in_one_clique(cliques)$data
@@ -207,14 +205,14 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
     }
   }
 
-  # Reconstructing adjacency matrix from cliques
-
+  # Reconstructing adjacency matrix from cliques.
   nodes <- sort(unique(unlist(cliques)))
   n_var <- length(nodes)
   n_cliq <- length(cliques)
 
   adj_matrix <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(adj_matrix) <- colnames(adj_matrix) <- nodes
+  
   for (i in 1:n_cliq) {
     if (length(cliques[[i]]) != 1){
     adj_matrix[cliques[[i]], cliques[[i]]] <- 1
@@ -230,10 +228,3 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
               "n_edges" = n_edges_graph,
               "n_edges_removed" = n_edges_removed))
 }
-
-
-
-
-
-
-

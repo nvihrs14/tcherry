@@ -1,6 +1,6 @@
-#' Determines a t-cherry tree from data
+#' Determines a third order t-cherry tree from data
 #'
-#' @description Determines the structure of a t-cherry tree
+#' @description Determines the structure of a third order t-cherry tree
 #' from data based on a greedy stepwise approach.
 #'
 #' @param data The data the tree structure should be based on.
@@ -12,28 +12,28 @@
 #' recommended to use \code{\link{k_tcherry_step}} with \eqn{k=3},
 #' because this function runs faster.
 #'
-#' The algorithm for constructing the t-cherry tree from
+#' The algorithm for constructing the third order t-cherry tree from
 #' data is based on an atempt to minimize the Kullback-Leibler
 #' divergence. The first cherry is chosen as the triplet with
-#' highest mutual information. This is the preliminary t-cherry
+#' highest mutual information. This is the preliminary third order t-cherry
 #' tree. Then all possible new cherries are added stepwise to this
 #' tree and the weight \deqn{\sum MI3(clique) - \sum MI2(separator)}
 #' is calculated.
 #' The first sum is over the cliques and the second over the
-#' separators of the junction tree of the preliminary t-cherry tree.
+#' separators of the junction tree of the preliminary third order t-cherry tree.
 #' The one with the highest weight is chosen as the new preliminary
-#' t-cherry tree, and the procedure is repeated untill all variables
+#' third order t-cherry tree, and the procedure is repeated untill all variables
 #' has been added.
 #'
 #' @return A list containing the following components:
 #' \itemize{
-#' \item \code{adj_matrix} The adjacency matrix for the t-cherry
+#' \item \code{adj_matrix} The adjacency matrix for the third order t-cherry
 #' tree.
-#' \item \code{weight} The weight of the final t-cherry tree.
+#' \item \code{weight} The weight of the final third order t-cherry tree.
 #' \item \code{cliques} A list containing the cliques (cherries) of
-#'  the t-cherry tree.
+#'  the third order t-cherry tree.
 #' \item \code{separators} A list containing the separators of a
-#' junction tree for the t-cherry tree.
+#' junction tree for the third order t-cherry tree.
 #' }
 #'
 #' @author
@@ -68,17 +68,6 @@
 #'
 #' # smooth used in both MI2 and MI3
 #' (tch <- tcherry_step(data, smooth = 0.1))
-#'
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 tcherry_step <- function(data, ...){
@@ -155,6 +144,7 @@ tcherry_step <- function(data, ...){
     new_cliques_list <- new_seps_list <- new_var_list <-
       as.list(weight_next_step)
     idx <- 1
+    
     for (i in 1:nrow(tcherry_edges)){
       for (var in nodes_remaining){
         new_sep <- unlist(tcherry_edges[i, ])
@@ -198,6 +188,7 @@ tcherry_step <- function(data, ...){
       adj_matrix[edge_1, edge_3] <-
       adj_matrix[edge_3, edge_1] <- 1
   }
+  
   return(list("adj_matrix" = adj_matrix,
               "weight" = weight,
               "cliques" = cliques,

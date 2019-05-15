@@ -32,6 +32,20 @@ adj_mat <- matrix(c(0, 1, 1, 1,
 
 colnames(adj_mat) <- rownames(adj_mat) <- names(data)
 
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(increase_order_complete_search(ChowLiu_cliques, data_na,
+                                                smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
+
 test_that("results are corrects", {
   expect_equal(tch_complete$model$adj_matrix, adj_mat)
   expect_equal(tch_complete$model$n_edges, 5)

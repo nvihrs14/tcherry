@@ -7,7 +7,11 @@
 #' @param ... Additional arguments passed to \code{MI2} and
 #' \code{MI3}.
 #'
-#' @details The algorithm for constructing the t-cherry tree from
+#' @details 
+#' This function i mainly kept for historical purposes, and it is
+#' recommended to use \code{\link{increase_order2}} instead.
+#' 
+#' The algorithm for constructing the t-cherry tree from
 #' a Chow-Liu tree is as described in \insertRef{EKTS}{tcherry}.
 #'
 #' The algorithm is greedy in the sence that it always attempts to
@@ -23,6 +27,7 @@
 #' \item \code{separators} A list containing the separators of a
 #' junction tree for the t-cherry tree.
 #' }
+#' 
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
@@ -58,17 +63,6 @@
 #'
 #' # smooth used in both MI2 and MI3
 #' (tch <- tcherry_CL(data, smooth = 0.1))
-#'
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 tcherry_CL <- function(data, ...){
@@ -173,7 +167,7 @@ tcherry_CL <- function(data, ...){
           as.matrix(MI3_tab[, 1:3]) %in% tcherry_nodes,
           nrow = nrow(MI3_tab))) == 3)
 
-        MI3_tab <- MI3_tab[-idx_delete, ]
+        MI3_tab <- MI3_tab[- idx_delete, ]
 
         i <- 0
         j <- j + 1
@@ -186,5 +180,4 @@ tcherry_CL <- function(data, ...){
   return(list("adj_matrix" = adj_matrix,
               "cliques" = cliques,
               "separators" = separators))
-
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/loglikelihood.R
 \name{loglikelihood}
 \alias{loglikelihood}
-\title{Calculates the maximum log-likelihood}
+\title{Calculates the log-likelihood value}
 \usage{
 loglikelihood(cliques, separators, data, ...)
 }
@@ -34,7 +34,6 @@ Calculates the value as \deqn{n_obs * (weight - \sum H(A))}
  probabilities.
 }
 \examples{
-
 set.seed(43)
 var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))

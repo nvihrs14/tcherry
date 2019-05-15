@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -34,6 +33,18 @@ tcherry_ord_inc <- increase_order1(ChowLiu_cliques, data,
                                           smooth = 0.1)
 tcherry_ord_inc2 <- increase_order1(ChowLiu_cliques, data_mat,
                                    smooth = 0.1)
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(increase_order1(ChowLiu_cliques, data_na, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are corrects", {
   expect_equal(tcherry_ord_inc$adj_matrix, tcherryCL$adj_matrix)

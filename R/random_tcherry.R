@@ -1,33 +1,34 @@
-#' Constructs a random t-cherry tree
+#' Constructs a random third order t-cherry tree
 #'
-#' @description Constructs a random t-cherry tree with conditional
+#' @description Constructs a random third order t-cherry tree with conditional
 #' probability tables.
 #'
 #' @param n The number of variables/nodes in the graph.
 #' @param n_levels Vector with the number of levels for each variable.
 #' @param noise If given makes it possible to control the strength
-#'  of dependences. See details.
+#'  of dependencies. See details.
 #'
-#' @details The t-cherry tree is constructed by choosing the first edge
+#' @details The third order t-cherry tree is constructed by choosing the first edge
 #' at random. Then a random node is chosen to be connected to the two
 #' nodes of a random already existing edge.
 #'
 #' The constructed conditional probability tables are based on the
-#' structures of a bayesian network with the t-cherry tree as domain
+#' structure of a bayesian network with the third order t-cherry tree as domain
 #' graph.
 #' The two nodes firstly added to the graph are considered to have no
 #' parents in the bayesian network, and their probability tables are
 #' constructed by normalised random tables.
 #' All other nodes have exactly two parents. If the argument \code{noise}
 #' is \code{NULL} these conditional probability tables are also made by
-#' random tables with suiting normalisation.
+#' random tables with proper normalisation.
 #'
 #' If \code{noise} is given,
 #' the conditional probability table is first constructed for the child
 #' given one parent and a specific level for the second parent.
 #' The conditional probability tables for the remaining levels of the
 #' second parent is then constructed from the first one by adding
-#' uniformly distributed simulations in the interval [0 ; \code{noise}].
+#' uniformly distributed simulations in the interval [0 ; \code{noise}]
+#' before normalisation.
 #'
 #' This makes it possible to control whether the child should depend
 #' strongly on one parent and not necessarily both. For instance
@@ -36,7 +37,7 @@
 #'
 #' @return A list containing the following components:
 #' \itemize{
-#' \item \code{adj_matrix} The adjacency matrix for the t-cherry tree.
+#' \item \code{adj_matrix} The adjacency matrix for the third order t-cherry tree.
 #' \item \code{CPTs} Conditional probability tables for a corresponding
 #' bayesian network.
 #' }
@@ -52,17 +53,10 @@
 #' set.seed(43)
 #' graph <- random_tcherry(5, rep(2, 5))
 #' graph_noise <- random_tcherry(5, rep(2, 5), noise = 0.01)
-#' # For simulation
-#' library(gRain)
-#' comp <- compileCPT(graph$CPTs)
-#' network <- grain(comp)
-#' # Bayesian network
-#' plot(network)
-#' sim <- simulate(network, nsim = 500)
-#'
 #' @export
 
 random_tcherry <- function(n, n_levels, noise = NULL){
+  
   if (length(n) != 1 | ! is.numeric(n)){
     stop("n must be a single integer.")
   }
@@ -92,9 +86,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
   if (length(n_levels) != n){
     stop("The number of entries in n_level must be n.")
   }
-
-
-
+  
   var_names <- paste("V", 1:n, sep = "")
   adj_matrix <- matrix(0, nrow = n, ncol = n)
   rownames(adj_matrix) <- colnames(adj_matrix) <- var_names
@@ -125,6 +117,7 @@ random_tcherry <- function(n, n_levels, noise = NULL){
 
   # Choosing how to add remaining nodes.
   i <- 3
+  
   while (length(nodes_remaining) != 0){
     new_var <- sample(nodes_remaining, 1)
     edges_idx <- which(adj_matrix == 1, arr.ind = TRUE)

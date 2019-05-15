@@ -38,6 +38,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
                    "var4" = as.character(var4))
+                   
 cliques <- list(c("var1", "var2", "var4"), c("var1", "var3", "var4"))
 separators <- list(c("var1", "var4"))
 

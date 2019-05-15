@@ -5,7 +5,7 @@ entropy <- function(var, smooth = 0, log_base = 2){
   - sum(p_tab * log(p_tab, base = log_base))
 }
 
-#' Calculates the maximum log-likelihood
+#' Calculates the log-likelihood value
 #'
 #' @description Calculates the value of the log-likelihood function for a
 #' graphical model with the given junction tree after inserting estimated
@@ -38,7 +38,6 @@ entropy <- function(var, smooth = 0, log_base = 2){
 #' of a junction tree.
 #'
 #' @examples
-#'
 #' set.seed(43)
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
@@ -87,6 +86,8 @@ loglikelihood <- function(cliques, separators, data, ...){
     stop("data must be a data frame or a matrix.")
   }
 
+  data <- as.data.frame(data)
+  
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
   }
@@ -116,8 +117,6 @@ loglikelihood <- function(cliques, separators, data, ...){
   if (length(setdiff(unique(unlist(separators)), colnames(data))) != 0){
     stop("All variable names in separators should be in data.")
   }
-
-  data <- as.data.frame(data)
 
   n_obs <- nrow(data)
 

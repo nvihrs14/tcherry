@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -30,14 +29,27 @@ mat_res <- matrix(c(0, 1, 1, 0, 0, 0, 0,
                     0, 1, 1, 1, 0, 0, 0,
                     0, 0, 1, 1, 0, 0, 0),
                   nrow = 7)
+
 rownames(mat_res) <- colnames(mat_res) <- names(data)
+
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(tcherry_step(data_na, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are correct", {
   expect_equal(tcherry_step(data, smooth = 0.001)$adj_matrix,
                mat_res)
   expect_equal(tcherry_step(data, smooth = 0.001)$weight, 4.269289,
                tolerance = 1e-6)
-
   expect_equal(tcherry_step(data_matrix, smooth = 0.001)$adj_matrix,
                mat_res)
   expect_equal(tcherry_step(data_matrix, smooth = 0.001)$weight, 4.269289,

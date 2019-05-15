@@ -38,10 +38,10 @@ triangulated graph based on a likelihood ratio test for conditional
 independence.
 }
 \details{
-The edges in the graph are removed one by one if the respetive
+The edges in the graph are removed one by one if the respective
 conditional independence test cannot be rejected. An edge is only
-considered if its removal results in a new triangulated graph. This
-means that only edges in one clique only are considered.
+considered if its removal results in a new triangulated graph,
+i.e. the edge is in one clique only.
 }
 \examples{
 set.seed(43)
@@ -75,7 +75,6 @@ separators <- list(c("var1"),
 
 thinning_edges(cliques, separators, data = data, alpha = 0.1,
                smooth = 0.1)
-
 }
 \seealso{
 \code{\link{cond_independence_test}} for the test used.

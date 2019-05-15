@@ -32,6 +32,7 @@ var2 <- var1 + c(sample(c(1, 2), 50, replace = TRUE))
 var3 <- var1 + c(sample(c(0, 1), 50, replace = TRUE,
                         prob = c(0.9, 0.1)))
 var4 <- c(sample(c(1, 2), 50, replace = TRUE))
+
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -42,6 +43,9 @@ adj_matrix_DAG <- matrix(c(0, 0, 0, 0,
                            1, 0, 0, 0,
                            0, 1, 0, 0),
                           nrow = 4)
+                          
+rownames(adj_matrix_DAG) <- colnames(adj_matrix_DAG) <- names(data)
+                          
 CPT(adj_matrix_DAG, data)
 CPT(adj_matrix_DAG, data, bayes_smooth = 1)
 }

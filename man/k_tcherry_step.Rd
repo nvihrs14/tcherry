@@ -69,17 +69,6 @@ data <- data.frame("var1" = as.character(var1),
 
 # smooth used in MIk
 (tch <- k_tcherry_step(data, 3, smooth = 0.1))
-
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \seealso{
 \code{\link{MIk}} for mutual

@@ -27,7 +27,6 @@
 #'
 #' diff_edges_tch(m1, m1)
 #' diff_edges_tch(m1, m2)
-#'
 #' @export
 
 diff_edges_tch <- function(adj_mat_1, adj_mat_2){
@@ -44,7 +43,7 @@ diff_edges_tch <- function(adj_mat_1, adj_mat_2){
     stop("Arguments must be numeric.")
   }
 
-  if (any(!c(adj_mat_1, adj_mat_2) %in% 0:1)){
+  if (any(! c(adj_mat_1, adj_mat_2) %in% 0:1)){
     stop("Arguments must be adjacency matrices for unweighted graphs.
          Therefore all entries must be 0 or 1.")
   }
@@ -67,6 +66,12 @@ diff_edges_tch <- function(adj_mat_1, adj_mat_2){
                          ignoreOrder = TRUE)$result[1]){
     stop("The node names must be the same in both graphs.")
   }
+  
+  if (sum(adj_mat_1) != sum(adj_mat_2)){
+    stop(paste("The graphs do not have the same number of edges indicating",
+               "that the t-cherry trees do not have the same order", sep = " "))
+  }
+  
   adj_mat_1 <- adj_mat_1[rownames(adj_mat_2), colnames(adj_mat_2)]
 
   u_tri_1_idx <- upper.tri(adj_mat_1)

@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -19,6 +18,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var5" = as.character(var5),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
+
 data_mat <- as.matrix(data)
 
 data_numeric <- data
@@ -77,7 +77,6 @@ graph <- thinning_edges(cliques, separators, data = data, smooth = 0.1)
 graph2 <- thinning_edges(cliques, separators, data = data_mat,
                          smooth = 0.1)
 
-
 target_mat <- matrix(c(0, 1, 1, 0, 0, 0, 0,
                        1, 0, 1, 0, 1, 0, 0,
                        1, 1, 0, 0, 1, 0, 0,
@@ -88,11 +87,23 @@ target_mat <- matrix(c(0, 1, 1, 0, 0, 0, 0,
 
 colnames(target_mat) <- rownames(target_mat) <- names(data)
 
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(thinning_edges(cliques, separators, data_na, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
+
 test_that("results are correct", {
   expect_equal(graph$adj_matrix, target_mat)
   expect_equal(graph$n_edges_removed, 4)
   expect_equal(graph$n_edges, 6)
-
   expect_equal(graph2$adj_matrix, target_mat)
   expect_equal(graph2$n_edges_removed, 4)
   expect_equal(graph2$n_edges, 6)

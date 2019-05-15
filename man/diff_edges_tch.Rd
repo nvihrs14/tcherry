@@ -29,7 +29,6 @@ colnames(m2) <- rownames(m2) <- letters[1:4]
 
 diff_edges_tch(m1, m1)
 diff_edges_tch(m1, m2)
-
 }
 \author{
 Katrine Kirkeby, \email{enir_tak@hotmail.com}

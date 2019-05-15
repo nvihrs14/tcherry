@@ -2,8 +2,8 @@
 % Please edit documentation in R/increase_order_complete_search.R
 \name{increase_order_complete_search}
 \alias{increase_order_complete_search}
-\title{Determine the (k + 1)'th order t-cherry tree from a k'th order
-t-cherry tree with the greatest weight}
+\title{Determine the (k + 1)'th order t-cherry tree with the highest weight from
+a k'th order t-cherry tree}
 \usage{
 increase_order_complete_search(tch_cliq, data, ...)
 }
@@ -35,7 +35,7 @@ t-cherry tree.
 }
 \description{
 Determine the structure of the (k + 1)'th order t-cherry
-tree from a k'th order t-cherry tree with the greatest weight based
+tree with the highest weight from a k'th order t-cherry tree based
 on a complete search.
 }
 \details{
@@ -76,16 +76,6 @@ ChowLiu_cliques <- list(c("var1", "var5"),
 
 (tch <- increase_order_complete_search(ChowLiu_cliques, data,
                                        smooth = 0.1))
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$model$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \seealso{
 \code{\link{weight_junction_tree}} for calculation of the

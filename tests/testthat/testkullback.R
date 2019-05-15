@@ -25,17 +25,18 @@ p_target_noname <- array(c(0.1, 0.2, 0.05, 0.4, 0.005, 0.015,
 
 p_target_names <- array(c(0.1, 0.2, 0.05, 0.4, 0.005,
                           0.015, 0.13, 0.1),
-                  dim = c(2, 2, 2),
-                  dimnames = list("V1" = NULL,
-                                  "V2" = NULL,
-                                  "V3" = NULL))
+                        dim = c(2, 2, 2),
+                        dimnames = list("V1" = NULL,
+                                        "V2" = NULL,
+                                        "V3" = NULL))
 
 p_target_dimnames <- array(c(0.1, 0.2, 0.05, 0.4, 0.005, 0.015,
                              0.13, 0.1),
-                  dim = c(2, 2, 2),
-                  dimnames = list(c("a", "b"),
-                                  c("a", "b"),
-                                  c("a", "b")))
+                           dim = c(2, 2, 2),
+                           dimnames = list(c("a", "b"),
+                                           c("a", "b"),
+                                           c("a", "b")))
+
 p_target_no_prop <- p_target
 p_target_no_prop[1, 2, 2] <- 0.8
 
@@ -45,17 +46,17 @@ p_target_0[2, 1, 1] <- 0
 
 p_approx_2 <- array(c(0.01, 0.23, 0.06, 0.4, 0.005, 0.018,
                       0.137, 0.14),
-                  dim = c(2, 2, 2),
-                  dimnames = list("A" = c("a", "b"),
-                                  "B" = c("a", "b"),
-                                  "C" = c("a", "b")))
+                    dim = c(2, 2, 2),
+                    dimnames = list("A" = c("a", "b"),
+                                    "B" = c("a", "b"),
+                                    "C" = c("a", "b")))
 
 p_approx_3 <- array(c(0.01, 0.23, 0.06, 0.4, 0.005, 0.018,
                       0.133, 0.14, 0.001, 0.001, 0.001, 0.001),
-                  dim = c(2, 3, 2),
-                  dimnames = list("V1" = c("a", "b"),
-                                  "V2" = c("a", "b", "c"),
-                                  "V3" = c("a", "b")))
+                    dim = c(2, 3, 2),
+                    dimnames = list("V1" = c("a", "b"),
+                                    "V2" = c("a", "b", "c"),
+                                    "V3" = c("a", "b")))
 
 test_that("kullback error messages work", {
   expect_error(kullback(p_data_frame, p_approx),
@@ -69,7 +70,7 @@ test_that("kullback error messages work", {
   expect_error(kullback(p_target_no_prop, p_approx),
                "At least one of the given arrays is not a probability distribution.")
   expect_error(kullback(p_target_0, p_approx),
-               "Some entries are zero.")
+               "Some probabilities are zero.")
   expect_error(kullback(p_target, p_approx_2),
                "Distributions are not over the same universe.")
   expect_error(kullback(p_target, p_approx_3),

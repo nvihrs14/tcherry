@@ -1,4 +1,5 @@
 #' Calculates mutual information
+#' 
 #' @description Calculate mutual information for two or three
 #' categorical variables.
 #'
@@ -6,8 +7,8 @@
 #' @param smooth Additional cell counts for bayesian estimation of
 #' probabilities.
 #' @param log_base The base of the logarithmic function to be used.
+#' 
 #' @details
-#'
 #' The mutual information for two variables is calculated by the
 #' formula \deqn{MI(x, y) = \sum P(x, y) log(P(x, y) / (P(x)P(y)))}
 #' where the sum is over alle possible values of x and y.
@@ -16,37 +17,49 @@
 #' formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P
 #' (x)P(y)P(z)))} where the sum is over all possible values of x, y and
 #' z.
+#' 
 #' @return The mutual information given by a single numeric value.
+#' 
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
 #' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
 #'
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#' 
 #' @importFrom Rdpack reprompt
+#' 
 #' @references
 #' \insertRef{TCJT}{tcherry}
-#'
 #' \insertRef{EKTS}{tcherry}
+#' 
 #' @seealso
 #' \code{\link{MIk}} for mutual information for k variables.
+#' 
 #' @examples
-#'
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+#' var3 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var1 <- as.character(var1)
 #' var2 <- as.character(var2)
+#' var3 <- as.character(var3)
+#' 
 #' MI2(var1, var2, smooth = 1)
 #' MI2(var1, var2, smooth = 0.1, log_base = exp(1))
+#' 
+#' MI3(var1, var2, var3, smooth = 1)
+#' MI3(var1, var2, var3, smooth = 0.1, log_base = exp(1))
 #' @export
 
 MI2 <- function(x, y, smooth = 0, log_base = 2){
+  
   if (! all(sapply(list(x, y), function(x){
     is.character(x) | is.factor(x)
     }
     ))){
     stop("x and y must be either characters or factors.")
   }
+  
   if (length(smooth) > 1){
     stop("smooth must be a single non-negative value.")
   }
@@ -82,12 +95,14 @@ MI2 <- function(x, y, smooth = 0, log_base = 2){
 #' @export
 
 MI3 <- function(x, y, z, smooth = 0, log_base = 2){
+  
   if (! all(sapply(list(x, y, z), function(x){
     is.character(x) | is.factor(x)
     }
     ))){
     stop("x, y and z must be either characters or factors.")
   }
+  
   if (length(smooth) > 1){
     stop("smooth must be a single non-negative value.")
   }

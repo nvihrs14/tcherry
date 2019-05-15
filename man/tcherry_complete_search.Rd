@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcherry_complete_search.R
 \name{tcherry_complete_search}
 \alias{tcherry_complete_search}
-\title{Determine the k'th order t-cherry tree from data with the greatest
+\title{Determine the k'th order t-cherry tree from data with the highest
 weight}
 \usage{
 tcherry_complete_search(data, k, ...)
@@ -33,7 +33,7 @@ t-cherry tree.
 }
 \description{
 Determine the structure of the k'th order t-cherry tree
-from data with the greatest weight based on a complete search.
+from data with the highest weight based on a complete search.
 }
 \details{
 The algorithm for constructing the t-cherry tree from
@@ -64,17 +64,6 @@ data <- data.frame("var1" = as.character(var1),
                    "var7" = as.character(var7))
 
 (tch <- tcherry_complete_search(data, 5, smooth = 0.1))
-
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$model$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \seealso{
 \code{\link{weight_junction_tree}} for calculation of the

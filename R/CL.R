@@ -4,15 +4,19 @@
 #' an adjacency matrix, is acyclic.
 #'
 #' @param adj_matrix The adjacency matrix representing the graph.
+#' 
 #' @details Notice that the function cannot cope with loops.
 #' If the graph has loops, an error is returned.
+#' 
 #' @return A logical value indicating whether the graph is acyclic.
+#' 
 #' @author
 #' Katrine Kirkeby, \email{enir_tak@@hotmail.com}
 #'
 #' Maria Knudsen, \email{mariaknudsen@@hotmail.dk}
 #'
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
+#' 
 #' @examples
 #' adj_matrix_cyclic <- matrix(c(0, 1, 1, 1,
 #'                               1, 0, 0, 1,
@@ -32,9 +36,29 @@
 #' @export
 
 is_acyclic <- function(adj_matrix){
+  
+  if (! is.matrix(adj_matrix)){
+    stop("Argument must be a matrix.")
+  }
+  
   if (any(diag(adj_matrix) == 1)){
     stop("The graph represented by the matrix contains loops.")
   }
+  
+  if (! is.numeric(adj_matrix)){
+    stop("Argument must be numeric.")
+  }
+  
+  if (any(! c(adj_matrix) %in% 0:1)){
+    stop(paste("Argument must be an adjacency matrix for an unweighted graph.",
+         "Therefore all entries must be 0 or 1.", sep = " "))
+  }
+  
+  if (! isSymmetric(adj_matrix)){
+    stop(paste("Only undirected graphs are supported so argument must be",
+         "symmetric. This includes that rownames must equal colnames.", sep = " "))
+  }
+  
   while (any(rowSums(adj_matrix) == 1 |
              rowSums(adj_matrix) == 0)){
     idx <- which(rowSums(adj_matrix) == 1 |
@@ -103,6 +127,7 @@ is_acyclic <- function(adj_matrix){
 
 ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
                     CPTs = TRUE, ...){
+  
   if (any(is.na(data))){
     warning(paste("The data contains NA values.",
                   "Theese will be excluded from tables,",
@@ -115,12 +140,24 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }
+  
+  data <- as.data.frame(data)
 
   if (! all(sapply(data, function(x){
     is.character(x) | is.factor(x)
   }
   ))){
     stop("Some columns are not characters or factors.")
+  }
+  
+  if (length(bayes_smooth) > 1){
+    stop("bayes_smooth must be a single non-negative value.")
+  }
+  else if (!is.numeric(bayes_smooth)) {
+    stop("bayes_smooth must be numeric.")
+  }
+  else if (bayes_smooth < 0){
+    stop("bayes_smooth must be a non-negative numeric value.")
   }
 
   # Calculating mutual information
@@ -146,7 +183,7 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
   MI_tab <- MI_tab[ord_idx, ]
   rownames(MI_tab) <- NULL
 
-  # Construct skeleton for Chow-Liu tree
+  # Construct skeleton for Chow-Liu tree.
   adj_matrix <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(adj_matrix) <- colnames(adj_matrix) <- nodes
   i <- 1
@@ -167,7 +204,7 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
 
   skeleton_adj <- adj_matrix
 
-  # Determine DAG
+  # Determine DAG.
   if (is.null(root)){
     root <- sample(nodes, 1)
   }
@@ -187,16 +224,13 @@ ChowLiu <- function(data, root = NULL, bayes_smooth = 0,
     root <- nodes[kids_idx]
   }
 
-  # Calculate conditional probability tables
+  # Calculate conditional probability tables.
   if (CPTs){
     CPTs <- CPT(adj_matrix_directed, data,
               bayes_smooth = bayes_smooth)
-
-
   }
 
   return(list("skeleton_adj" = skeleton_adj,
               "adj_DAG" = adj_matrix_directed,
               "CPTs" = CPTs))
-
 }

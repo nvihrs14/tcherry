@@ -25,7 +25,6 @@ data_mat <- as.matrix(data)
 data_numeric <- data
 data_numeric$var2 <- as.numeric(data_numeric$var2)
 
-
 test_that("error messages work", {
   expect_error(cond_independence_test("var1", "var2",
                                       data = 1:2, smooth = 0.1),
@@ -33,6 +32,17 @@ test_that("error messages work", {
   expect_error(cond_independence_test("var1", "var2",
                                       data = data_numeric, smooth = 0.1),
                "Some columns are not characters or factors.")
+  expect_error(cond_independence_test("var1", "var2", cond = matrix(1, nrow = 1),
+                                      data = data),
+               paste("cond must either be a single variable name or a vector,",
+                     "possibly empty, of names.", sep = " "))
+  expect_error(cond_independence_test("var1", "var2", cond = list("var3"),
+                                      data = data),
+               paste("cond must either be a single variable name or a vector,",
+                     "possibly empty, of names.", sep = " "))  
+  expect_error(cond_independence_test(var1 = c("var1", "var3"), var2 = "var2",
+                                      data = data),
+               "var1 and var2 must each be a single name.")
   expect_error(cond_independence_test("va1", "var2",
                                       data = data, smooth = 0.1),
                "var1, var2 and the variables in cond must be variable names in data.")
@@ -66,6 +76,20 @@ object2 <- cond_independence_test("var1", "var4",
                                  data = data_mat, smooth = 0.1)
 object_cond2 <- cond_independence_test("var2", "var3", cond = "var1",
                                       data = data_mat, smooth = 0.1)
+
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(cond_independence_test("var1", "var4", data = data_na,
+                                        smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are correct", {
   expect_equal(object$chi_sq_statistic, 0.7512572)

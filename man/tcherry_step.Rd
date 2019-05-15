@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcherry_step.R
 \name{tcherry_step}
 \alias{tcherry_step}
-\title{Determines a t-cherry tree from data}
+\title{Determines a third order t-cherry tree from data}
 \usage{
 tcherry_step(data, ...)
 }
@@ -15,17 +15,17 @@ tcherry_step(data, ...)
 \value{
 A list containing the following components:
 \itemize{
-\item \code{adj_matrix} The adjacency matrix for the t-cherry
+\item \code{adj_matrix} The adjacency matrix for the third order t-cherry
 tree.
-\item \code{weight} The weight of the final t-cherry tree.
+\item \code{weight} The weight of the final third order t-cherry tree.
 \item \code{cliques} A list containing the cliques (cherries) of
- the t-cherry tree.
+ the third order t-cherry tree.
 \item \code{separators} A list containing the separators of a
-junction tree for the t-cherry tree.
+junction tree for the third order t-cherry tree.
 }
 }
 \description{
-Determines the structure of a t-cherry tree
+Determines the structure of a third order t-cherry tree
 from data based on a greedy stepwise approach.
 }
 \details{
@@ -33,17 +33,17 @@ This function i mainly kept for historical purposes, and it is
 recommended to use \code{\link{k_tcherry_step}} with \eqn{k=3},
 because this function runs faster.
 
-The algorithm for constructing the t-cherry tree from
+The algorithm for constructing the third order t-cherry tree from
 data is based on an atempt to minimize the Kullback-Leibler
 divergence. The first cherry is chosen as the triplet with
-highest mutual information. This is the preliminary t-cherry
+highest mutual information. This is the preliminary third order t-cherry
 tree. Then all possible new cherries are added stepwise to this
 tree and the weight \deqn{\sum MI3(clique) - \sum MI2(separator)}
 is calculated.
 The first sum is over the cliques and the second over the
-separators of the junction tree of the preliminary t-cherry tree.
+separators of the junction tree of the preliminary third order t-cherry tree.
 The one with the highest weight is chosen as the new preliminary
-t-cherry tree, and the procedure is repeated untill all variables
+third order t-cherry tree, and the procedure is repeated untill all variables
 has been added.
 }
 \examples{
@@ -67,17 +67,6 @@ data <- data.frame("var1" = as.character(var1),
 
 # smooth used in both MI2 and MI3
 (tch <- tcherry_step(data, smooth = 0.1))
-
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \seealso{
 \code{\link{k_tcherry_step}} for a better implementation,

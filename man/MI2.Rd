@@ -35,17 +35,21 @@ formula \deqn{MI(x, y, z) = \sum P(x, y, z) log(P(x, y, z) / (P
 z.
 }
 \examples{
-
 var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
+var3 <- c(sample(c(1, 2), 100, replace = TRUE))
 var1 <- as.character(var1)
 var2 <- as.character(var2)
+var3 <- as.character(var3)
+
 MI2(var1, var2, smooth = 1)
 MI2(var1, var2, smooth = 0.1, log_base = exp(1))
+
+MI3(var1, var2, var3, smooth = 1)
+MI3(var1, var2, var3, smooth = 0.1, log_base = exp(1))
 }
 \references{
 \insertRef{TCJT}{tcherry}
-
 \insertRef{EKTS}{tcherry}
 }
 \seealso{

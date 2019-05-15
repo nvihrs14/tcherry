@@ -55,6 +55,7 @@ increase_order2 <- function(tch_cliq, data, ...){
 
   tch_adj <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(tch_adj) <- colnames(tch_adj) <- nodes
+  
   for (i in 1:n_cliq) {
     tch_adj[tch_cliq[[i]], tch_cliq[[i]]] <- 1
     diag(tch_adj[tch_cliq[[i]], tch_cliq[[i]]]) <- 0
@@ -75,7 +76,7 @@ increase_order2 <- function(tch_cliq, data, ...){
   cliques <- as.list(rep(NA, n_var - k))
   separators <- as.list(rep(NA, n_var - (k + 1)))
 
-  # Adding first cherry
+  # Adding first cherry.
   poss_cliq <- utils::combn(nodes, k + 1)
   poss_cliq <- split(poss_cliq, rep(1:ncol(poss_cliq),
                                     each = nrow(poss_cliq)))
@@ -97,7 +98,6 @@ increase_order2 <- function(tch_cliq, data, ...){
       dat_first_cherry$adj_mat[[i]] <- adj_matrix_temp
     }
   }
-
 
   idx.max <- which.max(dat_first_cherry$MI)
 
@@ -145,7 +145,6 @@ increase_order2 <- function(tch_cliq, data, ...){
         dat_new_poss$new_sep[[idx.dat]] <- new_sep
         new_cliq <- c(dat_new_poss$new_sep[[idx.dat]], var)
         dat_new_poss$new_cliq[[idx.dat]] <- new_cliq
-
 
         adj_matrix_temp <- adj_matrix
         adj_matrix_temp[new_cliq, new_cliq] <- 1

@@ -50,6 +50,7 @@ data <- data.frame("var1" = as.character(var1),
                    "var5" = as.character(var5),
                    "var6" = as.character(var6),
                    "var7" = as.character(var7))
+                   
 MIk(c("var1", "var2", "var7"), data, smooth = 0.001)
 }
 \references{

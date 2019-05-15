@@ -1,7 +1,7 @@
 #' Calculates the BIC value
 #'
-#' @description Calculates the BIC value for a graphical model where the
-#' graph has the given junction tree.
+#' @description Calculates the BIC value for a graphical model from a junction tree
+#' for the graph.
 #'
 #' @param cliques A list containing the cliques of the junction tree.
 #' @param separators A list containing the separators of the junction
@@ -30,7 +30,6 @@
 #' determining the number of free parameters in the model.
 #'
 #' @examples
-#'
 #' set.seed(43)
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
@@ -63,7 +62,6 @@
 #' # smooth is used to deal with zero probabilities.
 #' BIC_junction_tree(cliques, separators, data, smooth = 0.1)
 #' @export
-#'
 
 BIC_junction_tree <- function(cliques, separators, data,
                               base_log = 2, ...){

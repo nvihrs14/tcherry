@@ -18,7 +18,6 @@
 #' Ninna Vihrs, \email{ninnavihrs@@hotmail.dk}
 #'
 #' @examples
-#'
 #' set.seed(43)
 #' var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 #' var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
@@ -49,7 +48,6 @@
 #'                    c("var5", "var6"))
 #'
 #' n_params_junction_tree(cliques, separators, data)
-#'
 #' @export
 
 n_params_junction_tree <- function(cliques, separators, data){

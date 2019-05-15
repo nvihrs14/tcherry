@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -47,6 +46,19 @@ tcherry_separators <- list(c("var2", "var5"),
                            c("var2", "var5"),
                            c("var3", "var5"),
                            c("var5", "var6"))
+
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(tcherry_CL(data_na, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are corrects", {
   expect_equal(tcherry_tree$adj_matrix, adj_matrix_tcherry)

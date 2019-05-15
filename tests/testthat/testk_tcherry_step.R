@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -36,7 +35,7 @@ test_that("error messages work", {
                "k must be a single positive integer.")
   expect_error(k_tcherry_step(data, 1.1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
-  expect_error(k_tcherry_step(data, -1, smooth = 0.001),
+  expect_error(k_tcherry_step(data, - 1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
   expect_error(k_tcherry_step(data, 1, smooth = 0.001),
                "k must be a positive integer and at least 2.")
@@ -50,6 +49,19 @@ tch3m <- k_tcherry_step(data_matrix, 3, smooth = 0.1)
 
 CL <- ChowLiu(data, CPTs = FALSE, smooth = 0.1)
 tchstep <- tcherry_step(data, smooth = 0.1)
+
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(k_tcherry_step(data_na, 3, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are correct", {
   expect_equal(tch2$adj_matrix, CL$skeleton_adj)

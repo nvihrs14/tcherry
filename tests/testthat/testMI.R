@@ -8,10 +8,9 @@ test_that("Input is correctly specified", {
                "smooth must be a single non-negative value.")
   expect_error(MI2(c("1", "2"), c("1", "2"), "C"),
                "smooth must be numeric.")
-  expect_error(MI2(c("1", "2"), c("1", "2"), -1),
+  expect_error(MI2(c("1", "2"), c("1", "2"), - 1),
                "smooth must be a non-negative numeric value.")
 })
-
 
 x <- c("hund", "kat", "kat", "kat", "hund", "hund",
        "hund", "hund", "hund")

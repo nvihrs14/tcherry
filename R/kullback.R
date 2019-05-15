@@ -30,16 +30,19 @@
 #'                   dimnames = list("V1" = c("a", "b"),
 #'                                   "V2" = c("a", "b"),
 #'                                   "V3" = c("a", "b")))
+#'                                   
 #' p_approx <- array(c(0.01, 0.23, 0.06, 0.4, 0.005, 0.018,
 #'                     0.137, 0.14),
 #'                   dim = c(2, 2, 2),
 #'                   dimnames = list("V1" = c("a", "b"),
 #'                                   "V2" = c("a", "b"),
 #'                                   "V3" = c("a", "b")))
+#'                                   
 #' kullback(p_target, p_approx)
 #' @export
 
 kullback <- function(target_p, approx_p, log_base = 2){
+  
   if (! is.array(target_p) | !is.array(approx_p)){
     stop("The input is not arrays.")
   }
@@ -63,13 +66,14 @@ kullback <- function(target_p, approx_p, log_base = 2){
   }
 
   if (0 %in% target_p | 0 %in% approx_p){
-    stop("Some entries are zero.")
+    stop("Some probabilities are zero.")
   }
 
   if (! compare::compare(dimnames(target_p), dimnames(approx_p),
                        ignoreComponentOrder = TRUE)$result[1]){
     stop("Distributions are not over the same universe.")
   }
+  
   frac <- gRbase::ar_div(target_p, approx_p)
   sum(gRbase::ar_prod(target_p, log(frac, base = log_base)))
 }

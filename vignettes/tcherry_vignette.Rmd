@@ -25,39 +25,39 @@ The tcherry package has a variety of functions for learning a $k$'th order $t$-c
 
 ## 2. The concept of a k'th order t-cherry tree
 
-The concepts in this section are based on @EKTShyp.
+The concept of a $k$'th order t-cherry tree is here presented as in @EKTShyp.
 
 A $k$'th order $t$-cherry tree is a graph which can be defined in the following recursive way: 
 \begin{itemize}
-  \item A complete set of $k-1$ vertives is the smallest $k$'th order $t$-cherry tree.
+  \item A complete set of $k-1$ vertices is the smallest $k$'th order $t$-cherry tree.
   \item A $k$'th order $t$-cherry tree is extended with a new vertex by adding an edge between this vertex and $k-1$ vertices already mutually connected by edges.
 \end{itemize}
 
-The nodes $A_1,\ldots,A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree $T$. This junction tree suggests the joint probability distribution
+The nodes $A_1, \ldots, A_n$ of a $k$'th order $t$-cherry tree represent variables. The graph is triangulated, so the cliques can be organised in a junction tree $T$. This junction tree suggests the joint probability distribution
 \begin{equation}\label{eq:prop_dist_junc}
 \tilde{P^T}(A_1,\ldots,A_n) = \frac{\prod\limits_{C\in\mathcal{C}}P(C)}{\prod\limits_{S\in\mathcal{S}}P(S)}
 \end{equation}
-where $\mathcal{C}$ is the set of cliques and $\mathcal{S}$ is the set of separators (separators used more than once should appear as many times as they are used).
+where $\mathcal{C}$ is the set of cliques and $\mathcal{S}$ is the set of separators (separators should be repeated as many times as they appear in the junction tree).
 
 If $P$ is the true probability distribution the Kullback-Leibler divergence becomes
 
 \begin{equation*}
 KL(P,P^T) = -H(A_1,\ldots,A_p)- \left(\sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)\right) + \sum_{i=1}^p H(A_i)
 \end{equation*}
-where $H(A_i)$ is the entropy $MI$ is mutual information given by
+where $H()$ is the entropy and $MI()$ is mutual information given by
 \begin{equation*}
 MI(A_1, \ldots, A_p) = \sum_{A_1,\ldots,A_p}P(A_1,\ldots,A_p)\log\left(\frac{P(A_1,\ldots,A_p)}{P(A_1)\cdots P(A_p)}\right).
 \end{equation*}
 
-In practice the exact probability distributions are not known, and they are therefore estimated by data. Then the expression 
+In practice, the exact probability distributions are unknown, and they are therefore estimated from data. The expression 
 \begin{equation*}
 w(T) = \sum_{C\in\mathcal{C}}MI(C)-\sum_{S\in\mathcal{S}}MI(S)
 \end{equation*}
-is called the weight of the junction tree. In order to minimize the Kullback-Leibler divergence it is enough to maximize the weight, which all the construction algorithms in this package are attempting to do.
+is called the weight of the junction tree. In order to minimize the Kullback-Leibler divergence, it is enough to maximize the weight, which all the construction algorithms in this package are attempting to do.
 
 ## 3. Learning the structure
 
-The purpose of the structure learning functions is to find a $k$'th order $t$-cherry tree from data, so let us first make some data. The function \texttt{random\_tcherry} makes a random 3. order $t$-cherry tree. It also returns some random conditional probability tables belonging to a bayesian network with the $t$-cherry tree as moral graph.
+The purpose of the structure learning functions is to find a $k$'th order $t$-cherry tree from data. Therefore, some data is needed. The function \texttt{random\_tcherry} makes a random 3. order $t$-cherry tree. It also returns some random conditional probability tables belonging to a bayesian network with the $t$-cherry tree as moral graph.
 
 ```{r}
 library(tcherry)
@@ -67,9 +67,9 @@ tch_random <- random_tcherry(n = 6, n_levels = rep(2, 6))
 tch_random$adj_matrix
 ```
 
-This makes a 3. order $t$-cherry tree with six binary variables. To work further with this network the gRain package is used [@SH].
+This makes a 3. order $t$-cherry tree with six binary variables. To work further with this network the gRain package [@SH] is used.
 
-A plot could be achieved by
+A plot could be achieved with Rgraphviz [@Rgraphviz] by
 
 ```{r, message=FALSE, fig.height=2.5}
 library(gRain)
@@ -99,13 +99,13 @@ sim <- simulate.grain(object = G, nsim = 100, seed = 43)
 
 This data set is now used to learn some $k$'th order $t$-cherry structures. 
 
-First a 2. order $t$-cherry tree is constructed. This is also known as a Chow-Liu tree.
+First, a 2. order $t$-cherry tree is constructed. This is also known as a Chow-Liu tree (optionally by directing all edges away from a chosen root).
 
 ```{r}
 tch2 <- k_tcherry_step(data = sim, k = 2, smooth = 0.001)
 ```
 
-The smooth arguments is added to all tables before normalisation in connection with estimating probabilities for mutual information. The algorithm behind this function is a greedy algorithm attempting to maximize the weight of the junction tree by stepwise adding one clique at a time to the $t$-cherry tree. For $k=2$ this is known to give the optimal solution. For higher values of $k$ this is no longer the case.
+The smooth arguments is added to all tables before normalisation in connection with estimating probabilities for mutual information. The algorithm behind this function is a greedy algorithm attempting to maximize the weight of the junction tree by stepwise adding one clique at a time to the $t$-cherry tree. For $k=2$ this is known to give the optimal solution. For higher values of $k$, this is no longer the case.
 
 A 3. order $t$-cherry tree is also fitted with the same approach, and the weight of the constructed junction tree is extracted.
 
@@ -122,7 +122,6 @@ tch3_2_lookahead <- k_tcherry_p_lookahead(data = sim, k = 3, p = 2,
 tch3_2_lookahead$weight
 ```
 
-
 It can be time consuming to construct a $k$'th order $t$-cherry tree directly from data for large problems. A faster approach is to expand a $(k-1)$'th order $t$-cherry tree instead. This is done by a greedy approach trying to maximize the weight of the resulting junction tree.
 
 ```{r}
@@ -130,7 +129,7 @@ tch3_increase <- increase_order2(tch_cliq = tch2$cliques, data = sim, smooth = 0
 tch3_increase$weight
 ```
 
-This expands the Chow-Liu tree fitted before to a 3. order $t$-cherry tree. There is also a function called \texttt{increase\_order1} which does not attempt to maximize the weight but only the sum of mutual information of the cliques. This algorithm is also greedy and inspired by @EKTS.
+This expands the Chow-Liu tree fitted before to a 3. order $t$-cherry tree. There is also a function called \texttt{increase\_order1} which does not attempt to maximize the weight, but only the sum of mutual information of the cliques. This algorithm is also greedy and inspired by @EKTS, but it is not recommended to use this one.
 
 As mentioned before the greedy algorithms are not garanteed to yield the optimal solution, and since the problem is no larger than it is, a complete search is actually possible.
 
@@ -168,17 +167,16 @@ new_data <- data.frame("V1" = rep(NA, 3),
 predict.grain(object = G_tch3_step, response = "V1", newdata = new_data)
 predict.grain(object = G_tch3_step, response = "V1", newdata = new_data,
               type = "distribution")
-
 ```
 
 ## 4. Thinning edges in a given structure
 
-If a high order $t$-cherry tree has been chosen for a problem, the high number of edges increases the risk of overfitting. To take care of this problem, the number of edges in the graph can be reduced. The function \texttt{thinning\_edges} offers a method which succesively deletes one edge such that the resulting graph is still triangulated. This means that the cliques of this new graph can also be organised in a junction tree and the probability distibution approximated by \eqref{eq:prop_dist_junc}. The two models may then be compared by a likelihood ratio test with the test statistic
+If a high order $t$-cherry tree has been chosen for a problem, the high number of edges increases the risk of overfitting. To take care of this problem, the number of edges in the graph can be reduced. The function \texttt{thinning\_edges} offers a method which succesively deletes one edge such that the resulting graph is still triangulated. This means that the cliques of this new graph can also be organised in a junction tree and the probability distibution approximated by \eqref{eq:prop_dist_junc}. The model without the edge can be compared to the model with the edge by a likelihood ratio test with the test statistic
 
 \begin{equation*}
-2\sum_{A_i, A_j, S}N(A_i, A_j, S)\log\left(\frac{P^L(A_i, A_j|S)}{P^L(A_i|S)P^L(A_j|S)}\right)
+2\cdot \sum_{A_i, A_j, S}N(A_i, A_j, S)\log\left(\frac{P^L(A_i, A_j|S)}{P^L(A_i|S)P^L(A_j|S)}\right)
 \end{equation*}
-where the sum is over all possible states of the variables, $N()$ is the number of accurences of the current combination of states seen in data and $\{A_i, A_j\}$ is the edge to be tested. For the resulting graph to be trianguled this edge can be in one clique only in the original model. If this clique is denoted $K$, $S = K\setminus\{A_i, A_j\}$. This is actually a test for whether $A_i$ and $A_j$ are independent given $S$. Under the null hypothesis that the edge is needless this test statistic follows asymptotically a chi-squared distribution with $(n_i-1)(n_j-1)n_S$ degrees of freedom where $n_i$ and $n_j$ are the number of possible states of $A_i$ and $A_j$ and $n_S$ are the number of konfigurations of the states of $S$.
+where the sum is over all possible states of the variables, $N()$ is the number of occurences of the current combination of states seen in data and $\{A_i, A_j\}$ is the edge to be tested. For the resulting graph to be trianguled, this edge can be in one clique only in the original model [@SL]. If this clique is denoted $K$, $S = K\setminus\{A_i, A_j\}$. This is actually a test for whether $A_i$ and $A_j$ are independent given $S$. Under the null hypothesis that the edge can be deleted, this test statistic follows asymptotically a chi-squared distribution. The degrees of freedom are $(n_i-1)(n_j-1)n_S$ where $n_i$ and $n_j$ are the number of possible states of $A_i$ and $A_j$ respectively, and $n_S$ is the number of konfigurations of the states of $S$.
 
 To thin the edges of an undirected graphical model with a triangulated graph this test is carried out for each edge which can be deleated such that the resulting graph is still triangulated. Each time an edge is removed the cliques and edges which can be removed are updated.
 
@@ -218,7 +216,6 @@ thinned_graph <- as(thinned$adj_matrix, "graphNEL")
 par(mfrow = c(1, 2))
 plot(tch3_graph)
 plot(thinned_graph)
-
 ```
 
 The two models can be compared by the value of the likelihood function,
@@ -227,7 +224,7 @@ the BIC criterion and the number of free parameters. The value of the log-likeli
 \begin{equation*}
 l(T;\mathcal{D})=|\mathcal{D}| \left(w(T)-\sum_{i=1}^nH(A_i)\right)
 \end{equation*}
-where $|\mathcal{D}|$ is the number of observations in data and $H()$ is the entropy. All probabilities are estimated with maximum likelihood estimation unless a correction is necessary to avoid zero probabilities. The BIC criterion is calculated as
+where $|\mathcal{D}|$ is the number of observations in data, $w()$ is the weight of the juction tree and $H()$ is the entropy. All probabilities are estimated with maximum likelihood estimation unless a correction is necessary to avoid zero probabilities. The BIC criterion is calculated as
 
 \begin{equation*}
 BIC(T) = l(T) - \frac{n_p}{2} \cdot \log(|\mathcal{D}|)
@@ -243,8 +240,8 @@ BIC_junction_tree(thinned$cliques, thinned$separators, data = data, smooth = 0.0
 
 n_params_junction_tree(tch3$cliques, tch3$separators, data = data)
 n_params_junction_tree(thinned$cliques, thinned$separators, data = data)
-
 ```
+
 The BIC criterion for the thinned model is higher, which confirms that this is just as good as the more complicated model.
 
 The function used for the independence test is \texttt{cond\_independence\_test} which can also be used to check the independence of some variables.
@@ -254,8 +251,8 @@ cond_independence_test("var1", "var4", data = data, smooth = 0.001)
 cond_independence_test("var2", "var3", cond = "var1", data = data, smooth = 0.001)
 cond_independence_test("var2", "var1", cond = c("var7", "var4"), data = data,
                        smooth = 0.001)
-
 ```
+
 These statements fits very well with the construction of the data.
 
 Notice that this thinning procedure can be used for any triangulated graph and not just $t$-cherry trees.

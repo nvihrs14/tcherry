@@ -53,6 +53,7 @@
 #'                    "var5" = as.character(var5),
 #'                    "var6" = as.character(var6),
 #'                    "var7" = as.character(var7))
+#'                    
 #' MIk(c("var1", "var2", "var7"), data, smooth = 0.001)
 #' @export
 
@@ -73,7 +74,7 @@ MIk <- function(variables, data, smooth = 0, log_base = 2){
 
   data <- as.data.frame(data)
 
-  if (!all(variables %in% colnames(data))){
+  if (! all(variables %in% colnames(data))){
     stop("All names in variables must be column names of data.")
   }
 

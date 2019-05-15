@@ -11,7 +11,6 @@ var5 <- var2 + var3
 var6 <- var1 - var4 + c(sample(c(1, 2), 100, replace = TRUE))
 var7 <- c(sample(c(1, 2), 100, replace = TRUE))
 
-
 data <- data.frame("var1" = as.character(var1),
                    "var2" = as.character(var2),
                    "var3" = as.character(var3),
@@ -55,6 +54,18 @@ seps <- list(c("var3", "var5"),
              c("var1", "var6"),
              c("var2", "var3"))
 
+data_na <- data
+data_na[1, 1] <- NA
+
+test_that("Warning message works", {
+  expect_warning(increase_order2(ChowLiu_cliques, data_na, smooth = 0.1),
+                 paste("The data contains NA values.",
+                       "Theese will be excluded from tables,",
+                       "which may be problematic.",
+                       "It is highly recommended to manually take",
+                       "care of NA values before using the data as input.",
+                       sep = " "))
+})
 
 test_that("results are corrects", {
   expect_equal(tcherry_ord_inc$adj_matrix, adj_mat)
@@ -63,7 +74,6 @@ test_that("results are corrects", {
                                ignoreOrder = TRUE)$result)
   expect_true(compare::compare(tcherry_ord_inc$separators, seps,
                                ignoreOrder = TRUE)$result)
-
   expect_equal(tcherry_ord_inc2$adj_matrix, adj_mat)
   expect_equal(tcherry_ord_inc2$n_edges, 11)
   expect_true(compare::compare(tcherry_ord_inc2$cliques, cliques,
@@ -114,7 +124,7 @@ test_that("error messages work", {
                paste("Cliques must be given in a list, each entry containing",
                      "a vector with the names of the variables in the clique.",
                      collapse = " "))
-  expect_error(increase_order2(ChowLiu_cliques[-1], data,
+  expect_error(increase_order2(ChowLiu_cliques[- 1], data,
                                           smooth = 0.1),
                paste("The column names of data must be the same as the",
                      "variable names in tch_cliq. All variables in data must",

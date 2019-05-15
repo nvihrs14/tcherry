@@ -1,15 +1,14 @@
-#' Determine the k'th order t-cherry tree from data with the greatest
+#' Determine the k'th order t-cherry tree from data with the highest
 #' weight
 #'
 #' @description Determine the structure of the k'th order t-cherry tree
-#' from data with the greatest weight based on a complete search.
+#' from data with the highest weight based on a complete search.
 #'
 #' @param data The data the tree structure should be based on.
 #' @param k The order of the t-cherry tree.
 #' @param ... Additional arguments passed to \code{weight_junction_tree}.
 #'
 #' @details
-#'
 #' The algorithm for constructing the t-cherry tree from
 #' data is based on an atempt to minimize the Kullback-Leibler
 #' divergence, by mazimising the weight. All possible structures are
@@ -65,17 +64,6 @@
 #'                    "var7" = as.character(var7))
 #'
 #' (tch <- tcherry_complete_search(data, 5, smooth = 0.1))
-#'
-#' # For plotting
-#' library(gRbase)
-#' library(Rgraphviz)
-#' tcherry_tree <- as(tch$model$adj_matrix, "graphNEL")
-#' plot(tcherry_tree)
-#'
-#' # For probability propagation
-#' library(gRain)
-#' model <- grain(tcherry_tree, data = data, smooth = 0.1)
-#' querygrain(model)
 #' @export
 
 tcherry_complete_search <- function(data, k, ...){
@@ -177,6 +165,4 @@ tcherry_complete_search <- function(data, k, ...){
 
   return(list("model" = model,
               "n_models" = length(models)))
-
 }
-

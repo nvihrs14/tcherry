@@ -3,7 +3,7 @@
 \name{k_tcherry_p_lookahead}
 \alias{k_tcherry_p_lookahead}
 \title{Determine a k'th order t-cherry tree from data by adding p cliques
-at a time.}
+at a time}
 \usage{
 k_tcherry_p_lookahead(data, k, p, ...)
 }
@@ -38,18 +38,19 @@ approach. In each step p new cliques are added.
 Notice that for \eqn{p = 1} it is the same as using
 \code{k_tcherry_step} and for \eqn{p = n - (k - 1)} it is the same
 as using \code{tcherry_complete_search}.
+Note that for \eqn{p = 1} it is faster to use \code{\link{k_tcherry_step}}
 
 The algorithm for constructing the t-cherry tree from
 data is based on an atempt to minimize the Kullback-Leibler
 divergence by maximizing the weight
 \deqn{\sum MI(clique) - \sum MI(separator).}
 The first sum is over the cliques and the second over the
-separators of the junction tree of the preliminary t-cherry tree.
+separators of the junction tree of the t-cherry tree.
 In each step all possibilities of p new cliques are added to the
 preliminary tree.
 The one with the highest weight is chosen as the new preliminary
 t-cherry tree, and the procedure is repeated untill all variables
-has been added.
+have been added.
 }
 \examples{
 set.seed(43)
@@ -70,17 +71,6 @@ data <- data.frame("var1" = as.character(var1),
 
 # smooth used in MIk
 (tch <- k_tcherry_p_lookahead(data, k = 3, p = 2, smooth = 0.1))
-
-# For plotting
-library(gRbase)
-library(Rgraphviz)
-tcherry_tree <- as(tch$adj_matrix, "graphNEL")
-plot(tcherry_tree)
-
-# For probability propagation
-library(gRain)
-model <- grain(tcherry_tree, data = data, smooth = 0.1)
-querygrain(model)
 }
 \seealso{
 \code{\link{MIk}} for mutual

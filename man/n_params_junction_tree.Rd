@@ -22,7 +22,6 @@ Determines the number of free parameters in a graphical
 model based on a junction tree for the graph.
 }
 \examples{
-
 set.seed(43)
 var1 <- c(sample(c(1, 2), 100, replace = TRUE))
 var2 <- var1 + c(sample(c(1, 2), 100, replace = TRUE))
@@ -53,7 +52,6 @@ separators <- list(c("var1"),
                    c("var5", "var6"))
 
 n_params_junction_tree(cliques, separators, data)
-
 }
 \author{
 Katrine Kirkeby, \email{enir_tak@hotmail.com}
