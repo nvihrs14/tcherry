@@ -12,8 +12,12 @@ With vignettes
 
 If there are problems with viewing documentation or vignettes, it is recommended to restart the R session.
 
-Note that the package requres the following R-packages, which are automatically installed with the package:
-    Rdpack, utils, gRbase, compare and stats.
+Note that the package requires the following R-packages, which are automatically installed with the package:
+    Rdpack, utils, gRbase, compare, rGrain, Rgraphviz and stats.
+    
+The package gRbase further requires the packages graph and RBGL which may have to be installed from Bioconductor for instance with
+
+`BiocManager::install(c("graph", "RBGL"))`
 
 ## Main functions (see vignette for more details)
 

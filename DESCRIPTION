@@ -20,12 +20,12 @@ Imports:
     utils,
     gRbase,
     compare,
-    stats
+    stats,
+    Rgraphviz,
+    gRain
 RdMacros: Rdpack
 Suggests: 
     testthat,
-    Rgraphviz,
-    gRain,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
