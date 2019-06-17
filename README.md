@@ -59,7 +59,7 @@ Note that the smooth argument is added to cell counts when estimating probabilit
 The graphical structure of af fourth order t-cherry tree for this data can be found by using the same function as above whit k = 4. However in this case, it is chosen to show how increase_order2 can be used to increase the order of the fitted third order t-cherry tree. The typical reason for this choice will be to save time, but often at the cost of a fitted structure of smaller likelihood.
 
 ``` r
-tch4 <- increase_order2(cliques = tch3$cliques, data = car, smooth = 0.001)
+tch4 <- increase_order2(tch_cliq = tch3$cliques, data = car, smooth = 0.001)
 tch4$adj_matrix
 #>            buying maint doors persons lug_boot safety class
 #> buying        0     1     0       1        1      1     1
