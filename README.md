@@ -33,12 +33,12 @@ The package gRbase further requires the packages graph and RBGL which may have t
 
 ## Example usage
 
-To demonstrate the main functions in this package consider the car evaluation data set from UCI Machine Learning Repository (Dau & Graff 2017). This data set contains 7 variables (all categorical) with 1728 observations for each and no missing values. The variables are describing different aspects of the car such as the estimated safety of the car, the number of doors etc. To find a graphical structure of a third order t-cherry tree for this data the function k_tcherry_p_lookahead is used. It is chosen to add just one clique at a time in the greedy search procedure.
+To demonstrate the main functions in this package consider the car evaluation data set from UCI Machine Learning Repository (Dau & Graff 2017). This data set contains 7 variables (all categorical) with 1728 observations for each and no missing values. The variables are describing different aspects of the car such as the estimated safety of the car, the number of doors etc. To find a graphical structure of a third order t-cherry tree for this data the function `k_tcherry_p_lookahead` is used. It is chosen to add just one clique at a time in the greedy search procedure.
 
 ``` r
 library(tcherry)
 car <- read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data",
-header = FALSE, sep = ",", dec = ".")
+          header = FALSE, sep = ",", dec = ".")
 names(car) <- c("buying", "maint", "doors", "persons", "lug_boot",
                   "safety", "class")
 tch3 <- k_tcherry_p_lookahead(data = car, k = 3, p = 1, smooth = 0.001)
@@ -56,7 +56,7 @@ tch3$adj_matrix
 
 Note that the smooth argument is added to cell counts when estimating probabilities to avoid zero probabilities, which would make some calculations invalid. 
 
-The graphical structure of af fourth order t-cherry tree for this data can be found by using the same function as above whit k = 4. However in this case, it is chosen to show how increase_order2 can be used to increase the order of the fitted third order t-cherry tree. The typical reason for this choice will be to save time, but often at the cost of a fitted structure of smaller likelihood.
+The graphical structure of af fourth order t-cherry tree for this data can be found by using the same function as above with k = 4. However in this case, it is chosen to show how `increase_order2` can be used to increase the order of the fitted third order t-cherry tree. The typical reason for this choice will be to save time, but often at the cost of a fitted structure of smaller likelihood.
 
 ``` r
 tch4 <- increase_order2(tch_cliq = tch3$cliques, data = car, smooth = 0.001)
