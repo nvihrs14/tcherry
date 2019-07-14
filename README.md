@@ -27,9 +27,9 @@ The package gRbase further requires the packages graph and RBGL which may have t
 
 -__`k_tcherry_p_lookahead`__: Determine a k'th order t-cherry tree from data by adding p cliques at a time by a greedy search. Note that if p is the total number of cliques in a k'th order t-cherry tree with the desired number of vertices, this is a complete search.
 
--__`thinning_edges`__: Thinning of edges in an undirected graphical model with a triangulated graph.
+-__`thin_edges`__: Thinning of edges in an undirected graphical model with a triangulated graph.
 
--__`BIC_junction_tree`__: Calculates the BIC value for a graphical model from a junction tree for the graph.
+-__`compute_BIC_junction_tree`__: Calculates the BIC value for a graphical model from a junction tree for the graph.
 
 ## Example usage
 
@@ -77,7 +77,7 @@ Note that the smooth argument is added for the same reasons as above, and the gi
 It can now be attempted to simplify this model by thinning the edges.
 
 ``` r
-tch_thinning <- thinning_edges(cliques = tch4$cliques, separators = tch4$separators, data = car,
+tch_thinning <- thin_edges(cliques = tch4$cliques, separators = tch4$separators, data = car,
 smooth = 0.001)
 tch_thinning$adj_matrix
 #>            buying class doors lug_boot maint persons safety
@@ -98,13 +98,13 @@ Notice that in this function the structure is represented by the cliques and sep
 The three fitted structures can be compared by calculating a BIC score.
 
 ``` r
-BIC_junction_tree(cliques = tch3$cliques, separators = tch3$separators, data = car, smooth = 0.001)
+compute_BIC_junction_tree(cliques = tch3$cliques, separators = tch3$separators, data = car, smooth = 0.001)
 #> -20079.89
 
-BIC_junction_tree(cliques = tch4$cliques, separators = tch4$separators, data = car, smooth = 0.001)
+compute_BIC_junction_tree(cliques = tch4$cliques, separators = tch4$separators, data = car, smooth = 0.001)
 #> -21572.4
 
-BIC_junction_tree(cliques = tch_thinning$cliques, separators = tch_thinning$separators, data = car,
+compute_BIC_junction_tree(cliques = tch_thinning$cliques, separators = tch_thinning$separators, data = car,
 smooth = 0.001)
 #> -19923.95
 ```

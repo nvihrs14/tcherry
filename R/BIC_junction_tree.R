@@ -60,10 +60,10 @@
 #'                    c("var5", "var6"))
 #'
 #' # smooth is used to deal with zero probabilities.
-#' BIC_junction_tree(cliques, separators, data, smooth = 0.1)
+#' compute_BIC_junction_tree(cliques, separators, data, smooth = 0.1)
 #' @export
 
-BIC_junction_tree <- function(cliques, separators, data,
+compute_BIC_junction_tree <- function(cliques, separators, data,
                               base_log = 2, ...){
 
   if (any(is.na(data))){

@@ -1,4 +1,4 @@
-context("BIC_junction_tree")
+context("compute_BIC_junction_tree")
 library(tcherry)
 
 set.seed(43)
@@ -47,23 +47,23 @@ cliques_wrong <- list(c("var1", "var2", "var3"),
                       c("var2", "var5", "var8"))
 
 test_that("error messages work", {
-  expect_error(BIC_junction_tree(cliques, separators, data = 1:2),
+  expect_error(compute_BIC_junction_tree(cliques, separators, data = 1:2),
                "data must be a data frame or a matrix.")
-  expect_error(BIC_junction_tree(cliques, separators, data = data_numeric),
+  expect_error(compute_BIC_junction_tree(cliques, separators, data = data_numeric),
                "Some columns are not characters or factors.")
-  expect_error(BIC_junction_tree(1:2, separators, data = data),
+  expect_error(compute_BIC_junction_tree(1:2, separators, data = data),
                paste("Cliques must be given in a list, each entry containing",
                      "a vector with the names of the variables in the clique.",
                      collapse = " "))
-  expect_error(BIC_junction_tree(cliques, 1:2, data = data),
+  expect_error(compute_BIC_junction_tree(cliques, 1:2, data = data),
                paste("Separators must be given in a list, each entry containing",
                      "a vector with the names of the variables in the separator.",
                      collapse = " "))
-  expect_error(BIC_junction_tree(cliques_wrong, separators, data = data),
+  expect_error(compute_BIC_junction_tree(cliques_wrong, separators, data = data),
                paste("The column names of data must be the same as the",
                      "variable names in tch_cliq. All variables in data must",
                      "be in at least one clique.", collapse = " "))
-  expect_error(BIC_junction_tree(cliques, separators_wrong, data = data),
+  expect_error(compute_BIC_junction_tree(cliques, separators_wrong, data = data),
                "All variable names in separators should be in data.")
 })
 
@@ -71,7 +71,7 @@ data_na <- data
 data_na[1, 1] <- NA
 
 test_that("Warning message works", {
-  expect_warning(BIC_junction_tree(cliques, separators, data_na, smooth = 0.1),
+  expect_warning(compute_BIC_junction_tree(cliques, separators, data_na, smooth = 0.1),
                  paste("The data contains NA values.",
                        "Theese will be excluded from tables,",
                        "which may be problematic.",
@@ -81,9 +81,9 @@ test_that("Warning message works", {
 })
 
 test_that("results are correct", {
-  expect_equal(BIC_junction_tree(cliques, separators, data, smooth = 0.1),
+  expect_equal(compute_BIC_junction_tree(cliques, separators, data, smooth = 0.1),
                -1042.296, tolerance = 10e-5)
-  expect_equal(BIC_junction_tree(cliques, separators, data_mat,
+  expect_equal(compute_BIC_junction_tree(cliques, separators, data_mat,
                                  smooth = 0.1),
                -1042.296, tolerance = 10e-5)
 })

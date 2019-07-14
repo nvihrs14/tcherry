@@ -205,7 +205,7 @@ A 3. order $t$-cherry tree is now fitted and subsequently thinned. Notice that \
 
 ```{r, message=FALSE, fig.height=2.5}
 tch3 <- k_tcherry_step(data = data, k = 3, smooth = 0.001)
-thinned <- thinning_edges(tch3$cliques, tch3$separators, data, smooth = 0.001)
+thinned <- thin_edges(tch3$cliques, tch3$separators, data, smooth = 0.001)
 thinned$n_edges_removed
 
 library(gRain)
@@ -235,8 +235,8 @@ where $n_p$ is the number of free parameters in the model. Notice that a high va
 loglikelihood(tch3$cliques, tch3$separators, data = data, smooth = 0.001)
 loglikelihood(thinned$cliques, thinned$separators, data = data, smooth = 0.001)
 
-BIC_junction_tree(tch3$cliques, tch3$separators, data = data, smooth = 0.001)
-BIC_junction_tree(thinned$cliques, thinned$separators, data = data, smooth = 0.001)
+compute_BIC_junction_tree(tch3$cliques, tch3$separators, data = data, smooth = 0.001)
+compute_BIC_junction_tree(thinned$cliques, thinned$separators, data = data, smooth = 0.001)
 
 n_params_junction_tree(tch3$cliques, tch3$separators, data = data)
 n_params_junction_tree(thinned$cliques, thinned$separators, data = data)
