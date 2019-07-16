@@ -69,11 +69,11 @@
 #'                    c("var2", "var5"),
 #'                    c("var5", "var6"))
 #'
-#' thinning_edges(cliques, separators, data = data, alpha = 0.1,
+#' thin_edges(cliques, separators, data = data, alpha = 0.1,
 #'                smooth = 0.1)
 #' @export
 
-thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
+thin_edges <- function(cliques, separators, data, alpha = 0.05, ...){
 
   if (any(is.na(data))){
     warning(paste("The data contains NA values.",
@@ -87,7 +87,7 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
   if (! (is.data.frame(data) | is.matrix(data))) {
     stop("data must be a data frame or a matrix.")
   }
-  
+
   data <- as.data.frame(data)
 
   if (! all(sapply(data, function(x){
@@ -212,7 +212,7 @@ thinning_edges <- function(cliques, separators, data, alpha = 0.05, ...){
 
   adj_matrix <- matrix(0, nrow = n_var, ncol = n_var)
   rownames(adj_matrix) <- colnames(adj_matrix) <- nodes
-  
+
   for (i in 1:n_cliq) {
     if (length(cliques[[i]]) != 1){
     adj_matrix[cliques[[i]], cliques[[i]]] <- 1
