@@ -123,3 +123,7 @@ If you experience any problems with this package, you are welcome to contact the
 Dua, D. & Graff, C. (2017). UCI machine learning repository.
 
 Kovács, E. & Szántai, T. (2012). Hypergraphs as a mean of discovering the dependence structure of a discrete multivariate probability distribution. Ann Oper Res, 193, 71-90. <https://doi.org/10.1007/s10479-010-0814-y>
+
+## See also
+
+JOSS paper [![DOI](http://joss.theoj.org/papers/10.21105/joss.01480/status.svg)](https://doi.org/10.21105/joss.01480)
