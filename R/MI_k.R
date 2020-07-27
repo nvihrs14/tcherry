@@ -118,10 +118,10 @@ MIk <- function(variables, data, smooth = 0, log_base = 2){
   )
   prop_joint <- tab_joint / sum(tab_joint)
 
-  frac_prop_MI <- gRbase::ar_div(prop_joint,
-                                 gRbase::ar_prod_list(prop_marginals))
+  frac_prop_MI <- gRbase::tabDiv(prop_joint,
+                                 gRbase::tabListMult(prop_marginals))
 
-  MI <- sum(gRbase::ar_prod(prop_joint,
+  MI <- sum(gRbase::tabProd(prop_joint,
                             log(frac_prop_MI, base = log_base)))
 
   return(MI)

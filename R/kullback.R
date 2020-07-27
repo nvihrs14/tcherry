@@ -74,6 +74,6 @@ kullback <- function(target_p, approx_p, log_base = 2){
     stop("Distributions are not over the same universe.")
   }
   
-  frac <- gRbase::ar_div(target_p, approx_p)
-  sum(gRbase::ar_prod(target_p, log(frac, base = log_base)))
+  frac <- gRbase::tabDiv(target_p, approx_p)
+  sum(gRbase::tabProd(target_p, log(frac, base = log_base)))
 }

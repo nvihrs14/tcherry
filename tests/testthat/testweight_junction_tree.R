@@ -1,3 +1,6 @@
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17494
+suppressWarnings(RNGversion("3.5.0"))
+
 context("weight_junction_tree")
 library(tcherry)
 
