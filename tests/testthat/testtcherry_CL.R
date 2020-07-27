@@ -1,3 +1,6 @@
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17494
+suppressWarnings(RNGversion("3.5.0"))
+
 context("tcherry_CL")
 library(tcherry)
 

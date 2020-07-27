@@ -89,7 +89,7 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
   }
   
   if (! is.null(cond)){
-    if (class(cond) != "character" | ! is.vector(cond)){
+    if (!is(cond, "character") | ! is.vector(cond)){
       stop(paste("cond must either be a single variable name or a vector,",
                  "possibly empty, of names.", sep = " "))
     }
@@ -132,9 +132,9 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
     }
 
     chi_sq <- 2 *
-      sum(gRbase::ar_prod(tab_12,
-                          log(gRbase::ar_div(p_tab_12,
-                                             gRbase::ar_prod(p_tab_1,
+      sum(gRbase::tabProd(tab_12,
+                          log(gRbase::tabDiv(p_tab_12,
+                                             gRbase::tabProd(p_tab_1,
                                                              p_tab_2)))))
   }else{
     tab_cond <- table(data[, cond], dnn = cond)
@@ -148,25 +148,25 @@ cond_independence_test <- function(var1, var2, cond = c(), data,
 
     tab_12cond <- table(data[, c(var1, var2, cond)])
     p_tab_12cond <- (tab_12cond + smooth) / sum(tab_12cond + smooth)
-    p_tab_12_given_cond <- gRbase::ar_div(p_tab_12cond, p_tab_cond)
+    p_tab_12_given_cond <- gRbase::tabDiv(p_tab_12cond, p_tab_cond)
 
     tab_1cond <- table(data[, c(var1, cond)])
     p_tab_1cond <- (tab_1cond + smooth) / sum(tab_1cond + smooth)
-    p_tab_1_given_cond <- gRbase::ar_div(p_tab_1cond, p_tab_cond)
+    p_tab_1_given_cond <- gRbase::tabDiv(p_tab_1cond, p_tab_cond)
 
     tab_2cond <- table(data[, c(var2, cond)])
     p_tab_2cond <- (tab_2cond + smooth) / sum(tab_2cond + smooth)
-    p_tab_2_given_cond <- gRbase::ar_div(p_tab_2cond, p_tab_cond)
+    p_tab_2_given_cond <- gRbase::tabDiv(p_tab_2cond, p_tab_cond)
 
     if (0 %in% c(p_tab_12cond, p_tab_1cond, p_tab_2cond)){
       stop("Some probabilities are zero. Consider using the smooth argument.")
     }
 
     chi_sq <- 2 *
-      sum(gRbase::ar_prod(tab_12cond,
-                          log(gRbase::ar_div(
+      sum(gRbase::tabProd(tab_12cond,
+                          log(gRbase::tabDiv(
                             p_tab_12_given_cond,
-                            gRbase::ar_prod(p_tab_1_given_cond,
+                            gRbase::tabProd(p_tab_1_given_cond,
                                             p_tab_2_given_cond)))))
   }
 
